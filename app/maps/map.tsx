@@ -172,7 +172,6 @@ const Map = () => {
 
     return (
         <div className="flex-col content-center">
-            <h1>Game Map</h1>
             {isLoading ? <div>Loading</div> : null}
             {!isLoading && state ? (
                 <DragDropContext onDragEnd={onDragEnd}>

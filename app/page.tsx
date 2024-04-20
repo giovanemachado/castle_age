@@ -1,5 +1,5 @@
 import Map from "./maps/map";
-import PassTurnButton from "./turns/components/pass_turn_button";
+import Turns from "./turns/turns";
 
 export default async function Home() {
     return (
@@ -16,13 +16,12 @@ export default async function Home() {
                     </ul>
                 </div>
             </div>
+
             <div className="w-full flex justify-center">
                 <Map />
             </div>
 
-            <div className="w-full flex justify-end">
-                <PassTurnButton />
-            </div>
+            <Turns />
         </div>
     );
 }

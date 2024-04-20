@@ -1,8 +1,15 @@
 "use client";
+type PassTurnButtonProps = {
+    onTurnUpdate: (turns: number) => void;
+};
 
-const PassTurnButton = () => {
-    const handleClick = () => {
-        fetch("http://localhost:3001/games/pass-turn", { method: "POST" });
+const PassTurnButton = ({ onTurnUpdate }: PassTurnButtonProps) => {
+    const handleClick = async () => {
+        const response = await fetch("http://localhost:3001/games/turns", {
+            method: "POST",
+        });
+        const jsonData = await response.json();
+        onTurnUpdate(jsonData);
     };
 
     return (
