@@ -14,10 +14,10 @@ export default async function Home() {
     const data = await getData();
 
     return (
-        <>
+        <div className="container mx-auto px-2">
             <div className="navbar bg-base-100">
                 <div className="flex-1">
-                    <a className="btn btn-ghost text-xl">Castle Age</a>
+                    <a className="text-xl font-bold">Castle Age</a>
                 </div>
                 <div className="flex-none">
                     <ul className="menu menu-horizontal px-1">
@@ -40,9 +40,13 @@ export default async function Home() {
                     </ul>
                 </div>
             </div>
-            <div className="h-screen w-full flex justify-center">
+            <div className="w-full flex justify-center">
                 <Map data={data} />
             </div>
-        </>
+
+            <div className="w-full flex justify-end">
+                <button className="btn btn-primary btn-lg">Pass turn</button>
+            </div>
+        </div>
     );
 }

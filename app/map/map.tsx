@@ -1,6 +1,6 @@
 "use client";
-import grassImage from "../../../public/grass1.png";
-import grass2Image from "../../../public/grass2.png";
+import grassImage from "../../public/grass1.png";
+import grass2Image from "../../public/grass2.png";
 import Square from "./components/square";
 import { SquareData } from "./types/square_data";
 import { useEffect, useState } from "react";

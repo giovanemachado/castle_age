@@ -1,5 +1,5 @@
 import { Draggable, DraggableProvided } from "@hello-pangea/dnd";
-import archerImage from "../../../public/archer.png";
+import archerImage from "../../public/archer.png";
 
 const draggableThing = ({
     draggableProps,
