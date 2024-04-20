@@ -1,7 +1,18 @@
-"use client";
 import Map from "./map/map";
 
-export default function Home() {
+async function getData() {
+    const res = await fetch("http://localhost:3001/games/map");
+
+    if (!res.ok) {
+        throw new Error("Failed to fetch data");
+    }
+
+    return res.json();
+}
+
+export default async function Home() {
+    const data = await getData();
+
     return (
         <>
             <div className="navbar bg-base-100">
@@ -30,7 +41,7 @@ export default function Home() {
                 </div>
             </div>
             <div className="h-screen w-full flex justify-center">
-                <Map />
+                <Map data={data} />
             </div>
         </>
     );

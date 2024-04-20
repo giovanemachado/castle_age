@@ -1,7 +1,7 @@
+"use client";
 import grassImage from "../../../public/grass1.png";
 import grass2Image from "../../../public/grass2.png";
 import Square from "./components/square";
-import initialData from "../initial_data";
 import { SquareData } from "./types/square_data";
 import { useEffect, useState } from "react";
 import { MapData } from "./types/map_data";
@@ -51,8 +51,8 @@ const handleClick = (row: number, col: number) => {
     console.log(`Square clicked: ${row}-${col}`);
 };
 
-const Map = () => {
-    const [state, setState] = useState<MapData>(initialData);
+const Map = (data: { data: MapData }) => {
+    const [state, setState] = useState<MapData>(data.data);
 
     const validResult = (result: DropResult) => {
         if (!result.destination) {
@@ -88,11 +88,9 @@ const Map = () => {
 
     const updateSourceRow = (source: DraggableLocation) => {
         const sourceRowIndex = getRowIndex(state.rows, source.droppableId);
-
         let sourceRow = state.rows[sourceRowIndex];
 
         const sourceSquareIndex = getSquareIndex(sourceRow, source.droppableId);
-
         const sourceSquare = sourceRow[sourceSquareIndex];
 
         const newUnitIds = Array.from(sourceSquare.unitIds);
@@ -102,7 +100,6 @@ const Map = () => {
             ...sourceSquare,
             unitIds: newUnitIds,
         };
-
         sourceRow[sourceSquareIndex] = newSquare;
 
         return { sourceRow, sourceRowIndex };
@@ -116,25 +113,21 @@ const Map = () => {
             state.rows,
             destination.droppableId
         );
-
         let destinationRow = state.rows[destinationRowIndex];
-
         const destinationSquareIndex = getSquareIndex(
             destinationRow,
             destination.droppableId
         );
-
         const destinationSquare = destinationRow[destinationSquareIndex];
+        const destinationNewUnitIds = Array.from(destinationSquare.unitIds);
 
-        const dnewUnitIds = Array.from(destinationSquare.unitIds);
-        dnewUnitIds.splice(destination.index, 0, draggableId); // add
+        destinationNewUnitIds.splice(destination.index, 0, draggableId);
 
-        const dnewSquare = {
+        const destinationNewSquare = {
             ...destinationSquare,
-            unitIds: dnewUnitIds,
+            unitIds: destinationNewUnitIds,
         };
-
-        destinationRow[destinationSquareIndex] = dnewSquare;
+        destinationRow[destinationSquareIndex] = destinationNewSquare;
 
         return { destinationRow, destinationRowIndex };
     };
@@ -156,15 +149,12 @@ const Map = () => {
             destination,
             draggableId
         );
-
         modifiedState.rows[destinationRowIndex] = destinationRow;
 
         setState({
             ...modifiedState,
         });
     };
-
-    useEffect(() => console.log(state), [state]);
 
     const rows = [];
 
