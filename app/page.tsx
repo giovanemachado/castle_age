@@ -1,18 +1,7 @@
-import Map from "./map/map";
-
-async function getData() {
-    const res = await fetch("http://localhost:3001/games/map");
-
-    if (!res.ok) {
-        throw new Error("Failed to fetch data");
-    }
-
-    return res.json();
-}
+import Map from "./maps/map";
+import PassTurnButton from "./turns/components/pass_turn_button";
 
 export default async function Home() {
-    const data = await getData();
-
     return (
         <div className="container mx-auto px-2">
             <div className="navbar bg-base-100">
@@ -24,28 +13,15 @@ export default async function Home() {
                         <li>
                             <a>.</a>
                         </li>
-                        {/* <li>
-                            <details>
-                                <summary>Parent</summary>
-                                <ul className="p-2 bg-base-100 rounded-t-none">
-                                    <li>
-                                        <a>Link 1</a>
-                                    </li>
-                                    <li>
-                                        <a>Link 2</a>
-                                    </li>
-                                </ul>
-                            </details>
-                        </li> */}
                     </ul>
                 </div>
             </div>
             <div className="w-full flex justify-center">
-                <Map data={data} />
+                <Map />
             </div>
 
             <div className="w-full flex justify-end">
-                <button className="btn btn-primary btn-lg">Pass turn</button>
+                <PassTurnButton />
             </div>
         </div>
     );

@@ -1,4 +1,4 @@
-import Card from "@/app/card/card";
+import Card from "@/app/cards/card";
 import { StrictModeDroppable } from "@/app/shared/droppable";
 import { DroppableProvided } from "@hello-pangea/dnd";
 
