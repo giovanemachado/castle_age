@@ -10,6 +10,7 @@ import {
     DraggableLocation,
     DropResult,
 } from "@hello-pangea/dnd";
+import { UnitData } from "./types/unit_data";
 
 const renderRow = (rowIndex: number, rowData: SquareData[]) => {
     return (
@@ -32,7 +33,7 @@ const renderSquare = (row: number, col: number, square: SquareData) => {
         <div key={`${row}-${col}`}>
             <Square
                 droppableId={square.id}
-                units={square.unitIds}
+                unit={square.unit}
                 row={row}
                 col={col}
                 type={square.type}
@@ -94,28 +95,36 @@ const Map = () => {
         return row.findIndex((square) => square.id == droppableId);
     };
 
-    const updateSourceRow = (source: DraggableLocation, mapData: MapData) => {
+    const updateSourceRow = (
+        source: DraggableLocation,
+        mapData: MapData
+    ): {
+        sourceRow: SquareData[];
+        sourceRowIndex: number;
+        unitRemoved: UnitData;
+    } => {
         const sourceRowIndex = getRowIndex(mapData.rows, source.droppableId);
         let sourceRow = mapData.rows[sourceRowIndex];
 
         const sourceSquareIndex = getSquareIndex(sourceRow, source.droppableId);
         const sourceSquare = sourceRow[sourceSquareIndex];
 
-        const newUnitIds = Array.from(sourceSquare.unitIds);
-        newUnitIds.splice(source.index, 1);
+        if (!sourceSquare.unit) {
+            throw "Failed to move unit because it doesnt exists";
+        }
 
-        const newSquare = {
+        const newSquare: SquareData = {
             ...sourceSquare,
-            unitIds: newUnitIds,
+            unit: undefined,
         };
         sourceRow[sourceSquareIndex] = newSquare;
 
-        return { sourceRow, sourceRowIndex };
+        return { sourceRow, sourceRowIndex, unitRemoved: sourceSquare.unit };
     };
 
     const updateDestinationRow = (
         destination: DraggableLocation,
-        draggableId: string,
+        unitToAdd: UnitData,
         mapData: MapData
     ) => {
         const destinationRowIndex = getRowIndex(
@@ -128,14 +137,12 @@ const Map = () => {
             destination.droppableId
         );
         const destinationSquare = destinationRow[destinationSquareIndex];
-        const destinationNewUnitIds = Array.from(destinationSquare.unitIds);
 
-        destinationNewUnitIds.splice(destination.index, 0, draggableId);
-
-        const destinationNewSquare = {
+        const destinationNewSquare: SquareData = {
             ...destinationSquare,
-            unitIds: destinationNewUnitIds,
+            unit: unitToAdd,
         };
+
         destinationRow[destinationSquareIndex] = destinationNewSquare;
 
         return { destinationRow, destinationRowIndex };
@@ -155,12 +162,15 @@ const Map = () => {
         const { destination, source, draggableId } = result;
         const modifiedState = state;
 
-        const { sourceRow, sourceRowIndex } = updateSourceRow(source, state);
+        const { sourceRow, sourceRowIndex, unitRemoved } = updateSourceRow(
+            source,
+            state
+        );
         modifiedState.rows[sourceRowIndex] = sourceRow;
 
         const { destinationRow, destinationRowIndex } = updateDestinationRow(
             destination,
-            draggableId,
+            unitRemoved,
             state
         );
         modifiedState.rows[destinationRowIndex] = destinationRow;

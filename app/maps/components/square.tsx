@@ -1,21 +1,26 @@
 import Card from "@/app/cards/card";
 import { StrictModeDroppable } from "@/app/shared/droppable";
 import { DroppableProvided } from "@hello-pangea/dnd";
+import { UnitData } from "../types/unit_data";
 
 const droppableThing = ({
     index,
-    units,
+    unit,
     droppableProps,
     innerRef,
     placeholder,
 }: DroppableProvided & {
     index: number;
-    units: string[];
+    unit?: UnitData;
 }) => {
     return (
         <div className={"h-full w-full"} {...droppableProps} ref={innerRef}>
-            {units.length > 0 ? (
-                <Card index={index} draggableId={units[0]} />
+            {unit ? (
+                <Card
+                    image_tag={unit.class}
+                    index={index}
+                    draggableId={unit.id}
+                />
             ) : null}
 
             {placeholder}
@@ -25,7 +30,7 @@ const droppableThing = ({
 
 const Square = ({
     droppableId,
-    units,
+    unit,
     row,
     col,
     type,
@@ -33,7 +38,7 @@ const Square = ({
     backgroundImage,
 }: {
     droppableId: string;
-    units: string[];
+    unit?: UnitData;
     row: number;
     col: number;
     type: string;
@@ -54,7 +59,7 @@ const Square = ({
                 {(provided) =>
                     droppableThing({
                         index: 0,
-                        units,
+                        unit,
                         ...provided,
                     })
                 }
