@@ -1,72 +1,42 @@
 import { Draggable, DraggableProvided } from "@hello-pangea/dnd";
-import castleImage from "../../public/castle.png";
-import gateImage from "../../public/gate.png";
-import archerImage from "../../public/archer.png";
-import spearmanImage from "../../public/spearman.png";
-import horsemanImage from "../../public/horseman.png";
-import wallImage from "../../public/wall.png";
-import { StaticImageData } from "next/image";
-import { UNITS } from "../shared/enums/units";
+import CardImage from "./components/cardImage";
+import { UnitData } from "../maps/types/unit_data";
+import { unitIsStructure } from "../shared/utils";
 
-type ImageProp = {
-    image: React.ReactNode;
+type DraggableCardProps = {
+    imageComponent: React.ReactNode;
 };
 
-const getImage = (image_tag: string): StaticImageData => {
-    switch (image_tag) {
-        case UNITS.CASTLE:
-            return castleImage;
-        case UNITS.GATE:
-            return gateImage;
-        case UNITS.ARCHER:
-            return archerImage;
-        case UNITS.WALL:
-            return wallImage;
-        case UNITS.SPEARMAN:
-            return spearmanImage;
-        case UNITS.HORSEMAN:
-            return horsemanImage;
-        default:
-            return archerImage;
-    }
+type CardProps = {
+    unit: UnitData;
 };
 
-const draggableThing = ({
+const draggable = ({
     draggableProps,
     dragHandleProps,
     innerRef,
-    image,
-}: DraggableProvided & ImageProp) => {
+    imageComponent,
+}: DraggableProvided & DraggableCardProps) => {
     return (
         <div {...draggableProps} {...dragHandleProps} ref={innerRef}>
-            {image}
+            {imageComponent}
         </div>
     );
 };
 
-const image = (image_tag: string) => {
+const Card = ({ unit }: CardProps) => {
     return (
-        <div
-            className="w-full h-full square"
-            style={{ backgroundImage: `url(${getImage(image_tag).src})` }}
-        ></div>
-    );
-};
-
-const Card = ({
-    index,
-    draggableId,
-    image_tag,
-}: {
-    index: number;
-    draggableId: string;
-    image_tag: string;
-}) => {
-    return (
-        <Draggable draggableId={draggableId} index={index}>
-            {(provided) =>
-                draggableThing({
-                    image: image(image_tag),
+        <Draggable
+            draggableId={unit.id}
+            index={0}
+            isDragDisabled={unitIsStructure(unit)}
+        >
+            {(provided, snapshot) =>
+                draggable({
+                    imageComponent: CardImage({
+                        unitClass: unit.class,
+                        isDragging: snapshot.isDragging,
+                    }),
                     ...provided,
                 })
             }

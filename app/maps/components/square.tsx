@@ -3,26 +3,27 @@ import { StrictModeDroppable } from "@/app/shared/droppable";
 import { DroppableProvided } from "@hello-pangea/dnd";
 import { UnitData } from "../types/unit_data";
 
-const droppableThing = ({
-    index,
+type SquareDroppableProps = {
+    unit?: UnitData;
+    isDraggingOver: boolean;
+};
+
+const droppable = ({
     unit,
     droppableProps,
     innerRef,
     placeholder,
-}: DroppableProvided & {
-    index: number;
-    unit?: UnitData;
-}) => {
+    isDraggingOver,
+}: DroppableProvided & SquareDroppableProps) => {
     return (
-        <div className={"h-full w-full"} {...droppableProps} ref={innerRef}>
-            {unit ? (
-                <Card
-                    image_tag={unit.class}
-                    index={index}
-                    draggableId={unit.id}
-                />
-            ) : null}
-
+        <div
+            className={`h-full w-full ${
+                isDraggingOver ? "bg-secondary/50" : ""
+            }`}
+            {...droppableProps}
+            ref={innerRef}
+        >
+            {unit ? <Card unit={unit} /> : null}
             {placeholder}
         </div>
     );
@@ -55,11 +56,14 @@ const Square = ({
             onClick={handleClick}
             style={{ backgroundImage }}
         >
-            <StrictModeDroppable droppableId={droppableId}>
-                {(provided) =>
-                    droppableThing({
-                        index: 0,
+            <StrictModeDroppable
+                droppableId={droppableId}
+                isDropDisabled={!!unit}
+            >
+                {(provided, snapshot) =>
+                    droppable({
                         unit,
+                        isDraggingOver: snapshot.isDraggingOver,
                         ...provided,
                     })
                 }
