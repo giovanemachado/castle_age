@@ -2,6 +2,7 @@ import { Draggable, DraggableProvided } from "@hello-pangea/dnd";
 import CardImage from "./components/cardImage";
 import { unitIsStructure } from "../shared/utils";
 import { UnitData } from "@/schema/types";
+import { useState } from "react";
 
 type DraggableCardProps = {
     imageComponent: React.ReactNode;
@@ -25,11 +26,13 @@ const draggable = ({
 };
 
 const Card = ({ unit }: CardProps) => {
+    const [itMoved, setItMoved] = useState(false);
+
     return (
         <Draggable
             draggableId={unit.id}
             index={0}
-            isDragDisabled={unitIsStructure(unit)}
+            isDragDisabled={unitIsStructure(unit) || itMoved}
         >
             {(provided, snapshot) =>
                 draggable({
