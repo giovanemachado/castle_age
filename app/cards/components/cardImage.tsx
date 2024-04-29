@@ -5,21 +5,21 @@ import archerImage from "@/public/archer.png";
 import spearmanImage from "@/public/spearman.png";
 import horsemanImage from "@/public/horseman.png";
 import wallImage from "@/public/wall.png";
-import { UNIT_CLASS } from "wheelbarrow";
+import { UNITDATA_CLASS } from "@/schema/types";
 
 const getCardImage = (image_tag: string): StaticImageData => {
     switch (image_tag) {
-        case UNIT_CLASS.CASTLE:
+        case UNITDATA_CLASS.CASTLE:
             return castleImage;
-        case UNIT_CLASS.GATE:
+        case UNITDATA_CLASS.GATE:
             return gateImage;
-        case UNIT_CLASS.ARCHER:
+        case UNITDATA_CLASS.ARCHER:
             return archerImage;
-        case UNIT_CLASS.WALL:
+        case UNITDATA_CLASS.WALL:
             return wallImage;
-        case UNIT_CLASS.SPEARMAN:
+        case UNITDATA_CLASS.SPEARMAN:
             return spearmanImage;
-        case UNIT_CLASS.HORSEMAN:
+        case UNITDATA_CLASS.HORSEMAN:
             return horsemanImage;
         default:
             return archerImage;

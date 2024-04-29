@@ -1,7 +1,7 @@
 import { Draggable, DraggableProvided } from "@hello-pangea/dnd";
 import CardImage from "./components/cardImage";
-import { UnitData } from "../maps/types/unit_data";
 import { unitIsStructure } from "../shared/utils";
+import { UnitData } from "@/schema/types";
 
 type DraggableCardProps = {
     imageComponent: React.ReactNode;

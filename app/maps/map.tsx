@@ -2,15 +2,13 @@
 import grassImage from "../../public/grass1.png";
 import grass2Image from "../../public/grass2.png";
 import Square from "./components/square";
-import { SquareData } from "./types/square_data";
 import { useEffect, useState } from "react";
-import { MapData } from "./types/map_data";
 import {
     DragDropContext,
     DraggableLocation,
     DropResult,
 } from "@hello-pangea/dnd";
-import { UnitData } from "./types/unit_data";
+import { SquareData, MapData, UnitData } from '@/schema/types';
 
 const renderRow = (rowIndex: number, rowData: SquareData[]) => {
     return (

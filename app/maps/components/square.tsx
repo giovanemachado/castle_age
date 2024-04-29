@@ -1,7 +1,7 @@
 import Card from "@/app/cards/card";
 import { StrictModeDroppable } from "@/app/shared/droppable";
+import { UnitData } from "@/schema/types";
 import { DroppableProvided } from "@hello-pangea/dnd";
-import { UnitData } from "../types/unit_data";
 
 type SquareDroppableProps = {
     unit?: UnitData;

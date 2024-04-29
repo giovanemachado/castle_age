@@ -12,8 +12,7 @@
     "@hello-pangea/dnd": "^16.6.0",
     "next": "14.2.1",
     "react": "^18",
-    "react-dom": "^18",
-    "wheelbarrow": "https://giovanemachado@github.com/giovanemachado/wheelbarrow.git"
+    "react-dom": "^18"
   },
   "devDependencies": {
     "@types/node": "^20",
