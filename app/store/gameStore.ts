@@ -1,22 +1,19 @@
+import { GameState, UnitData } from "@/schema/types";
 import { createStore } from "zustand/vanilla";
-
-export type GameState = {
-    turns: number;
-};
+// import { setUnitMovement } from "./gameStoreActions";
 
 export type GameActions = {
     increaseTurns: () => void;
+    // setUnitMovement: (unitId: string) => void;
 };
 
 export type GameStore = GameState & GameActions;
 
-export const defaultInitState: GameState = {
-    turns: 0,
-};
-
-export const createGameStore = (initState: GameState = defaultInitState) => {
+export const createGameStore = (initState: GameState) => {
     return createStore<GameStore>()((set) => ({
         ...initState,
         increaseTurns: () => set((state) => ({ turns: state.turns + 1 })),
+        // setUnitMovement: (unitId) =>
+        //     set((state) => setUnitMovement(state, unitId)),
     }));
 };

@@ -4,10 +4,11 @@ import grass2Image from "../../public/grass2.png";
 import Square from "./components/square";
 import { useEffect, useState } from "react";
 import { DragDropContext, DropResult } from "@hello-pangea/dnd";
-import { SquareData, MapData, UnitData } from "@/schema/types";
+import { SquareData, MapData } from "@/schema/types";
 import { updateDestinationRow } from "./methods/updateDestinationRow";
 import { updateSourceRow } from "./methods/updateSourceRow";
 import { validDropResult } from "./methods/utils";
+import { useGameStore } from "../store/gameStoreProvider";
 
 const renderRow = (rowIndex: number, rowData: SquareData[]) => {
     return (
@@ -30,7 +31,6 @@ const renderSquare = (row: number, col: number, square: SquareData) => {
         <div key={`${row}-${col}`}>
             <Square
                 droppableId={square.id}
-                unit={square.unit}
                 row={row}
                 col={col}
                 type={square.type}
@@ -46,19 +46,13 @@ const handleClick = (row: number, col: number) => {
 };
 
 const Map = () => {
-    useEffect(() => {
-        const fetchData = async () => {
-            const response = await fetch("http://localhost:3001/games/map");
-            const jsonData = await response.json();
-            setState(jsonData);
-            setIsLoading(false);
-        };
+    const { gameMap } = useGameStore((state) => state);
 
-        fetchData();
-    }, []);
+    useEffect(() => {
+        setState(gameMap);
+    }, [gameMap]);
 
     const [state, setState] = useState<MapData>();
-    const [isLoading, setIsLoading] = useState(true);
 
     const onDragEnd = (dropResult: DropResult) => {
         if (!state) {
@@ -87,8 +81,6 @@ const Map = () => {
         );
         modifiedState.rows[destinationRowIndex] = destinationRow;
 
-        console.log(draggableId);
-
         setState({
             ...modifiedState,
         });
@@ -96,8 +88,7 @@ const Map = () => {
 
     return (
         <div className="flex-col content-center">
-            {isLoading ? <div>Loading</div> : null}
-            {!isLoading && state ? (
+            {state ? (
                 <DragDropContext onDragEnd={onDragEnd}>
                     <div className="map">
                         {state.rows.map((row: SquareData[], index: number) =>
