@@ -1,17 +1,24 @@
 import { UnitData } from "@/schema/types";
 import { GameStore } from "./gameStore";
 
-// export const setUnitMovement = (state: GameStore, unitId: string) => {
-//     // const unitsInGameMap: UnitData[] = state.gameMap.rows.map((row) =>
-//     //     row.map((square) => square.unit)
-//     // );
-//     // const sIndex = unitsInGameMap.findIndex(
-//     //     (unitState) => unitState.id === unitId
-//     // );
-//     // if (sIndex != -1) {
-//     //     return { units: state.units };
-//     // }
-//     // const nUnits = Array.from(state.units);
-//     // nUnits[sIndex].movementInTurn.moved;
-//     return { state };
-// };
+export const setUnitMovement = (
+    state: GameStore,
+    unitId: string,
+    localization: string
+) => {
+    const unitsInStore: UnitData[] = Array.from(state.units);
+
+    const unitInStoreIndex = unitsInStore.findIndex(
+        (unit) => unit.id === unitId
+    );
+
+    if (unitInStoreIndex == -1) {
+        throw "No unitInStoreIndex";
+    }
+
+    unitsInStore[unitInStoreIndex].movementInTurn.moved = true;
+    unitsInStore[unitInStoreIndex].movementInTurn.turn = state.turns;
+    unitsInStore[unitInStoreIndex].movement.localization = localization;
+
+    return { units: unitsInStore };
+};

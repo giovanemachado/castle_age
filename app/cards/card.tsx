@@ -24,12 +24,15 @@ const draggable = ({
     );
 };
 
+/**
+ * Representation of a Card in the game (an unit). It's a draggable item, and you can interact with most of them.
+ */
 const Card = ({ unit }: CardProps) => {
     return (
         <Draggable
             draggableId={unit.id}
             index={0}
-            isDragDisabled={unitIsStructure(unit)}
+            isDragDisabled={unitIsStructure(unit) || unit.movementInTurn.moved}
         >
             {(provided, snapshot) =>
                 draggable({

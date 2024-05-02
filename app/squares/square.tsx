@@ -4,6 +4,8 @@ import { useGameStore } from "@/app/store/gameStoreProvider";
 import { UnitData } from "@/schema/types";
 import { DroppableProvided } from "@hello-pangea/dnd";
 import { useEffect, useState } from "react";
+import grass1Image from "../../public/grass1.png";
+import grass2Image from "../../public/grass2.png";
 
 type SquareDroppableProps = {
     unit?: UnitData;
@@ -31,21 +33,16 @@ const droppable = ({
     );
 };
 
-const Square = ({
-    droppableId,
-    row,
-    col,
-    type,
-    onClick,
-    backgroundImage,
-}: {
-    droppableId: string;
-    row: number;
-    col: number;
-    type: string;
-    onClick: (row: number, col: number) => void;
-    backgroundImage: string;
-}) => {
+/**
+ * Representation of a Square in the map (one space where you can move units to). It's a droppable area, as you can
+ * drop 1 card in each of these.
+ */
+const Square = ({ droppableId }: { droppableId: string }) => {
+    // temporary random to test images (will come from backend)
+    let backgroundImage = `url(${
+        Math.random() > 0.65 ? grass1Image.src : grass2Image.src
+    })`;
+
     const { units } = useGameStore((state) => state);
     const [unit, setUnit] = useState<UnitData | undefined>(undefined);
 
@@ -54,18 +51,10 @@ const Square = ({
             (unit) => unit.movement.localization === droppableId
         );
         setUnit(foundUnit);
-    }, [units]);
-
-    const handleClick = () => {
-        onClick(row, col);
-    };
+    }, [units, droppableId]);
 
     return (
-        <div
-            className={`square ${type} h-full w-full`}
-            onClick={handleClick}
-            style={{ backgroundImage }}
-        >
+        <div className={`square h-full w-full`} style={{ backgroundImage }}>
             <StrictModeDroppable
                 droppableId={droppableId}
                 isDropDisabled={!!unit}

@@ -1,15 +1,16 @@
 "use client";
-type PassTurnButtonProps = {
-    onTurnUpdate: (turns: number) => void;
-};
 
-const PassTurnButton = ({ onTurnUpdate }: PassTurnButtonProps) => {
+import { useGameStore } from "@/app/store/gameStoreProvider";
+
+const PassTurnButton = () => {
+    const { passTurn } = useGameStore((state) => state);
+
     const handleClick = async () => {
         const response = await fetch("http://localhost:3001/games/turns", {
             method: "POST",
         });
         const jsonData = await response.json();
-        onTurnUpdate(jsonData);
+        passTurn(jsonData);
     };
 
     return (
