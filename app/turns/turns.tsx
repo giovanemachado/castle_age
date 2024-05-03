@@ -7,7 +7,7 @@ const Turns = () => {
 
     return (
         <div className="w-full flex justify-end">
-            <span className="px-2 font-mono text-6xl">{turns}</span>
+            <span className="px-2 font-mono text-5xl">{turns}</span>
 
             <PassTurnButton />
         </div>

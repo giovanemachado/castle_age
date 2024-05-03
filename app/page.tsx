@@ -3,7 +3,7 @@ import Turns from "./turns/turns";
 
 export default async function Home() {
     return (
-        <div className="container mx-auto px-2">
+        <div className="h-screen flex flex-col container mx-auto px-2">
             <div className="navbar bg-base-100">
                 <div className="flex-1">
                     <a className="text-xl font-bold">Castle Age</a>
@@ -16,11 +16,9 @@ export default async function Home() {
                     </ul>
                 </div>
             </div>
-
-            <div className="w-full flex justify-center">
+            <div className="flex flex-1 overflow-y-auto justify-center">
                 <Map />
             </div>
-
             <Turns />
         </div>
     );
