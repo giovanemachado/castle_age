@@ -30,7 +30,7 @@ const Map = () => {
     };
 
     return (
-        <div className="flex-col content-center">
+        <div className="flex-col">
             <DragDropContext
                 onBeforeCapture={onBeforeCapture}
                 onDragEnd={onDragEnd}

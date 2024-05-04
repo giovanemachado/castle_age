@@ -3,7 +3,7 @@
 import { useGameStore } from "@/app/store/gameStoreProvider";
 
 const PassTurnButton = () => {
-    const { turns, units, gameMap, gameId, passTurn } = useGameStore(
+    const { turns, units, gameId, playerIds, money, passTurn } = useGameStore(
         (state) => state
     );
 
@@ -15,7 +15,7 @@ const PassTurnButton = () => {
                     "Content-Type": "application/json",
                 },
                 method: "POST",
-                body: JSON.stringify({ turns, units, gameMap }),
+                body: JSON.stringify({ playerIds, turns, units, money }),
             }
         );
         const jsonData = await response.json();

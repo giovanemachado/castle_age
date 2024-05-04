@@ -1,4 +1,5 @@
 import Map from "./maps/map";
+import Money from "./money/money";
 import Turns from "./turns/turns";
 
 export default async function Home() {
@@ -16,10 +17,13 @@ export default async function Home() {
                     </ul>
                 </div>
             </div>
-            <div className="flex flex-1 overflow-y-auto justify-center">
+            <div className="flex overflow-y-auto justify-center">
                 <Map />
             </div>
-            <Turns />
+            <div className="flex justify-between">
+                <Money />
+                <Turns />
+            </div>
         </div>
     );
 }
