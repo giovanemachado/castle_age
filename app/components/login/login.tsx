@@ -1,7 +1,7 @@
 "use client";
 import { useFormState } from "react-dom";
-import { authenticate } from "../lib/actions";
-import { useGameStore } from "../store/gameStoreProvider";
+import { authenticate } from "../../lib/actions";
+import { useGameStore } from "../../store/gameStoreProvider";
 import { useEffect } from "react";
 
 export default function LoginForm() {

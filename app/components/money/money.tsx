@@ -1,5 +1,5 @@
 "use client";
-import { useGameStore } from "../store/gameStoreProvider";
+import { useGameStore } from "../../store/gameStoreProvider";
 
 const Money = () => {
     const { money } = useGameStore((state) => state);

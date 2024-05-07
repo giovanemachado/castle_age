@@ -1,11 +1,10 @@
 "use client";
 import { useEffect, useState } from "react";
 import Map from "../maps/map";
-import Money from "../money/money";
-import { useGameStore } from "../store/gameStoreProvider";
 import Turns from "../turns/turns";
 import { GameState } from "@/schema/types";
-import Lobby from "../lobby/lobby";
+import { useGameStore } from '@/app/store/gameStoreProvider';
+import Lobby from '../lobby/lobby';
 
 export default function Game() {
     const [loading, setLoading] = useState(true);

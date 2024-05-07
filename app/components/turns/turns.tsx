@@ -1,6 +1,6 @@
 "use client";
+import { useGameStore } from "@/app/store/gameStoreProvider";
 import PassTurnButton from "./components/pass_turn_button";
-import { useGameStore } from "../store/gameStoreProvider";
 
 const Turns = () => {
     const { turns } = useGameStore((state) => state);

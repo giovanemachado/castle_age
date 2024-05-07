@@ -3,7 +3,7 @@ import Square from "../squares/square";
 import { BeforeCapture, DragDropContext, DropResult } from "@hello-pangea/dnd";
 import { SquareData, UNITDATA_CLASS } from "@/schema/types";
 import { validDropResult } from "./methods/utils";
-import { useGameStore } from "../store/gameStoreProvider";
+import { useGameStore } from "@/app/store/gameStoreProvider";
 
 /**
  * Represents the whole map of the game, showing all Squares and Cards in it.

@@ -2,7 +2,7 @@
 
 import { MatchData } from "@/schema/types";
 import { useState } from "react";
-import { useGameStore } from "../store/gameStoreProvider";
+import { useGameStore } from "../../store/gameStoreProvider";
 
 export default function Lobby() {
     const { token } = useGameStore((state) => state);
