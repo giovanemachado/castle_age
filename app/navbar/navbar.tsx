@@ -1,5 +1,7 @@
 "useClient";
 
+import Link from "next/link";
+
 export default function Navbar() {
     return (
         <div className="navbar bg-base-100">
@@ -30,7 +32,13 @@ export default function Navbar() {
                         className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52"
                     >
                         <li>
-                            <a>.</a>
+                            <Link href="/">Home</Link>
+                        </li>
+                        <li>
+                            <Link href="/about">About Us</Link>
+                        </li>
+                        <li>
+                            <Link href="/blog/hello-world">Blog Post</Link>
                         </li>
                     </ul>
                 </div>

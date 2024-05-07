@@ -16,7 +16,18 @@ export type GameActions = {
 
 export type GameStore = GameState & GameActions & ClientState;
 
-export const createGameStore = (initState: GameState) => {
+const initialStateObject: GameState = {
+    gameId: "",
+    playerIds: [],
+    money: [],
+    turns: 0,
+    units: [],
+    gameMap: {
+        rows: [],
+    },
+};
+
+export const createGameStore = (initState = initialStateObject) => {
     return createStore<GameStore>()((set) => ({
         ...initState,
         canBeReached: [],
@@ -27,6 +38,8 @@ export const createGameStore = (initState: GameState) => {
         setCanBeReached: (unitId) =>
             set((state) => setCanBeReached(state, unitId)),
         setToken: (externaltoken) =>
-            set(() => { return { token: externaltoken } } ),
+            set(() => {
+                return { token: externaltoken };
+            }),
     }));
 };

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { GameStoreProvider } from "./store/gameStoreProvider";
+import Navbar from "./navbar/navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,7 +19,12 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className={inter.className} suppressHydrationWarning={true}>
-                <GameStoreProvider>{children}</GameStoreProvider>
+                <GameStoreProvider>
+                    <div className="h-screen flex flex-col container mx-auto px-2">
+                        <Navbar />
+                        {children}
+                    </div>
+                </GameStoreProvider>
             </body>
         </html>
     );

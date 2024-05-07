@@ -9,7 +9,6 @@ import {
 } from "react";
 import { useStore } from "zustand";
 import { GameStore, createGameStore } from "./gameStore";
-import { GameState } from "@/schema/types";
 
 export type GameStoreApi = ReturnType<typeof createGameStore>;
 
@@ -26,24 +25,12 @@ export const GameStoreProvider = ({ children }: GameStoreProviderProps) => {
     const storeRef = useRef<GameStoreApi>();
 
     useEffect(() => {
-        const fetchData = async () => {
-            const response = await fetch(
-                "http://localhost:3001/games/initial-load"
-            );
-            const gameInitialState: GameState = await response.json();
-
-            if (!storeRef.current) {
-                storeRef.current = createGameStore(gameInitialState);
-            }
-
-            setLoading(false);
-        };
-
-        fetchData();
+        storeRef.current = createGameStore();
+        setLoading(false);
     }, []);
 
     if (loading) {
-        return <>f</>;
+        return <>Loading</>;
     }
 
     return (
