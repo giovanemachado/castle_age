@@ -1,4 +1,4 @@
-import { UNITDATA_CLASS, UnitData } from "@/schema/types";
+import { GameState, UNITDATA_CLASS, UnitData } from "@/schema/types";
 import { GameStore } from "./gameStore";
 
 const getUnitIndex = (units: UnitData[], unitId: string): number => {
@@ -86,4 +86,8 @@ export const setCanBeReached = (state: GameStore, unitId?: string) => {
             downMovementGate,
         ],
     };
+};
+
+export const setInitialLoadState = (initialLoad: GameState) => {
+    return { ...initialLoad };
 };

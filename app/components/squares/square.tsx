@@ -3,8 +3,8 @@ import { useGameStore } from "@/app/store/gameStoreProvider";
 import { UnitData } from "@/schema/types";
 import { DroppableProvided } from "@hello-pangea/dnd";
 import { useEffect, useState } from "react";
-import grass1Image from "../../public/grass1.png";
-import grass2Image from "../../public/grass2.png";
+import grass1Image from "@/public/grass1.png";
+import grass2Image from "@/public/grass2.png";
 import Card from "../cards/card";
 
 type SquareDroppableProps = {

@@ -1,6 +1,10 @@
 import { GameState, UnitData } from "@/schema/types";
 import { createStore } from "zustand/vanilla";
-import { setCanBeReached, setUnitMovement } from "./gameStoreActions";
+import {
+    setCanBeReached,
+    setInitialLoadState,
+    setUnitMovement,
+} from "./gameStoreActions";
 
 export type ClientState = {
     token: string;
@@ -12,6 +16,7 @@ export type GameActions = {
     setUnitMovement: (unitId: string, localization: string) => void;
     setCanBeReached: (unitId?: string) => void;
     setToken: (token: string) => void;
+    setInitialLoadState: (initialLoad: GameState) => void;
 };
 
 export type GameStore = GameState & GameActions & ClientState;
@@ -41,5 +46,7 @@ export const createGameStore = (initState = initialStateObject) => {
             set(() => {
                 return { token: externaltoken };
             }),
+        setInitialLoadState: (initialLoad) =>
+            set(() => setInitialLoadState(initialLoad)),
     }));
 };

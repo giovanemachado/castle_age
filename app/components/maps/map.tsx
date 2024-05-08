@@ -1,7 +1,7 @@
 "use client";
 import Square from "../squares/square";
 import { BeforeCapture, DragDropContext, DropResult } from "@hello-pangea/dnd";
-import { SquareData, UNITDATA_CLASS } from "@/schema/types";
+import { SquareData } from "@/schema/types";
 import { validDropResult } from "./methods/utils";
 import { useGameStore } from "@/app/store/gameStoreProvider";
 

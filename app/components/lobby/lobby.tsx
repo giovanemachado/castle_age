@@ -1,15 +1,55 @@
 "use client";
 
 import { MatchData } from "@/schema/types";
-import { useState } from "react";
-import { useGameStore } from "../../store/gameStoreProvider";
+import { useEffect, useMemo, useState } from "react";
+import { useGameStore } from "@/app/store/gameStoreProvider";
 import { useRouter } from "next/navigation";
+import { socket } from "@/app/socket/socket";
 
 export default function Lobby() {
     const router = useRouter();
     const { token } = useGameStore((state) => state);
     const [match, setMatch] = useState<MatchData | null>(null);
     const [matchCode, setMatchCode] = useState<string>("");
+
+    const [isConnected, setIsConnected] = useState(socket.connected);
+    const [fooEvents, setFooEvents] = useState<any[]>([]);
+
+    useEffect(() => {
+        if (!token) {
+            return;
+        }
+        function onConnect() {
+            setIsConnected(true);
+        }
+
+        function onDisconnect() {
+            setIsConnected(false);
+        }
+
+        function onFooEvent(value: any) {
+            setFooEvents((previous) => [...previous, value]);
+        }
+
+        socket.on("connect", onConnect);
+        socket.on("disconnect", onDisconnect);
+        socket.on("match_created", onFooEvent);
+
+        return () => {
+            socket.off("connect", onConnect);
+            socket.off("disconnect", onDisconnect);
+            socket.off("match_created", onFooEvent);
+        };
+    }, [token]);
+
+    useEffect(() => {
+        if (!token) {
+            return;
+        }
+        if (fooEvents.length > 0) {
+            router.push("/game");
+        }
+    }, [fooEvents, token]);
 
     const handleCreateMatch = async () => {
         const response = await fetch(`http://localhost:3001/games/match`, {
@@ -45,35 +85,49 @@ export default function Lobby() {
         if (response.status === 201) {
             const matchData: MatchData = await response.json();
             setMatch(matchData);
-            router.push("/about");
+            router.push("/game");
         }
     };
 
     return (
         <>
-            {match && <p>Match code: {match.code}</p>}
-            {!match && (
-                <>
-                    <button
-                        onClick={handleCreateMatch}
-                        className="btn btn-primary btn-lg"
-                    >
-                        Create match
-                    </button>
-                    <div className="join">
-                        <input
-                            className="input input-bordered join-item"
-                            placeholder="Match code"
-                            onChange={(v) => setMatchCode(v.target.value)}
-                        />
-                        <button
-                            onClick={handleEnterMatch}
-                            className="btn join-item rounded-r-full"
-                        >
-                            Enter in Match
-                        </button>
+            {token && match && <p>Match code: {match.code}</p>}
+            {token && !match && (
+                <div className="hero h-full bg-base-100">
+                    <div className="hero-content flex-col">
+                        <div className="flex flex-col">
+                            <h1 className="text-lg font-bold">
+                                Create a new Match.
+                            </h1>
+                            <button
+                                onClick={handleCreateMatch}
+                                className="btn btn-primary"
+                            >
+                                Create
+                            </button>
+                        </div>
+                        <div className="flex flex-col">
+                            <h1 className="text-lg font-bold text-center">
+                                Or enter a Match code.
+                            </h1>
+                            <div className="join">
+                                <input
+                                    className="input input-bordered join-item"
+                                    placeholder="Match code"
+                                    onChange={(v) =>
+                                        setMatchCode(v.target.value)
+                                    }
+                                />
+                                <button
+                                    onClick={handleEnterMatch}
+                                    className="btn btn-primary join-item rounded-r-full"
+                                >
+                                    Play
+                                </button>
+                            </div>
+                        </div>
                     </div>
-                </>
+                </div>
             )}
         </>
     );

@@ -1,13 +1,13 @@
 "useClient";
 import React from "react";
 import LoginForm from "./components/login/login";
-import Game from "./components/game/game";
+import Lobby from "./components/lobby/lobby";
 
 export default async function Home() {
     return (
         <>
             <LoginForm />
-            <Game />
+            <Lobby />
         </>
     );
 }

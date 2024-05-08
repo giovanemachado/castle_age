@@ -46,9 +46,7 @@ export default function Navbar() {
             <div className="navbar-center">
                 <p className="text-xl font-bold">Castle Age</p>
             </div>
-            <div className="navbar-end">
-                <p>Logged as</p>
-            </div>
+            <div className="navbar-end">{/* <p>Logged as</p> */}</div>
         </div>
     );
 }
