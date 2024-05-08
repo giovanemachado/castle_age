@@ -3,8 +3,10 @@
 import { MatchData } from "@/schema/types";
 import { useState } from "react";
 import { useGameStore } from "../../store/gameStoreProvider";
+import { useRouter } from "next/navigation";
 
 export default function Lobby() {
+    const router = useRouter();
     const { token } = useGameStore((state) => state);
     const [match, setMatch] = useState<MatchData | null>(null);
     const [matchCode, setMatchCode] = useState<string>("");
@@ -43,6 +45,7 @@ export default function Lobby() {
         if (response.status === 201) {
             const matchData: MatchData = await response.json();
             setMatch(matchData);
+            router.push("/about");
         }
     };
 

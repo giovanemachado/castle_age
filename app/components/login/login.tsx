@@ -1,15 +1,20 @@
 "use client";
 import { useFormState } from "react-dom";
 import { authenticate } from "../../lib/actions";
-import { useGameStore } from "../../store/gameStoreProvider";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function LoginForm() {
-    const { token, setToken } = useGameStore((state) => state);
+    const [token, setToken] = useState<string | null>(null);
     const [authResult, dispatch] = useFormState(authenticate, {});
 
     useEffect(() => {
+        const tokenInStorage = localStorage.getItem("accessToken");
+        setToken(tokenInStorage);
+    }, []);
+
+    useEffect(() => {
         if (authResult && authResult.access_token) {
+            localStorage.setItem("accessToken", authResult.access_token);
             setToken(authResult.access_token);
         }
     }, [authResult]);
