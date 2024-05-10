@@ -10,12 +10,18 @@
   },
   "dependencies": {
     "@hello-pangea/dnd": "^16.6.0",
+    "bcrypt": "^5.1.1",
+    "jose": "^5.2.4",
     "next": "14.2.1",
+    "next-auth": "^5.0.0-beta.17",
     "react": "^18",
     "react-dom": "^18",
     "socket.io-client": "^4.7.5",
     "ws": "^8.17.0",
     "zustand": "^4.5.2"
+  },
+  "resolutions": {
+    "string-width": "5.1.2"
   },
   "devDependencies": {
     "@types/node": "^20",

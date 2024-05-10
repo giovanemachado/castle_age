@@ -36,7 +36,7 @@ export const createGameStore = (initState = initialStateObject) => {
     return createStore<GameStore>()((set) => ({
         ...initState,
         canBeReached: [],
-        token: localStorage.getItem("accessToken") ?? "",
+        token: "", // localStorage.getItem("accessToken") ?? "",
         passTurn: (updatedState) => set(() => updatedState),
         setUnitMovement: (unitId, localization) =>
             set((state) => setUnitMovement(state, unitId, localization)),

@@ -1,8 +1,13 @@
-"useClient";
+"use client";
 
+import { signOut } from "next-auth/react";
 import Link from "next/link";
 
 export default function Navbar() {
+    const handleClick = () => {
+        signOut();
+    };
+
     return (
         <div className="navbar bg-base-100">
             <div className="navbar-start">
@@ -46,7 +51,15 @@ export default function Navbar() {
             <div className="navbar-center">
                 <p className="text-xl font-bold">Castle Age</p>
             </div>
-            <div className="navbar-end">{/* <p>Logged as</p> */}</div>
+            <div className="navbar-end">
+                {/* <p>Logged as</p> */}
+                <button
+                    onClick={handleClick}
+                    className="btn btn-primary btn-lg"
+                >
+                    Sign out
+                </button>
+            </div>
         </div>
     );
 }
