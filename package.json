@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@hello-pangea/dnd": "^16.6.0",
-    "bcrypt": "^5.1.1",
     "jose": "^5.2.4",
     "next": "14.2.1",
     "next-auth": "^5.0.0-beta.17",
@@ -24,10 +23,12 @@
     "string-width": "5.1.2"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@types/ws": "^8.5.10",
+    "bcryptjs": "^2.4.3",
     "daisyui": "^4.10.2",
     "eslint": "^8",
     "eslint-config-next": "14.2.1",

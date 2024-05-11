@@ -1,7 +1,7 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
 import { saltAndHashPassword } from "./app/utils/password";
-import { fuck } from "./app/lib/actions";
+import { lg } from "./app/lib/actions";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
     providers: [
@@ -24,7 +24,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
                 // logic to verify if user exists
                 // user = await getUserFromDb(credentials.username, pwHash);
-                const d = fuck(credentials.username, pwHash);
+                const d = await lg(credentials.username, pwHash);
 
                
                 console.log(d);
