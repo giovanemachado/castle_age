@@ -1,11 +1,13 @@
 "use client";
 
-import { signOut } from "next-auth/react";
+import { auth, signOut } from "@/auth";
 import Link from "next/link";
 
 export default function Navbar() {
+    const session = false // await auth();
+    
     const handleClick = () => {
-        signOut();
+        // signOut();
     };
 
     return (
@@ -42,9 +44,6 @@ export default function Navbar() {
                         <li>
                             <Link href="/about">About Us</Link>
                         </li>
-                        <li>
-                            <Link href="/blog/hello-world">Blog Post</Link>
-                        </li>
                     </ul>
                 </div>
             </div>
@@ -52,13 +51,13 @@ export default function Navbar() {
                 <p className="text-xl font-bold">Castle Age</p>
             </div>
             <div className="navbar-end">
-                {/* <p>Logged as</p> */}
-                <button
+                {session &&
+                (<button
                     onClick={handleClick}
                     className="btn btn-primary btn-lg"
                 >
                     Sign out
-                </button>
+                </button>)}
             </div>
         </div>
     );

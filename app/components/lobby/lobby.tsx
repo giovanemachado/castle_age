@@ -49,7 +49,7 @@ export default function Lobby() {
         if (fooEvents.length > 0) {
             router.push("/game");
         }
-    }, [fooEvents, token]);
+    }, [fooEvents, token, router]);
 
     const handleCreateMatch = async () => {
         const response = await fetch(`http://localhost:3001/games/match`, {

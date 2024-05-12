@@ -1,6 +1,5 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import { saltAndHashPassword } from "./app/utils/password";
 import { lg } from "./app/lib/actions";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
@@ -10,34 +9,19 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 username: {},
                 password: {},
             },
-            authorize: async (credentials) => {
-                console.log("authorize");
-                if (!credentials) {
+            authorize: async (credentials: any) => {
+                if (!credentials ) {
                     throw "No credentials";
                 }
 
-                let user = null;
+                const loginResult = await lg(credentials.username, credentials.password);
 
-                // logic to salt and hash password
-                const pwHash = saltAndHashPassword(credentials.password);
-                console.log("nova senha => ", pwHash, " <=");
 
-                // logic to verify if user exists
-                // user = await getUserFromDb(credentials.username, pwHash);
-                const d = await lg(credentials.username, pwHash);
-
-               
-                console.log(d);
-                user = d;
-
-                if (!user) {
-                    // No user found, so this is their first attempt to login
-                    // meaning this is also the place you could do registration
+                if (!loginResult.access_token) {
                     throw new Error("User not found.");
                 }
 
-                // return user object with the their profile data
-                return user;
+                return loginResult;
             },
         }),
     ],

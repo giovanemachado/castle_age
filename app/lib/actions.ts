@@ -1,7 +1,7 @@
 'use server';
 import { signIn } from "../../auth";
 
-export async function authenticate(prevState: {}, formData: FormData) {
+export async function authenticate(_: {}, formData: FormData) {
     try {
         const result: Response = await fetch(
             "http://localhost:3001/auth/login",
@@ -23,7 +23,7 @@ export async function authenticate(prevState: {}, formData: FormData) {
     }
 }
 
-export async function signInAction(prevState: {},formData: FormData) {
+export async function signInAction(_: {}, formData: FormData) {
     return await signIn("credentials", formData);
 }
 

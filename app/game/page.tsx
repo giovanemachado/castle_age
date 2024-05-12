@@ -33,7 +33,7 @@ export default function Game() {
         fetchData();
 
         setLoading(false);
-    }, [token]);
+    }, [token, setInitialLoadState]);
 
     return (
         <>
