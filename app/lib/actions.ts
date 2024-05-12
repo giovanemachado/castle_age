@@ -1,5 +1,6 @@
-'use server';
-import { signIn } from "../../auth";
+"use server";
+
+import { signIn } from "@/auth";
 
 export async function authenticate(_: {}, formData: FormData) {
     try {
@@ -14,7 +15,7 @@ export async function authenticate(_: {}, formData: FormData) {
                     username: formData.get("username"),
                     password: formData.get("password"),
                 }),
-            }
+            },
         );
 
         return await result.json();

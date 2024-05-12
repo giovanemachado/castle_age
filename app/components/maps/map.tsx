@@ -10,7 +10,7 @@ import { useGameStore } from "@/app/store/gameStoreProvider";
  */
 const Map = () => {
     const { gameMap, setUnitMovement, setCanBeReached } = useGameStore(
-        (state) => state
+        (state) => state,
     );
 
     const onBeforeCapture = (beforeCapture: BeforeCapture) => {

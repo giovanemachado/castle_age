@@ -1,38 +1,41 @@
 {
-  "name": "castle-age",
-  "version": "0.1.0",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
-  },
-  "dependencies": {
-    "@hello-pangea/dnd": "^16.6.0",
-    "jose": "^5.2.4",
-    "next": "14.2.1",
-    "next-auth": "^5.0.0-beta.17",
-    "react": "^18",
-    "react-dom": "^18",
-    "socket.io-client": "^4.7.5",
-    "ws": "^8.17.0",
-    "zustand": "^4.5.2"
-  },
-  "resolutions": {
-    "string-width": "5.1.2"
-  },
-  "devDependencies": {
-    "@types/node": "^20",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "@types/ws": "^8.5.10",
-    "daisyui": "^4.10.2",
-    "eslint": "^8",
-    "eslint-config-next": "14.2.1",
-    "postcss": "^8",
-    "tailwindcss": "^3.4.1",
-    "typescript": "^5"
-  },
-  "packageManager": "yarn@4.2.2"
+    "name": "castle-age",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "dev": "next dev",
+        "build": "next build",
+        "start": "next start",
+        "lint": "next lint"
+    },
+    "dependencies": {
+        "@hello-pangea/dnd": "^16.6.0",
+        "jose": "^5.2.4",
+        "next": "14.2.1",
+        "next-auth": "^5.0.0-beta.17",
+        "react": "^18",
+        "react-dom": "^18",
+        "socket.io-client": "^4.7.5",
+        "ws": "^8.17.0",
+        "zustand": "^4.5.2"
+    },
+    "resolutions": {
+        "string-width": "5.1.2"
+    },
+    "devDependencies": {
+        "@types/node": "^20",
+        "@types/react": "^18",
+        "@types/react-dom": "^18",
+        "@types/ws": "^8.5.10",
+        "@typescript-eslint/parser": "^5.0.1",
+        "daisyui": "^4.10.2",
+        "eslint": "^8.52.0",
+        "eslint-config-next": "14.2.1",
+        "postcss": "^8",
+        "prettier": "^3.1.0",
+        "prettier-eslint": "^16.1.2",
+        "tailwindcss": "^3.4.1",
+        "typescript": "^4.4.4"
+    },
+    "packageManager": "yarn@4.2.2"
 }

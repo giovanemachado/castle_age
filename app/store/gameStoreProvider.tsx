@@ -13,7 +13,7 @@ import { GameStore, createGameStore } from "./gameStore";
 export type GameStoreApi = ReturnType<typeof createGameStore>;
 
 export const GameStoreContext = createContext<GameStoreApi | undefined>(
-    undefined
+    undefined,
 );
 
 export interface GameStoreProviderProps {

@@ -10,12 +10,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
                 password: {},
             },
             authorize: async (credentials: any) => {
-                if (!credentials ) {
+                if (!credentials) {
                     throw "No credentials";
                 }
 
-                const loginResult = await lg(credentials.username, credentials.password);
-
+                const loginResult = await lg(
+                    credentials.username,
+                    credentials.password,
+                );
 
                 if (!loginResult.access_token) {
                     throw new Error("User not found.");

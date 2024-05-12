@@ -26,7 +26,7 @@ const createSquareId = (rowId: number, colId: number) => {
 export const setUnitMovement = (
     state: GameStore,
     unitId: string,
-    localization: string
+    localization: string,
 ) => {
     const unitsInStore: UnitData[] = Array.from(state.units);
     const unitInStoreIndex = getUnitIndex(state.units, unitId);
@@ -61,8 +61,8 @@ export const setCanBeReached = (state: GameStore, unitId?: string) => {
         (unit) =>
             unit.class === UNITDATA_CLASS.GATE &&
             [leftMovement, rightMovement, upMovement, downMovement].includes(
-                unit.movement.localization
-            )
+                unit.movement.localization,
+            ),
     );
 
     let upMovementGate = "";
@@ -70,7 +70,7 @@ export const setCanBeReached = (state: GameStore, unitId?: string) => {
 
     if (gateUnitReachable) {
         const { rowId, colId } = getLocalizationIds(
-            gateUnitReachable.movement.localization
+            gateUnitReachable.movement.localization,
         );
         upMovementGate = createSquareId(rowId - 1, colId);
         downMovementGate = createSquareId(rowId + 1, colId);

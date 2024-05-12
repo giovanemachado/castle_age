@@ -4,8 +4,8 @@ import { auth, signOut } from "@/auth";
 import Link from "next/link";
 
 export default function Navbar() {
-    const session = false // await auth();
-    
+    const session = false; // await auth();
+
     const handleClick = () => {
         // signOut();
     };
@@ -51,13 +51,14 @@ export default function Navbar() {
                 <p className="text-xl font-bold">Castle Age</p>
             </div>
             <div className="navbar-end">
-                {session &&
-                (<button
-                    onClick={handleClick}
-                    className="btn btn-primary btn-lg"
-                >
-                    Sign out
-                </button>)}
+                {session && (
+                    <button
+                        onClick={handleClick}
+                        className="btn btn-primary btn-lg"
+                    >
+                        Sign out
+                    </button>
+                )}
             </div>
         </div>
     );

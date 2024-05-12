@@ -27,8 +27,8 @@ const droppable = ({
                 isDraggingOver
                     ? "bg-secondary/100"
                     : !isDropDisabled
-                    ? "bg-secondary/50"
-                    : ""
+                      ? "bg-secondary/50"
+                      : ""
             }`}
             {...droppableProps}
             ref={innerRef}
@@ -54,7 +54,7 @@ const Square = ({ droppableId }: { droppableId: string }) => {
 
     useEffect(() => {
         const foundUnit = units.find(
-            (unit) => unit.movement.localization === droppableId
+            (unit) => unit.movement.localization === droppableId,
         );
         setUnit(foundUnit);
     }, [units, droppableId]);

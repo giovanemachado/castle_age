@@ -4,7 +4,7 @@ import { DropResult } from "@hello-pangea/dnd";
 export const getRowIndex = (rows: SquareData[][], droppableId: string) => {
     return rows.findIndex(
         (squares) =>
-            squares.findIndex((square) => square.id == droppableId) != -1
+            squares.findIndex((square) => square.id == droppableId) != -1,
     );
 };
 

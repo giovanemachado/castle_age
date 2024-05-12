@@ -79,7 +79,7 @@ export default function Lobby() {
                     Authorization: `Bearer ${token}`,
                 },
                 method: "POST",
-            }
+            },
         );
 
         if (response.status === 201) {

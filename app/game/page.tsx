@@ -1,4 +1,5 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import Map from "../components/maps/map";
 import Turns from "../components/turns/turns";
@@ -25,7 +26,7 @@ export default function Game() {
                         //     "accessToken"
                         // )}`,
                     },
-                }
+                },
             );
             const initialLoad: GameState = await response.json();
             setInitialLoadState(initialLoad);
