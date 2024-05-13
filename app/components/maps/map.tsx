@@ -9,46 +9,43 @@ import { useGameStore } from "@/app/store/gameStoreProvider";
  * Represents the whole map of the game, showing all Squares and Cards in it.
  */
 const Map = () => {
-    const { gameMap, setUnitMovement, setCanBeReached } = useGameStore(
-        (state) => state,
-    );
+  const { gameMap, setUnitMovement, setCanBeReached } = useGameStore(
+    (state) => state,
+  );
 
-    const onBeforeCapture = (beforeCapture: BeforeCapture) => {
-        setCanBeReached(beforeCapture.draggableId);
-    };
+  const onBeforeCapture = (beforeCapture: BeforeCapture) => {
+    setCanBeReached(beforeCapture.draggableId);
+  };
 
-    const onDragEnd = (dropResult: DropResult) => {
-        const result = validDropResult(dropResult);
-        setCanBeReached();
+  const onDragEnd = (dropResult: DropResult) => {
+    const result = validDropResult(dropResult);
+    setCanBeReached();
 
-        if (!result) {
-            return;
-        }
+    if (!result) {
+      return;
+    }
 
-        const { destination, draggableId } = result;
-        setUnitMovement(draggableId, destination.droppableId);
-    };
+    const { destination, draggableId } = result;
+    setUnitMovement(draggableId, destination.droppableId);
+  };
 
-    return (
-        <div className="flex-col">
-            <DragDropContext
-                onBeforeCapture={onBeforeCapture}
-                onDragEnd={onDragEnd}
-            >
-                <div className="map">
-                    {gameMap.rows.map((row: SquareData[], rIndex: number) => (
-                        <div key={`${rIndex}`} className="map-row">
-                            {row.map((square: SquareData, index: number) => (
-                                <div key={`${rIndex}-${index}`}>
-                                    <Square droppableId={square.id} />
-                                </div>
-                            ))}
-                        </div>
-                    ))}
+  return (
+    <div className="flex-col">
+      <DragDropContext onBeforeCapture={onBeforeCapture} onDragEnd={onDragEnd}>
+        <div className="map">
+          {gameMap.rows.map((row: SquareData[], rIndex: number) => (
+            <div key={`${rIndex}`} className="map-row">
+              {row.map((square: SquareData, index: number) => (
+                <div key={`${rIndex}-${index}`}>
+                  <Square droppableId={square.id} />
                 </div>
-            </DragDropContext>
+              ))}
+            </div>
+          ))}
         </div>
-    );
+      </DragDropContext>
+    </div>
+  );
 };
 
 export default Map;
