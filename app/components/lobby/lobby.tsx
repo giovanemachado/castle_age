@@ -1,14 +1,13 @@
 "use client";
 
 import { MatchData } from "@/schema/types";
-import { useEffect, useMemo, useState } from "react";
-import { useGameStore } from "@/app/store/gameStoreProvider";
-import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+// import { useRouter } from "next/navigation";
 import { socket } from "@/app/socket/socket";
 
 export default function Lobby() {
-    const router = useRouter();
-    const { token } = useGameStore((state) => state);
+    const token = false;
+    // const router = useRouter();
     const [match, setMatch] = useState<MatchData | null>(null);
     const [matchCode, setMatchCode] = useState<string>("");
 
@@ -16,6 +15,7 @@ export default function Lobby() {
     const [fooEvents, setFooEvents] = useState<any[]>([]);
 
     useEffect(() => {
+        const token = false;
         if (!token) {
             return;
         }
@@ -43,15 +43,17 @@ export default function Lobby() {
     }, [token]);
 
     useEffect(() => {
+        const token = false;
         if (!token) {
             return;
         }
         if (fooEvents.length > 0) {
-            router.push("/game");
+            // router.push("/game");
         }
-    }, [fooEvents, token, router]);
+    }, [fooEvents, token]);
 
     const handleCreateMatch = async () => {
+        const token = false;
         const response = await fetch(`http://localhost:3001/games/match`, {
             headers: {
                 "Content-Type": "application/json",
@@ -67,6 +69,7 @@ export default function Lobby() {
     };
 
     const handleEnterMatch = async () => {
+        const token = false;
         if (!matchCode) {
             return;
         }
@@ -85,12 +88,13 @@ export default function Lobby() {
         if (response.status === 201) {
             const matchData: MatchData = await response.json();
             setMatch(matchData);
-            router.push("/game");
+            // router.push("/game");
         }
     };
 
     return (
         <>
+            <p>lobby</p>
             {token && match && <p>Match code: {match.code}</p>}
             {token && !match && (
                 <div className="hero h-full bg-base-100">

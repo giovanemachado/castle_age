@@ -1,15 +1,17 @@
 import React from "react";
 import LoginForm from "./components/login/login";
 import Lobby from "./components/lobby/lobby";
-import { auth } from "@/auth";
+import { createClient } from "@/utils/supabase/server";
 
 export default async function Home() {
-    const session = await auth();
+  const supabase = createClient();
 
-    return (
-        <>
-            {!session && <LoginForm />}
-            {session && <Lobby />}
-        </>
-    );
+  const { data } = await supabase.auth.getUser();
+
+  return (
+    <>
+      {data?.user?.email && <p>Hello {data?.user?.email}</p>}
+      {!data?.user?.id ? <LoginForm /> : data.user && <Lobby />}
+    </>
+  );
 }

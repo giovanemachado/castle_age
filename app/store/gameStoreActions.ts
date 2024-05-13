@@ -91,3 +91,7 @@ export const setCanBeReached = (state: GameStore, unitId?: string) => {
 export const setInitialLoadState = (initialLoad: GameState) => {
     return { ...initialLoad };
 };
+
+export const setToken = (token: string) => {
+    return { token };
+};
