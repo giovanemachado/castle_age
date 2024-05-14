@@ -9,12 +9,14 @@ import Card from "../cards/card";
 
 type SquareDroppableProps = {
   unit?: UnitData;
+  isRed?: boolean;
   isDraggingOver: boolean;
   isDropDisabled: boolean;
 };
 
 const droppable = ({
   unit,
+  isRed,
   droppableProps,
   isDropDisabled,
   innerRef,
@@ -33,7 +35,7 @@ const droppable = ({
       {...droppableProps}
       ref={innerRef}
     >
-      {unit ? <Card unit={unit} /> : null}
+      {unit ? <Card unit={unit} isRed={!!isRed} /> : null}
       {placeholder}
     </div>
   );
@@ -49,15 +51,17 @@ const Square = ({ droppableId }: { droppableId: string }) => {
     Math.random() > 100 ? grass1Image.src : grass2Image.src
   })`;
 
-  const { units, canBeReached } = useGameStore((state) => state);
+  const { units, canBeReached, match } = useGameStore((state) => state);
   const [unit, setUnit] = useState<UnitData | undefined>(undefined);
+  const [isRedPlayer, setIsRedPlayer] = useState<boolean>(false);
 
   useEffect(() => {
     const foundUnit = units.find(
       (unit) => unit.movement.localization === droppableId,
     );
     setUnit(foundUnit);
-  }, [units, droppableId]);
+    setIsRedPlayer(match.players[1] === foundUnit?.playerId);
+  }, [units, droppableId, match]);
 
   const isDropDisabled = !!unit || !canBeReached.includes(droppableId);
 
@@ -70,6 +74,7 @@ const Square = ({ droppableId }: { droppableId: string }) => {
         {(provided, snapshot) =>
           droppable({
             unit,
+            isRed: isRedPlayer,
             isDropDisabled,
             isDraggingOver: snapshot.isDraggingOver,
             ...provided,

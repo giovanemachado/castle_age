@@ -9,7 +9,7 @@ import Money from "../components/money/money";
 import { createClient } from "@/utils/supabase/client";
 
 export default function Game() {
-  const { setInitialLoadState } = useGameStore((state) => state);
+  const { match, setInitialLoadState } = useGameStore((state) => state);
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState<string>("");
 
@@ -26,24 +26,32 @@ export default function Game() {
   }, [supabase]);
 
   useEffect(() => {
-    if (!token) {
+    if (!token || !loading) {
       return;
     }
 
     const fetchData = async () => {
-      const response = await fetch("http://localhost:3001/games/initial-load", {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
+      if (!match.code) {
+        return;
+      }
+
+      const response = await fetch(
+        `http://localhost:3001/games/initial-load/${match.code}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         },
-      });
+      );
       const initialLoad: GameState = await response.json();
+      console.log("initialLoad", initialLoad);
       setInitialLoadState(initialLoad);
     };
     fetchData();
 
     setLoading(false);
-  }, [token, setInitialLoadState]);
+  }, [token, setInitialLoadState, match, loading]);
 
   return (
     <>

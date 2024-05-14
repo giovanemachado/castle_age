@@ -1,13 +1,18 @@
 "use client";
 
-import { MatchData } from "@/schema/types";
+import { MatchData, SquareData, UnitData } from "@/schema/types";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { socket } from "@/app/socket/socket";
 import { createClient } from "@/utils/supabase/client";
+import { useGameStore } from "@/app/store/gameStoreProvider";
 
 export default function Lobby() {
+  const { match, setGameMap, setUnits, setMatch } = useGameStore(
+    (state) => state,
+  );
   const [token, setToken] = useState<string>("");
+  const [matchCode, setMatchCode] = useState<string>("");
   const supabase = createClient();
 
   useEffect(() => {
@@ -19,8 +24,6 @@ export default function Lobby() {
   }, [supabase]);
 
   const router = useRouter();
-  const [match, setMatch] = useState<MatchData | null>(null);
-  const [matchCode, setMatchCode] = useState<string>("");
 
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [fooEvents, setFooEvents] = useState<any[]>([]);
@@ -57,10 +60,28 @@ export default function Lobby() {
     if (!token) {
       return;
     }
+
     if (fooEvents.length > 0) {
       router.push("/game");
     }
   }, [fooEvents, token, router]);
+
+  const getMap = async (code: string) => {
+    const response = await fetch(
+      `http://localhost:3001/games/initial-map/${code}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+
+    if (response.status === 200) {
+      const mapData: { rows: SquareData[][] } = await response.json();
+      setGameMap(mapData.rows);
+    }
+  };
 
   const handleCreateMatch = async () => {
     const response = await fetch(`http://localhost:3001/games/match`, {
@@ -73,6 +94,8 @@ export default function Lobby() {
 
     if (response.status === 201) {
       const matchData: MatchData = await response.json();
+
+      await getMap(matchData.code);
       setMatch(matchData);
     }
   };
@@ -95,6 +118,7 @@ export default function Lobby() {
 
     if (response.status === 201) {
       const matchData: MatchData = await response.json();
+      await getMap(matchData.code);
       setMatch(matchData);
       router.push("/game");
     }
@@ -102,8 +126,11 @@ export default function Lobby() {
 
   return (
     <>
-      {token && match && <p>Match code: {match.code}</p>}
-      {token && !match && (
+      {/* TODO real bad to have this logic here */}
+      {token && match.active && match.players.length == 2 && (
+        <p>Match code: {match.code}</p>
+      )}
+      {token && (!match.active || match.players.length != 2) && (
         <div className="hero h-full bg-base-100">
           <div className="hero-content flex-col">
             <div className="flex flex-col">
@@ -114,7 +141,7 @@ export default function Lobby() {
             </div>
             <div className="flex flex-col">
               <h1 className="text-lg font-bold text-center">
-                Or enter a Match code.
+                Or enter a Match code. 342851
               </h1>
               <div className="join">
                 <input

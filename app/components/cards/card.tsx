@@ -9,6 +9,8 @@ type DraggableCardProps = {
 
 type CardProps = {
   unit: UnitData;
+  // TODO temp, it should come from backend
+  isRed: boolean;
 };
 
 const draggable = ({
@@ -27,7 +29,7 @@ const draggable = ({
 /**
  * Representation of a Card in the game (an unit). It's a draggable item, and you can interact with most of them.
  */
-const Card = ({ unit }: CardProps) => {
+const Card = ({ unit, isRed }: CardProps) => {
   return (
     <Draggable
       draggableId={unit.id}
@@ -39,6 +41,7 @@ const Card = ({ unit }: CardProps) => {
           imageComponent: CardImage({
             unitClass: unit.class,
             isDragging: snapshot.isDragging,
+            isRed,
           }),
           ...provided,
         })

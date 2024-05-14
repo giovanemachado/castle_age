@@ -1,44 +1,46 @@
 import { StaticImageData } from "next/image";
-import castleImage from "@/public/castle.png";
-import gateImage from "@/public/gate.png";
-import archerImage from "@/public/archer.png";
-import spearmanImage from "@/public/spearman.png";
-import horsemanImage from "@/public/horseman.png";
-import wallImage from "@/public/wall.png";
+
+import castleBlueImage from "@/public/castle_blue.png";
+import gateBlueImage from "@/public/gate_blue.png";
+import wallBlueImage from "@/public/wall_blue.png";
+import spearmanBlueImage from "@/public/spearman_blue.png";
+
+import castleRedImage from "@/public/castle_red.png";
+import gateRedImage from "@/public/gate_red.png";
+import wallRedImage from "@/public/wall_red.png";
+import spearmanRedImage from "@/public/spearman_red.png";
+
 import { UNITDATA_CLASS } from "@/schema/types";
 
-const getCardImage = (image_tag: string): StaticImageData => {
+const getCardImage = (image_tag: string, isRed: boolean): StaticImageData => {
   switch (image_tag) {
     case UNITDATA_CLASS.CASTLE:
-      return castleImage;
+      return isRed ? castleRedImage : castleBlueImage;
     case UNITDATA_CLASS.GATE:
-      return gateImage;
-    case UNITDATA_CLASS.ARCHER:
-      return archerImage;
+      return isRed ? gateRedImage : gateBlueImage;
     case UNITDATA_CLASS.WALL:
-      return wallImage;
+      return isRed ? wallRedImage : wallBlueImage;
     case UNITDATA_CLASS.SPEARMAN:
-      return spearmanImage;
-    case UNITDATA_CLASS.HORSEMAN:
-      return horsemanImage;
+      return isRed ? spearmanRedImage : spearmanBlueImage;
     default:
-      return archerImage;
+      return isRed ? spearmanRedImage : spearmanBlueImage;
   }
 };
 
 type CardImageProps = {
   unitClass: string;
   isDragging: boolean;
+  isRed: boolean;
 };
 
-const CardImage = ({ unitClass, isDragging }: CardImageProps) => {
+const CardImage = ({ unitClass, isDragging, isRed }: CardImageProps) => {
   return (
     <div className={`h-full w-full ${isDragging ? "card" : ""} image-full`}>
       <figure>
         <div
           className="square"
           style={{
-            backgroundImage: `url(${getCardImage(unitClass).src})`,
+            backgroundImage: `url(${getCardImage(unitClass, isRed).src})`,
           }}
         ></div>
       </figure>
