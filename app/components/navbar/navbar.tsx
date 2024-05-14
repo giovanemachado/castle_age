@@ -13,8 +13,7 @@ export default function Navbar() {
   useEffect(() => {
     const getData = async () => {
       const userData = await supabase.auth.getUser();
-      const sessionData = await supabase.auth.getSession();
-      console.log("token ", sessionData.data.session?.access_token);
+
       setUser(userData.data.user);
     };
     getData();

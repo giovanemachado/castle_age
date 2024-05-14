@@ -7,7 +7,6 @@ import {
 } from "./gameStoreActions";
 
 export type ClientState = {
-  token: string;
   canBeReached: string[];
 };
 
@@ -15,7 +14,6 @@ export type GameActions = {
   passTurn: (updatedState: GameState) => void;
   setUnitMovement: (unitId: string, localization: string) => void;
   setCanBeReached: (unitId?: string) => void;
-  setToken: (token: string) => void;
   setInitialLoadState: (initialLoad: GameState) => void;
 };
 
@@ -36,15 +34,10 @@ export const createGameStore = (initState = initialStateObject) => {
   return createStore<GameStore>()((set) => ({
     ...initState,
     canBeReached: [],
-    token: "", // localStorage.getItem("accessToken") ?? "",
     passTurn: (updatedState) => set(() => updatedState),
     setUnitMovement: (unitId, localization) =>
       set((state) => setUnitMovement(state, unitId, localization)),
     setCanBeReached: (unitId) => set((state) => setCanBeReached(state, unitId)),
-    setToken: (externaltoken) =>
-      set(() => {
-        return { token: externaltoken };
-      }),
     setInitialLoadState: (initialLoad) =>
       set(() => setInitialLoadState(initialLoad)),
   }));
