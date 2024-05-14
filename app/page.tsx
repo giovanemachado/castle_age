@@ -8,10 +8,5 @@ export default async function Home() {
 
   const { data } = await supabase.auth.getUser();
 
-  return (
-    <>
-      {data?.user?.email && <p>Hello {data?.user?.email}</p>}
-      {!data?.user?.id ? <LoginForm /> : data.user && <Lobby />}
-    </>
-  );
+  return <>{!data?.user?.id ? <LoginForm /> : data.user && <Lobby />}</>;
 }

@@ -2,12 +2,23 @@
 
 import { MatchData } from "@/schema/types";
 import { useEffect, useState } from "react";
-// import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { socket } from "@/app/socket/socket";
+import { createClient } from "@/utils/supabase/client";
 
 export default function Lobby() {
-  const token = false;
-  // const router = useRouter();
+  const [token, setToken] = useState<string>("");
+  const supabase = createClient();
+
+  useEffect(() => {
+    const getData = async () => {
+      const sessionData = await supabase.auth.getSession();
+      setToken(sessionData.data.session?.access_token ?? "");
+    };
+    getData();
+  }, [supabase]);
+
+  const router = useRouter();
   const [match, setMatch] = useState<MatchData | null>(null);
   const [matchCode, setMatchCode] = useState<string>("");
 
@@ -15,10 +26,10 @@ export default function Lobby() {
   const [fooEvents, setFooEvents] = useState<any[]>([]);
 
   useEffect(() => {
-    const token = false;
     if (!token) {
       return;
     }
+
     function onConnect() {
       setIsConnected(true);
     }
@@ -43,17 +54,15 @@ export default function Lobby() {
   }, [token]);
 
   useEffect(() => {
-    const token = false;
     if (!token) {
       return;
     }
     if (fooEvents.length > 0) {
-      // router.push("/game");
+      router.push("/game");
     }
-  }, [fooEvents, token]);
+  }, [fooEvents, token, router]);
 
   const handleCreateMatch = async () => {
-    const token = false;
     const response = await fetch(`http://localhost:3001/games/match`, {
       headers: {
         "Content-Type": "application/json",
@@ -69,7 +78,6 @@ export default function Lobby() {
   };
 
   const handleEnterMatch = async () => {
-    const token = false;
     if (!matchCode) {
       return;
     }
@@ -88,13 +96,12 @@ export default function Lobby() {
     if (response.status === 201) {
       const matchData: MatchData = await response.json();
       setMatch(matchData);
-      // router.push("/game");
+      router.push("/game");
     }
   };
 
   return (
     <>
-      <p>lobby</p>
       {token && match && <p>Match code: {match.code}</p>}
       {token && !match && (
         <div className="hero h-full bg-base-100">

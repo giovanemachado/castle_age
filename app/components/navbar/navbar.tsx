@@ -12,8 +12,10 @@ export default function Navbar() {
 
   useEffect(() => {
     const getData = async () => {
-      const { data } = await supabase.auth.getUser();
-      setUser(data.user);
+      const userData = await supabase.auth.getUser();
+      const sessionData = await supabase.auth.getSession();
+      console.log("token ", sessionData.data.session?.access_token);
+      setUser(userData.data.user);
     };
     getData();
   }, [supabase]);
@@ -61,8 +63,6 @@ export default function Navbar() {
       <div className="navbar-end">
         {user && (
           <>
-            <p> Hey, {user.email}!</p>
-
             <button onClick={handleClick} className="btn btn-seocndary">
               Sign out
             </button>
