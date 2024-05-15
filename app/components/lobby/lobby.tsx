@@ -1,6 +1,6 @@
 "use client";
 
-import { MatchData, SquareData, UnitData } from "@/schema/types";
+import { MatchData, SquareData } from "@/schema/types";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { socket } from "@/app/socket/socket";
@@ -8,9 +8,7 @@ import { createClient } from "@/utils/supabase/client";
 import { useGameStore } from "@/app/store/gameStoreProvider";
 
 export default function Lobby() {
-  const { match, setGameMap, setUnits, setMatch } = useGameStore(
-    (state) => state,
-  );
+  const { match, setGameMap, setMatch } = useGameStore((state) => state);
   const [token, setToken] = useState<string>("");
   const [matchCode, setMatchCode] = useState<string>("");
   const supabase = createClient();
@@ -92,6 +90,7 @@ export default function Lobby() {
       method: "POST",
     });
 
+    // TODO real bad to have this logic here
     if (response.status === 201) {
       const matchData: MatchData = await response.json();
 
