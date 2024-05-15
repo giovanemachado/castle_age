@@ -141,7 +141,7 @@ export default function Lobby() {
             </div>
             <div className="flex flex-col">
               <h1 className="text-lg font-bold text-center">
-                Or enter a Match code. 342851
+                Or enter a Match code. // test: 342851
               </h1>
               <div className="join">
                 <input
