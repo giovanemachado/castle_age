@@ -8,15 +8,20 @@ import { createClient } from "@/utils/supabase/client";
 import { useGameStore } from "@/app/store/gameStoreProvider";
 
 export default function Lobby() {
-  const { match, setGameMap, setMatch } = useGameStore((state) => state);
+  const { match, setGameMap, setMatch, setPlayerId } = useGameStore(
+    (state) => state,
+  );
   const [token, setToken] = useState<string>("");
+  const [currentPlayerId, setCurrentPlayerId] = useState<string>("");
   const [matchCode, setMatchCode] = useState<string>("");
   const supabase = createClient();
 
   useEffect(() => {
     const getData = async () => {
+      const userData = await supabase.auth.getUser();
       const sessionData = await supabase.auth.getSession();
       setToken(sessionData.data.session?.access_token ?? "");
+      setCurrentPlayerId(userData.data.user?.id ?? "");
     };
     getData();
   }, [supabase]);
@@ -119,6 +124,7 @@ export default function Lobby() {
       const matchData: MatchData = await response.json();
       await getMap(matchData.code);
       setMatch(matchData);
+      setPlayerId(currentPlayerId);
       router.push("/game");
     }
   };

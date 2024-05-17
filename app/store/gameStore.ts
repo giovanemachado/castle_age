@@ -14,6 +14,7 @@ import {
 
 export type ClientState = {
   canBeReached: string[];
+  currentPlayerId: string;
   gameMap: MapData;
 };
 
@@ -25,6 +26,7 @@ export type GameActions = {
   setMatch: (matchData: MatchData) => void;
   setGameMap: (rows: SquareData[][]) => void;
   setUnits: (units: UnitData[]) => void;
+  setPlayerId: (playerId: string) => void;
 };
 
 export type GameStore = GameState & GameActions & ClientState;
@@ -48,6 +50,7 @@ export const createGameStore = (initState = initialStateObject) => {
   return createStore<GameStore>()((set) => ({
     ...initState,
     canBeReached: [],
+    currentPlayerId: "",
     gameMap: {
       rows: [],
     },
@@ -70,6 +73,10 @@ export const createGameStore = (initState = initialStateObject) => {
     setUnits: (units: UnitData[]) =>
       set(() => ({
         units,
+      })),
+    setPlayerId: (currentPlayerId: string) =>
+      set(() => ({
+        currentPlayerId,
       })),
   }));
 };

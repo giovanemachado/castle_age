@@ -45,7 +45,6 @@ export default function Game() {
         },
       );
       const initialLoad: GameState = await response.json();
-      console.log("initialLoad", initialLoad);
       setInitialLoadState(initialLoad);
     };
     fetchData();

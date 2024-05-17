@@ -29,14 +29,12 @@ export const GameStoreProvider = ({ children }: GameStoreProviderProps) => {
     setLoading(false);
   }, []);
 
-  if (loading) {
-    return <>Loading</>;
-  }
-
   return (
-    <GameStoreContext.Provider value={storeRef.current}>
-      {children}
-    </GameStoreContext.Provider>
+    !loading && (
+      <GameStoreContext.Provider value={storeRef.current}>
+        {children}
+      </GameStoreContext.Provider>
+    )
   );
 };
 
