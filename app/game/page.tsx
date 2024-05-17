@@ -8,16 +8,17 @@ import { useGameStore } from "@/app/store/gameStoreProvider";
 import Money from "../components/money/money";
 import { createClient } from "@/utils/supabase/client";
 import { fetchData } from "@/utils/requests";
+import { useRouter } from "next/router";
 
 /**
  * Game handles all game load, preparing all data to other components (Map, Turns, etc)
  */
 export default function Game() {
+  const router = useRouter();
+  const supabase = createClient();
   const { match, setInitialLoadState } = useGameStore((state) => state);
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState<string>("");
-
-  const supabase = createClient();
 
   useEffect(() => {
     const getData = async () => {
@@ -31,11 +32,13 @@ export default function Game() {
 
   useEffect(() => {
     if (!token || !loading) {
+      router.push("/");
       return;
     }
 
     const getData = async () => {
       if (!match.code) {
+        router.push("/");
         return;
       }
 
@@ -49,7 +52,7 @@ export default function Game() {
     getData();
 
     setLoading(false);
-  }, [token, setInitialLoadState, match, loading]);
+  }, [token, setInitialLoadState, match, loading, router]);
 
   return (
     <>
