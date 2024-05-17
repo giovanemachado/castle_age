@@ -8,7 +8,7 @@ import { useGameStore } from "@/app/store/gameStoreProvider";
 import Money from "../components/money/money";
 import { createClient } from "@/utils/supabase/client";
 import { fetchData } from "@/utils/requests";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 
 /**
  * Game handles all game load, preparing all data to other components (Map, Turns, etc)
