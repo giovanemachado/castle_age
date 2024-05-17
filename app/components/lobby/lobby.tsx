@@ -110,10 +110,7 @@ export default function Lobby() {
       {token && match.active && match.players.length == 2 && (
         <>
           <p>Match code: {match.code}</p>
-          <button
-            onClick={handleEnterMatch}
-            className="btn btn-primary join-item rounded-r-full"
-          >
+          <button onClick={handleEnterMatch} className="btn btn-primary">
             Re-enter match
           </button>
         </>

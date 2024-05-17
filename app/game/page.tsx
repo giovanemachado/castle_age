@@ -32,7 +32,6 @@ export default function Game() {
 
   useEffect(() => {
     if (!token || !loading) {
-      router.push("/");
       return;
     }
 
