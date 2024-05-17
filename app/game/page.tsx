@@ -7,7 +7,11 @@ import { GameState } from "@/schema/types";
 import { useGameStore } from "@/app/store/gameStoreProvider";
 import Money from "../components/money/money";
 import { createClient } from "@/utils/supabase/client";
+import { fetchData } from "@/utils/requests";
 
+/**
+ * Game handles all game load, preparing all data to other components (Map, Turns, etc)
+ */
 export default function Game() {
   const { match, setInitialLoadState } = useGameStore((state) => state);
   const [loading, setLoading] = useState(true);
@@ -30,31 +34,26 @@ export default function Game() {
       return;
     }
 
-    const fetchData = async () => {
+    const getData = async () => {
       if (!match.code) {
         return;
       }
 
-      const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BACKEND_URL}/games/initial-load/${match.code}`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        },
+      const initialLoad = await fetchData(
+        token,
+        `games/initial-load/${match.code}`,
       );
-      const initialLoad: GameState = await response.json();
-      setInitialLoadState(initialLoad);
+
+      setInitialLoadState(initialLoad.data);
     };
-    fetchData();
+    getData();
 
     setLoading(false);
   }, [token, setInitialLoadState, match, loading]);
 
   return (
     <>
-      {!loading && token ? (
+      {!loading && token && (
         <>
           <div className="flex overflow-y-auto justify-center">
             <Map />
@@ -64,7 +63,7 @@ export default function Game() {
             <Turns />
           </div>
         </>
-      ) : null}
+      )}
     </>
   );
 }

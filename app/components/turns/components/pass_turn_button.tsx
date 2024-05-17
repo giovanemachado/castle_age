@@ -1,6 +1,7 @@
 "use client";
 
 import { useGameStore } from "@/app/store/gameStoreProvider";
+import { fetchData } from "@/utils/requests";
 
 const PassTurnButton = () => {
   const { turns, units, gameId, playerIds, money, passTurn } = useGameStore(
@@ -8,18 +9,14 @@ const PassTurnButton = () => {
   );
 
   const handleClick = async () => {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/games/${gameId}/state`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        method: "POST",
-        body: JSON.stringify({ playerIds, turns, units, money }),
-      },
-    );
-    const jsonData = await response.json();
-    passTurn(jsonData);
+    const { data } = await fetchData("token", `games/${gameId}/state`, "POST", {
+      playerIds,
+      turns,
+      units,
+      money,
+    });
+
+    passTurn(data);
   };
 
   return (

@@ -6,15 +6,20 @@ import { useRouter } from "next/navigation";
 import { socket } from "@/app/socket/socket";
 import { createClient } from "@/utils/supabase/client";
 import { useGameStore } from "@/app/store/gameStoreProvider";
+import { fetchData } from "@/utils/requests";
 
+/**
+ * Lobby handles all interaction to enter in a match
+ */
 export default function Lobby() {
-  const { match, setGameMap, setMatch, setPlayerId } = useGameStore(
+  const supabase = createClient();
+  const router = useRouter();
+  const { match, setGameMap, setMatch, setPlayerId, setEvents } = useGameStore(
     (state) => state,
   );
   const [token, setToken] = useState<string>("");
   const [currentPlayerId, setCurrentPlayerId] = useState<string>("");
   const [matchCode, setMatchCode] = useState<string>("");
-  const supabase = createClient();
 
   useEffect(() => {
     const getData = async () => {
@@ -26,81 +31,52 @@ export default function Lobby() {
     getData();
   }, [supabase]);
 
-  const router = useRouter();
-
-  const [isConnected, setIsConnected] = useState(socket.connected);
-  const [fooEvents, setFooEvents] = useState<any[]>([]);
-
   useEffect(() => {
-    if (!token) {
-      return;
-    }
+    const onEvent = (value: any) => {
+      setEvents({ type: "match_created", value });
+    };
 
-    function onConnect() {
-      setIsConnected(true);
-    }
-
-    function onDisconnect() {
-      setIsConnected(false);
-    }
-
-    function onFooEvent(value: any) {
-      setFooEvents((previous) => [...previous, value]);
-    }
-
-    socket.on("connect", onConnect);
-    socket.on("disconnect", onDisconnect);
-    socket.on("match_created", onFooEvent);
+    socket.on("match_created", onEvent);
 
     return () => {
-      socket.off("connect", onConnect);
-      socket.off("disconnect", onDisconnect);
-      socket.off("match_created", onFooEvent);
+      socket.off("match_created", onEvent);
     };
-  }, [token]);
+  }, [setEvents, token]);
 
   useEffect(() => {
-    if (!token) {
-      return;
+    if (token && match.active && match.players.length == 2 && !matchCode) {
+      setMatchCode(matchCode);
     }
+  }, [token, match.active, match.players.length, matchCode]);
 
-    if (fooEvents.length > 0) {
-      router.push("/game");
-    }
-  }, [fooEvents, token, router]);
+  // useEffect(() => {
+  //   if (!token) {
+  //     return;
+  //   }
+
+  //   if (fooEvents.length > 0) {
+  //     router.push("/game");
+  //   }
+  // }, [fooEvents, token, router]);
 
   const getMap = async (code: string) => {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/games/initial-map/${code}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      },
+    const { status, data } = await fetchData(
+      token,
+      `games/initial-map/${code}`,
     );
 
-    if (response.status === 200) {
-      const mapData: { rows: SquareData[][] } = await response.json();
+    if (status === 200) {
+      const mapData: { rows: SquareData[][] } = data;
       setGameMap(mapData.rows);
     }
   };
 
   const handleCreateMatch = async () => {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/games/match`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        method: "POST",
-      },
-    );
+    const { status, data } = await fetchData(token, `games/match`, "POST");
 
     // TODO real bad to have this logic here
-    if (response.status === 201) {
-      const matchData: MatchData = await response.json();
+    if (status === 201) {
+      const matchData: MatchData = data;
 
       await getMap(matchData.code);
       setMatch(matchData);
@@ -112,22 +88,18 @@ export default function Lobby() {
       return;
     }
 
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_URL}/games/enter-match/${matchCode}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        method: "POST",
-      },
+    const { status, data } = await fetchData(
+      token,
+      `games/enter-match/${matchCode}`,
+      "POST",
     );
 
-    if (response.status === 201) {
-      const matchData: MatchData = await response.json();
+    if (status === 201) {
+      const matchData: MatchData = data;
       await getMap(matchData.code);
       setMatch(matchData);
       setPlayerId(currentPlayerId);
+      // TODO this causes a flash when hitting enter match, might need to add a loadign state here
       router.push("/game");
     }
   };
@@ -136,7 +108,15 @@ export default function Lobby() {
     <>
       {/* TODO real bad to have this logic here */}
       {token && match.active && match.players.length == 2 && (
-        <p>Match code: {match.code}</p>
+        <>
+          <p>Match code: {match.code}</p>
+          <button
+            onClick={handleEnterMatch}
+            className="btn btn-primary join-item rounded-r-full"
+          >
+            Re-enter match
+          </button>
+        </>
       )}
       {token && (!match.active || match.players.length != 2) && (
         <div className="hero h-full bg-base-100">
