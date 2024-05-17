@@ -71,7 +71,7 @@ export default function Lobby() {
 
   const getMap = async (code: string) => {
     const response = await fetch(
-      `http://localhost:3001/games/initial-map/${code}`,
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/games/initial-map/${code}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -87,13 +87,16 @@ export default function Lobby() {
   };
 
   const handleCreateMatch = async () => {
-    const response = await fetch(`http://localhost:3001/games/match`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+    const response = await fetch(
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/games/match`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        method: "POST",
       },
-      method: "POST",
-    });
+    );
 
     // TODO real bad to have this logic here
     if (response.status === 201) {
@@ -110,7 +113,7 @@ export default function Lobby() {
     }
 
     const response = await fetch(
-      `http://localhost:3001/games/enter-match/${matchCode}`,
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/games/enter-match/${matchCode}`,
       {
         headers: {
           "Content-Type": "application/json",

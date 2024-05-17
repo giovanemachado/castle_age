@@ -9,7 +9,7 @@ const PassTurnButton = () => {
 
   const handleClick = async () => {
     const response = await fetch(
-      `http://localhost:3001/games/${gameId}/state`,
+      `${process.env.NEXT_PUBLIC_BACKEND_URL}/games/${gameId}/state`,
       {
         headers: {
           "Content-Type": "application/json",

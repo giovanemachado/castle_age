@@ -36,7 +36,7 @@ export default function Game() {
       }
 
       const response = await fetch(
-        `http://localhost:3001/games/initial-load/${match.code}`,
+        `${process.env.NEXT_PUBLIC_BACKEND_URL}/games/initial-load/${match.code}`,
         {
           headers: {
             "Content-Type": "application/json",
