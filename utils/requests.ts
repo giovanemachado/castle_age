@@ -13,7 +13,7 @@ export const fetchData = async (
   };
 
   if (body) {
-    options.body = body;
+    options.body = JSON.stringify(body);
   }
 
   const response = await fetch(
