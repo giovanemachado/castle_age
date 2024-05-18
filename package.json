@@ -19,9 +19,6 @@
     "ws": "^8.17.0",
     "zustand": "^4.5.2"
   },
-  "resolutions": {
-    "string-width": "5.1.2"
-  },
   "devDependencies": {
     "@types/node": "^20",
     "@types/react": "^18",
