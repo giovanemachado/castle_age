@@ -1,11 +1,28 @@
-import { GameState, UNITDATA_CLASS, UnitData } from "@/schema/types";
+import {
+  MatchStateUnitsMovement,
+  UNITDATA_CLASS,
+  UnitData,
+} from "@/schema/types";
 import { GameStore } from "./gameStore";
 
-const getUnitIndex = (units: UnitData[], unitId: string): number => {
+const getUnitIndex = (
+  units: MatchStateUnitsMovement[],
+  unitId: string,
+): number => {
   const unitIndex = units.findIndex((unit) => unit.id === unitId);
 
   if (unitIndex == -1) {
     throw "No unitIndex";
+  }
+
+  return unitIndex;
+};
+
+const getUnitDataIndex = (units: UnitData[], unitId: string): number => {
+  const unitIndex = units.findIndex((unit) => unit.id === unitId);
+
+  if (unitIndex == -1) {
+    throw "No unitDataIndex";
   }
 
   return unitIndex;
@@ -28,14 +45,15 @@ export const setUnitMovement = (
   unitId: string,
   localization: string,
 ) => {
-  const unitsInStore: UnitData[] = Array.from(state.units);
-  const unitInStoreIndex = getUnitIndex(state.units, unitId);
+  const unitsInStore: MatchStateUnitsMovement[] = Array.from(
+    state.unitsMovement,
+  );
+  const unitInStoreIndex = getUnitIndex(state.unitsMovement, unitId);
 
-  unitsInStore[unitInStoreIndex].movementInTurn.moved = true;
-  unitsInStore[unitInStoreIndex].movementInTurn.turn = state.turns;
-  unitsInStore[unitInStoreIndex].movement.localization = localization;
+  unitsInStore[unitInStoreIndex].localization = localization;
+  unitsInStore[unitInStoreIndex].movedInTurn = true;
 
-  return { units: unitsInStore };
+  return { unitsMovement: unitsInStore };
 };
 
 export const setCanBeReached = (state: GameStore, unitId?: string) => {
@@ -45,12 +63,19 @@ export const setCanBeReached = (state: GameStore, unitId?: string) => {
     };
   }
 
-  const unitsInStore: UnitData[] = Array.from(state.units);
-  const unitInStoreIndex = getUnitIndex(state.units, unitId);
+  if (!state.gameMap) {
+    throw "No Game Map data";
+  }
 
-  const { localization, distance } = unitsInStore[unitInStoreIndex].movement;
+  const unitsInStore: UnitData[] = Array.from(state.gameMap.units);
+  const unitInStoreIndex = getUnitDataIndex(state.gameMap.units, unitId);
+  const unitInStoreIndexD = getUnitIndex(state.unitsMovement, unitId);
+  const currentLocalization =
+    state.unitsMovement[unitInStoreIndexD].localization;
 
-  const { rowId, colId } = getLocalizationIds(localization);
+  const { distance } = unitsInStore[unitInStoreIndex].movement;
+
+  const { rowId, colId } = getLocalizationIds(currentLocalization);
 
   const leftMovement = createSquareId(rowId, colId - distance);
   const rightMovement = createSquareId(rowId, colId + distance);
@@ -61,7 +86,7 @@ export const setCanBeReached = (state: GameStore, unitId?: string) => {
     (unit) =>
       unit.class === UNITDATA_CLASS.GATE &&
       [leftMovement, rightMovement, upMovement, downMovement].includes(
-        unit.movement.localization,
+        unit.movement.initialLocalization,
       ),
   );
 
@@ -70,7 +95,7 @@ export const setCanBeReached = (state: GameStore, unitId?: string) => {
 
   if (gateUnitReachable) {
     const { rowId, colId } = getLocalizationIds(
-      gateUnitReachable.movement.localization,
+      gateUnitReachable.movement.initialLocalization,
     );
     upMovementGate = createSquareId(rowId - 1, colId);
     downMovementGate = createSquareId(rowId + 1, colId);
@@ -86,10 +111,6 @@ export const setCanBeReached = (state: GameStore, unitId?: string) => {
       downMovementGate,
     ],
   };
-};
-
-export const setInitialLoadState = (initialLoad: GameState) => {
-  return { ...initialLoad };
 };
 
 export const setToken = (token: string) => {

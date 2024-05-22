@@ -25,7 +25,16 @@ export const GameStoreProvider = ({ children }: GameStoreProviderProps) => {
   const storeRef = useRef<GameStoreApi>();
 
   useEffect(() => {
-    storeRef.current = createGameStore();
+    storeRef.current = createGameStore({
+      playersEndTurn: [],
+      money: [],
+      turns: 0,
+      unitsMovement: [],
+      id: 0,
+      createdAt: "",
+      updatedAt: "",
+      matchId: 0,
+    });
     setLoading(false);
   }, []);
 

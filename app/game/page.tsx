@@ -7,13 +7,12 @@ import { useGameStore } from "@/app/store/gameStoreProvider";
 import Money from "../components/money/money";
 import { createClient } from "@/utils/supabase/client";
 import { fetchData } from "@/utils/requests";
-// import { useRouter } from "next/navigation";
 
 /**
  * Game handles all game load, preparing all data to other components (Map, Turns, etc)
  */
 export default function Game() {
-  const { setGameMap, setUnits, setPlayerId, setMatch } = useGameStore(
+  const { setGameMap, setPlayerId, setMatch, setUnitsMovement } = useGameStore(
     (state) => state,
   );
   // const router = useRouter();
@@ -36,15 +35,15 @@ export default function Game() {
 
       if (status === 200) {
         const mapData = data;
-        setGameMap(mapData.rows);
-        setUnits(mapData.units);
+        setGameMap(mapData.rows, mapData.units);
+        setUnitsMovement(mapData.units);
         setMatch(mapData.matchData);
       }
     };
 
     getData();
     setLoading(false);
-  }, [setGameMap, setMatch, setPlayerId, setUnits, supabase]);
+  }, [setGameMap, setMatch, setPlayerId, setUnitsMovement, supabase]);
 
   if (!token) {
     return null;

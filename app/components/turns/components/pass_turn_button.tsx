@@ -4,15 +4,16 @@ import { useGameStore } from "@/app/store/gameStoreProvider";
 import { fetchData } from "@/utils/requests";
 import { createClient } from "@/utils/supabase/client";
 import { useEffect, useState } from "react";
+import { socket } from "@/app/socket/socket";
+import { MatchState } from "@/schema/types";
 
 const PassTurnButton = () => {
+  const { turns, unitsMovement, money, passTurn, setEvents, events, match } =
+    useGameStore((state) => state);
   const supabase = createClient();
 
-  const { turns, units, money, passTurn, match } = useGameStore(
-    (state) => state,
-  );
-
   const [token, setToken] = useState<string>("");
+  const [data, setData] = useState<MatchState>();
 
   useEffect(() => {
     const getData = async () => {
@@ -22,19 +23,48 @@ const PassTurnButton = () => {
     getData();
   }, [supabase]);
 
+  useEffect(() => {
+    const onEvent = (value: any) => {
+      if (value.matchCode == match?.code) {
+        setEvents({ type: "both_players_ended_turn", value });
+      }
+    };
+
+    socket.on("both_players_ended_turn", onEvent);
+
+    return () => {
+      socket.off("both_players_ended_turn", onEvent);
+    };
+  }, [match?.code, setEvents, token]);
+
+  // TODO temp
+  useEffect(() => {
+    const event = events.findLast((e) => e.type === "both_players_ended_turn");
+
+    if (!event) {
+      return;
+    }
+
+    passTurn(event.value.matchState);
+  }, [events, data, passTurn]);
+
   const handleClick = async () => {
+    if (!match) {
+      return;
+    }
+
     const { data } = await fetchData(
       token,
-      `games/turn/${match.code}`,
+      `games/match-state/${match.code}`,
       "POST",
       {
         turns,
-        units,
+        unitsMovement,
         money,
       },
     );
 
-    passTurn(data);
+    setData(data);
   };
 
   return (

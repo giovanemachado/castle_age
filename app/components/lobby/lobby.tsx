@@ -29,8 +29,10 @@ export default function Lobby() {
 
   useEffect(() => {
     const onEvent = (value: any) => {
-      // TODO need to check if is the correct match
-      setEvents({ type: "enter_in_match", value });
+      console.log(value);
+      if (value.matchCode == match?.code) {
+        setEvents({ type: "enter_in_match", value });
+      }
     };
 
     socket.on("enter_in_match", onEvent);
@@ -38,20 +40,29 @@ export default function Lobby() {
     return () => {
       socket.off("enter_in_match", onEvent);
     };
-  }, [setEvents, token]);
+  }, [match, setEvents, token]);
 
   // TODO temp
   useEffect(() => {
-    if (events.length > 0) {
+    if (
+      events.filter((e) => {
+        console.log(e);
+        return e.type === "enter_in_match";
+      }).length > 0
+    ) {
       router.push("/game");
     }
   }, [events, router]);
 
   useEffect(() => {
+    if (!match) {
+      return;
+    }
+
     if (token && match.active && match.players.length == 2 && !matchCode) {
       setMatchCode(matchCode);
     }
-  }, [token, match.active, match.players, matchCode]);
+  }, [token, match, matchCode]);
 
   const handleCreateMatch = async () => {
     const { status, data } = await fetchData(token, `games/match`, "POST");
@@ -87,7 +98,7 @@ export default function Lobby() {
     return null;
   }
 
-  if (match.active) {
+  if (match?.active) {
     return (
       <div className="hero h-full bg-base-100">
         <div className="hero-content flex-col">
@@ -102,7 +113,7 @@ export default function Lobby() {
     );
   }
 
-  if (!match.active || match.players.length != 2) {
+  if (!match?.active || match.players.length != 2) {
     return (
       <div className="hero h-full bg-base-100">
         <div className="hero-content flex-col">

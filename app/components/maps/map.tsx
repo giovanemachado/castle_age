@@ -33,7 +33,7 @@ const Map = () => {
     <div className="flex-col">
       <DragDropContext onBeforeCapture={onBeforeCapture} onDragEnd={onDragEnd}>
         <div className="map">
-          {gameMap.rows.map((row: SquareData[], rIndex: number) => (
+          {gameMap?.rows.map((row: SquareData[], rIndex: number) => (
             <div key={`${rIndex}`} className="map-row">
               {row.map((square: SquareData, index: number) => (
                 <div key={`${rIndex}-${index}`}>

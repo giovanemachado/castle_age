@@ -1,6 +1,6 @@
 import { StrictModeDroppable } from "@/app/components/shared/droppable";
 import { useGameStore } from "@/app/store/gameStoreProvider";
-import { UnitData } from "@/schema/types";
+import { MatchStateUnitsMovement } from "@/schema/types";
 import { DroppableProvided } from "@hello-pangea/dnd";
 import { useEffect, useState } from "react";
 import grass1Image from "@/public/grass1.png";
@@ -8,7 +8,7 @@ import grass2Image from "@/public/grass2.png";
 import Card from "../cards/card";
 
 type SquareDroppableProps = {
-  unit?: UnitData;
+  unit?: MatchStateUnitsMovement;
   isDraggingOver: boolean;
   isDropDisabled: boolean;
 };
@@ -44,21 +44,23 @@ const droppable = ({
  * drop 1 card in each of these.
  */
 const Square = ({ droppableId }: { droppableId: string }) => {
-  const { units, canBeReached } = useGameStore((state) => state);
+  const { canBeReached, unitsMovement } = useGameStore((state) => state);
 
   // temporary non-random to test images (will come from backend)
   let backgroundImage = `url(${
     Math.random() > 100 ? grass1Image.src : grass2Image.src
   })`;
 
-  const [unit, setUnit] = useState<UnitData | undefined>(undefined);
+  const [unit, setUnit] = useState<MatchStateUnitsMovement | undefined>(
+    undefined,
+  );
 
   useEffect(() => {
-    const foundUnit = units.find(
-      (unit: UnitData) => unit.movement.localization === droppableId,
+    const foundUnit = unitsMovement.find(
+      (unit: MatchStateUnitsMovement) => unit.localization === droppableId,
     );
     setUnit(foundUnit);
-  }, [units, droppableId]);
+  }, [unitsMovement, droppableId]);
 
   const isDropDisabled = !!unit || !canBeReached.includes(droppableId);
 

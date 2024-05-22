@@ -2,7 +2,7 @@
 
 import { Draggable, DraggableProvided } from "@hello-pangea/dnd";
 import CardImage from "./components/cardImage";
-import { UnitData } from "@/schema/types";
+import { MatchStateUnitsMovement } from "@/schema/types";
 import { unitIsStructure } from "../shared/utils";
 import { useEffect, useState } from "react";
 import { useGameStore } from "@/app/store/gameStoreProvider";
@@ -12,7 +12,7 @@ type DraggableCardProps = {
 };
 
 type CardProps = {
-  unit: UnitData;
+  unit: MatchStateUnitsMovement;
 };
 
 const draggable = ({
@@ -32,14 +32,15 @@ const draggable = ({
  * Representation of a Card in the game (an unit). It's a draggable item, and you can interact with most of them.
  */
 const Card = ({ unit }: CardProps) => {
-  const { units, match, currentPlayerId } = useGameStore((state) => state);
+  const { gameMap, match, currentPlayerId } = useGameStore((state) => state);
   const [isDragEnabled, setIsDragEnabled] = useState(false);
   const [isRed, setIsRed] = useState(false);
+  const [unitClass, setUnitClass] = useState("");
 
   useEffect(() => {
-    const currentUnit = units.find((u: any) => u.id == unit.id);
+    const currentUnit = gameMap?.units.find((u: any) => u.id == unit.id);
 
-    if (!currentUnit) {
+    if (!currentUnit || !match) {
       return;
     }
 
@@ -48,18 +49,19 @@ const Card = ({ unit }: CardProps) => {
 
     setIsRed(currentUnit?.playerId == match.players[0]);
     setIsDragEnabled(isPlayersUnit && isUnitMovable);
-  }, [currentPlayerId, match.players, unit.id, units]);
+    setUnitClass(currentUnit.class);
+  }, [currentPlayerId, match, unit.id, gameMap]);
 
   return (
     <Draggable
       draggableId={unit.id}
       index={0}
-      isDragDisabled={!isDragEnabled || unit.movementInTurn.moved}
+      isDragDisabled={!isDragEnabled || unit.movedInTurn}
     >
       {(provided, snapshot) =>
         draggable({
           imageComponent: CardImage({
-            unitClass: unit.class,
+            unitClass: unitClass,
             isDragging: snapshot.isDragging,
             isRed,
           }),
