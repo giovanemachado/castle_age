@@ -44,12 +44,13 @@ const droppable = ({
  * drop 1 card in each of these.
  */
 const Square = ({ droppableId }: { droppableId: string }) => {
+  const { units, canBeReached } = useGameStore((state) => state);
+
   // temporary non-random to test images (will come from backend)
   let backgroundImage = `url(${
     Math.random() > 100 ? grass1Image.src : grass2Image.src
   })`;
 
-  const { units, canBeReached, match } = useGameStore((state) => state);
   const [unit, setUnit] = useState<UnitData | undefined>(undefined);
 
   useEffect(() => {
@@ -57,7 +58,7 @@ const Square = ({ droppableId }: { droppableId: string }) => {
       (unit: UnitData) => unit.movement.localization === droppableId,
     );
     setUnit(foundUnit);
-  }, [units, droppableId, match]);
+  }, [units, droppableId]);
 
   const isDropDisabled = !!unit || !canBeReached.includes(droppableId);
 

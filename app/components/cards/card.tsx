@@ -37,7 +37,7 @@ const Card = ({ unit }: CardProps) => {
   const [isRed, setIsRed] = useState(false);
 
   useEffect(() => {
-    const currentUnit = units.find((u) => u.id == unit.id);
+    const currentUnit = units.find((u: any) => u.id == unit.id);
 
     if (!currentUnit) {
       return;

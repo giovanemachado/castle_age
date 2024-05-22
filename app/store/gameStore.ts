@@ -1,10 +1,4 @@
-import {
-  GameState,
-  MapData,
-  MatchData,
-  SquareData,
-  UnitData,
-} from "@/schema/types";
+import { MatchData, SquareData, UnitData } from "@/schema/types";
 import { createStore } from "zustand/vanilla";
 import {
   setCanBeReached,
