@@ -51,7 +51,7 @@ export default function Navbar() {
               <Link href="/">Home</Link>
             </li>
             <li>
-              <Link href="/about">About Us</Link>
+              <Link href="/game">Game</Link>
             </li>
           </ul>
         </div>
