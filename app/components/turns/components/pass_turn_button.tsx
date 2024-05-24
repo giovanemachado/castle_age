@@ -8,8 +8,15 @@ import { socket } from "@/app/socket/socket";
 import { MatchState } from "@/schema/types";
 
 const PassTurnButton = () => {
-  const { turns, unitsMovement, money, passTurn, setEvents, events, match } =
-    useGameStore((state) => state);
+  const {
+    turns,
+    unitsMovement,
+    money,
+    setMatchState,
+    setEvents,
+    events,
+    match,
+  } = useGameStore((state) => state);
   const supabase = createClient();
 
   const [token, setToken] = useState<string>("");
@@ -45,8 +52,8 @@ const PassTurnButton = () => {
       return;
     }
 
-    passTurn(event.value.matchState);
-  }, [events, data, passTurn]);
+    setMatchState(event.value.matchState);
+  }, [events, data, setMatchState]);
 
   const handleClick = async () => {
     if (!match) {

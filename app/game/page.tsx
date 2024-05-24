@@ -12,10 +12,9 @@ import { fetchData } from "@/utils/requests";
  * Game handles all game load, preparing all data to other components (Map, Turns, etc)
  */
 export default function Game() {
-  const { setGameMap, setPlayerId, setMatch, setUnitsMovement } = useGameStore(
-    (state) => state,
-  );
-  // const router = useRouter();
+  const { setGameMap, setPlayerId, setMatch, setUnitsMovement, setMatchState } =
+    useGameStore((state) => state);
+
   const supabase = createClient();
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState<string>("");
@@ -38,12 +37,20 @@ export default function Game() {
         setGameMap(mapData.rows, mapData.units);
         setUnitsMovement(mapData.units);
         setMatch(mapData.matchData);
+        setMatchState(mapData.matchState);
       }
     };
 
     getData();
     setLoading(false);
-  }, [setGameMap, setMatch, setPlayerId, setUnitsMovement, supabase]);
+  }, [
+    setGameMap,
+    setMatch,
+    setPlayerId,
+    setUnitsMovement,
+    setMatchState,
+    supabase,
+  ]);
 
   if (!token) {
     return null;

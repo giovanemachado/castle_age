@@ -14,7 +14,7 @@ export type ClientState = {
 };
 
 export type GameActions = {
-  passTurn: (updatedState: MatchState) => void;
+  setMatchState: (updatedState: MatchState) => void;
   setUnitMovement: (unitId: string, localization: string) => void;
   setCanBeReached: (unitId?: string) => void;
   setMatch: (matchData: MatchData) => void;
@@ -31,7 +31,7 @@ export const createGameStore = (initState: MatchState) => {
     ...initState,
     canBeReached: [],
     events: [],
-    passTurn: (updatedState) => set(() => updatedState),
+    setMatchState: (updatedState) => set(() => updatedState),
     setUnitMovement: (unitId, localization) =>
       set((state) => setUnitMovement(state, unitId, localization)),
     setCanBeReached: (unitId) => set((state) => setCanBeReached(state, unitId)),

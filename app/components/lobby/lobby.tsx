@@ -1,7 +1,7 @@
 "use client";
 
 import { MatchData } from "@/schema/types";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { socket } from "@/app/socket/socket";
 import { createClient } from "@/utils/supabase/client";
@@ -21,15 +21,33 @@ export default function Lobby() {
   useEffect(() => {
     const getData = async () => {
       const sessionData = await supabase.auth.getSession();
-      setToken(sessionData.data.session?.access_token ?? "");
+      const accessToken = sessionData.data.session?.access_token;
+
+      setToken(accessToken ?? "");
+
+      if (!accessToken) {
+        return;
+      }
+
+      const { status, data } = await fetchData(accessToken, `games/match`);
+
+      if (status === 200) {
+        const matchData: MatchData | null = data;
+        if (matchData) {
+          setMatch(matchData);
+
+          if (matchData.players.length == 2) {
+            router.push("/game");
+          }
+        }
+      }
     };
 
     getData();
-  }, [supabase]);
+  }, [router, setMatch, supabase, token]);
 
   useEffect(() => {
     const onEvent = (value: any) => {
-      console.log(value);
       if (value.matchCode == match?.code) {
         setEvents({ type: "enter_in_match", value });
       }
@@ -46,7 +64,6 @@ export default function Lobby() {
   useEffect(() => {
     if (
       events.filter((e) => {
-        console.log(e);
         return e.type === "enter_in_match";
       }).length > 0
     ) {
@@ -54,32 +71,16 @@ export default function Lobby() {
     }
   }, [events, router]);
 
-  useEffect(() => {
-    if (!match) {
-      return;
-    }
-
-    if (token && match.active && match.players.length == 2 && !matchCode) {
-      setMatchCode(matchCode);
-    }
-  }, [token, match, matchCode]);
-
   const handleCreateMatch = async () => {
     const { status, data } = await fetchData(token, `games/match`, "POST");
 
     if (status === 201) {
       const matchData: MatchData = data;
       setMatch(matchData);
-    } else {
-      console.log("something went wrong in games/match");
     }
   };
 
   const handleEnterMatch = async () => {
-    if (!matchCode) {
-      return;
-    }
-
     const { status } = await fetchData(
       token,
       `games/enter-match/${matchCode}`,
@@ -89,8 +90,6 @@ export default function Lobby() {
     if (status === 201) {
       // TODO this causes a flash when hitting enter match, might need to add a loadign state here
       router.push("/game");
-    } else {
-      console.log("something went wrong in games/enter-match/");
     }
   };
 
