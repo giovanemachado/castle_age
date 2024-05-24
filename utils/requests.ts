@@ -21,7 +21,15 @@ export const fetchData = async (
     options,
   );
 
+  const contentType = response.headers.get("content-type");
+
+  let data;
+
+  if (contentType && contentType.includes("application/json")) {
+    data = await response.json();
+  }
+
   const status = response.status;
 
-  return { status, data: await response.json() };
+  return { status, data };
 };

@@ -9,7 +9,7 @@ import { useGameStore } from "@/app/store/gameStoreProvider";
  * Represents the whole map of the game, showing all Squares and Cards in it.
  */
 const Map = () => {
-  const { gameMap, setUnitMovement, setCanBeReached } = useGameStore(
+  const { gameMap, setUnitNewLocalization, setCanBeReached } = useGameStore(
     (state) => state,
   );
 
@@ -26,7 +26,7 @@ const Map = () => {
     }
 
     const { destination, draggableId } = result;
-    setUnitMovement(draggableId, destination.droppableId);
+    setUnitNewLocalization(draggableId, destination.droppableId);
   };
 
   return (

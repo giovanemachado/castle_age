@@ -1,6 +1,6 @@
 import { MatchData, MatchState, SquareData, UnitData } from "@/schema/types";
 import { createStore } from "zustand/vanilla";
-import { setCanBeReached, setUnitMovement } from "./gameStoreActions";
+import { setCanBeReached, setUnitNewLocalization } from "./gameStoreActions";
 
 export type ClientState = {
   canBeReached: string[];
@@ -15,7 +15,7 @@ export type ClientState = {
 
 export type GameActions = {
   setMatchState: (updatedState: MatchState) => void;
-  setUnitMovement: (unitId: string, localization: string) => void;
+  setUnitNewLocalization: (unitId: string, localization: string) => void;
   setCanBeReached: (unitId?: string) => void;
   setMatch: (matchData: MatchData) => void;
   setGameMap: (rows: SquareData[][], units: UnitData[]) => void;
@@ -31,9 +31,12 @@ export const createGameStore = (initState: MatchState) => {
     ...initState,
     canBeReached: [],
     events: [],
-    setMatchState: (updatedState) => set(() => updatedState),
-    setUnitMovement: (unitId, localization) =>
-      set((state) => setUnitMovement(state, unitId, localization)),
+    setMatchState: (updatedState) =>
+      set(() => {
+        return updatedState;
+      }),
+    setUnitNewLocalization: (unitId, localization) =>
+      set((state) => setUnitNewLocalization(state, unitId, localization)),
     setCanBeReached: (unitId) => set((state) => setCanBeReached(state, unitId)),
     setMatch: (match: MatchData) =>
       set(() => ({
@@ -54,14 +57,12 @@ export const createGameStore = (initState: MatchState) => {
       set((state) => ({ events: [...state.events, eventValue] })),
     setUnitsMovement: (unitsData) =>
       set((state) => ({
-        unitsMovement: unitsData.map((unitData) => {
-          return {
-            id: unitData.id,
-            localization: unitData.movement.initialLocalization,
-            playerId: unitData.playerId,
-            movedInTurn: false,
-          };
-        }),
+        unitsMovement: unitsData.map((unitData) => ({
+          id: unitData.id,
+          localization: unitData.movement.initialLocalization,
+          playerId: unitData.playerId,
+          movedInTurn: false,
+        })),
       })),
   }));
 };

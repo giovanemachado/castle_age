@@ -44,7 +44,7 @@ export default function Lobby() {
     };
 
     getData();
-  }, [router, setMatch, supabase, token]);
+  }, [router, setMatch, supabase]);
 
   useEffect(() => {
     const onEvent = (value: any) => {

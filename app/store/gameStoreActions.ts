@@ -40,7 +40,7 @@ const createSquareId = (rowId: number, colId: number) => {
   return `square_${rowId}-${colId}`;
 };
 
-export const setUnitMovement = (
+export const setUnitNewLocalization = (
   state: GameStore,
   unitId: string,
   localization: string,
