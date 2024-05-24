@@ -54,11 +54,11 @@ export const createGameStore = (initState: MatchState) => {
       set((state) => ({ events: [...state.events, eventValue] })),
     setUnitsMovement: (unitsData) =>
       set((state) => ({
-        unitsMovement: unitsData.map((u) => {
+        unitsMovement: unitsData.map((unitData) => {
           return {
-            id: u.id,
-            localization: u.movement.initialLocalization,
-            playerId: u.playerId,
+            id: unitData.id,
+            localization: unitData.movement.initialLocalization,
+            playerId: unitData.playerId,
             movedInTurn: false,
           };
         }),
