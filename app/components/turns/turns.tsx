@@ -7,9 +7,8 @@ const Turns = () => {
   const { turns } = useGameStore((state) => state);
 
   return (
-    <div className="w-full flex justify-end py-2">
-      <span className="px-2 font-mono text-5xl">{turns}</span>
-
+    <div className="flex py-2 justify-end w-full items-center">
+      <span className="px-2 ">{`Turn: ${turns}`}</span>
       <PassTurnButton />
     </div>
   );

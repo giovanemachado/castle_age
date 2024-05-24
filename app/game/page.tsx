@@ -13,15 +13,16 @@ import { fetchData } from "@/utils/requests";
  */
 export default function Game() {
   const {
-    unitsMovement,
     setGameMap,
     setPlayerId,
     setMatch,
     setUnitsMovement,
     setMatchState,
+    waitingOtherPlayers,
   } = useGameStore((state) => state);
 
   const supabase = createClient();
+
   const [loading, setLoading] = useState(true);
   const [token, setToken] = useState<string>("");
 
@@ -65,11 +66,19 @@ export default function Game() {
   return (
     !loading && (
       <>
-        <div className="flex overflow-y-auto justify-center">
+        <div className="flex overflow-y-auto justify-center py-4">
           <Map />
         </div>
-        <div className="flex justify-between">
-          <Money />
+        <div className="relative flex justify-center items-center">
+          {waitingOtherPlayers && (
+            <div className="flex flex-col justify-center items-center absolute">
+              <p className="py-2 text-sm">Waiting your opponent to play ...</p>
+              <progress className="progress w-56"></progress>
+            </div>
+          )}
+
+          {/* <Money /> */}
+
           <Turns />
         </div>
       </>

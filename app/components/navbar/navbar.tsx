@@ -1,26 +1,36 @@
 "use client";
 
 import { signOut } from "@/app/lib/actions";
+import { useGameStore } from "@/app/store/gameStoreProvider";
 import { createClient } from "@/utils/supabase/client";
-import { User } from "@supabase/supabase-js";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 export default function Navbar() {
-  const [user, setUser] = useState<User | null>(null);
+  const { player, setPlayer } = useGameStore((state) => state);
+
   const supabase = createClient();
 
   useEffect(() => {
     const getData = async () => {
       const userData = await supabase.auth.getUser();
+      if (!userData.data.user) {
+        return;
+      }
 
-      setUser(userData.data.user);
+      const playerInfo = {
+        playerId: userData.data.user.id,
+        name: userData.data.user.user_metadata.name,
+      };
+
+      setPlayer(playerInfo);
     };
     getData();
-  }, [supabase]);
+  }, [setPlayer, supabase]);
 
   const handleClick = () => {
     signOut();
+    setPlayer();
   };
 
   return (
@@ -60,8 +70,9 @@ export default function Navbar() {
         <p className="text-xl font-bold">Castle Age</p>
       </div>
       <div className="navbar-end">
-        {user && (
+        {player && (
           <>
+            <div>{player.name}</div>
             <button onClick={handleClick} className="btn btn-seocndary">
               Sign out
             </button>

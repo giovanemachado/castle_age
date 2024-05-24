@@ -57,6 +57,7 @@ export const setUnitNewLocalization = (
 };
 
 export const setCanBeReached = (state: GameStore, unitId?: string) => {
+  // TODO this logic should be on the backend
   if (!unitId) {
     return {
       canBeReached: [],

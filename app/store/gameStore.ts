@@ -2,15 +2,22 @@ import { MatchData, MatchState, SquareData, UnitData } from "@/schema/types";
 import { createStore } from "zustand/vanilla";
 import { setCanBeReached, setUnitNewLocalization } from "./gameStoreActions";
 
+export type Player = {
+  name: string;
+  playerId: string; // TODO same from currentPlayerId, we could remove it
+};
+
 export type ClientState = {
   canBeReached: string[];
   currentPlayerId?: string;
+  player?: Player;
   gameMap?: { rows: SquareData[][]; units: UnitData[] };
   match?: MatchData;
   events: {
     type: string;
     value: any;
   }[];
+  waitingOtherPlayers: boolean;
 };
 
 export type GameActions = {
@@ -22,6 +29,8 @@ export type GameActions = {
   setPlayerId: (playerId: string) => void;
   setEvents: (eventValue: { type: string; value: any }) => void;
   setUnitsMovement: (unitsData: UnitData[]) => void;
+  setWaitingOtherPlayers: (isWaiting: boolean) => void;
+  setPlayer: (player?: Player) => void;
 };
 
 export type GameStore = MatchState & GameActions & ClientState;
@@ -31,6 +40,7 @@ export const createGameStore = (initState: MatchState) => {
     ...initState,
     canBeReached: [],
     events: [],
+    waitingOtherPlayers: false,
     setMatchState: (updatedState) =>
       set(() => {
         return updatedState;
@@ -64,5 +74,8 @@ export const createGameStore = (initState: MatchState) => {
           movedInTurn: false,
         })),
       })),
+    setWaitingOtherPlayers: (isWaiting) =>
+      set((state) => ({ waitingOtherPlayers: isWaiting })),
+    setPlayer: (playerData) => set(() => ({ player: playerData })),
   }));
 };

@@ -53,26 +53,31 @@ const Card = ({ unit }: CardProps) => {
   }, [currentPlayerId, match, unit.id, gameMap]);
 
   return (
-    <div
-      className="tooltip tooltip-bottom"
-      data-tip={unitClass.charAt(0).toUpperCase() + unitClass.slice(1)}
-    >
-      <Draggable
-        draggableId={unit.id}
-        index={0}
-        isDragDisabled={!isDragEnabled || unit.movedInTurn}
+    <div className="indicator">
+      {isDragEnabled && !unit.movedInTurn && (
+        <span className="indicator-item badge badge-secondary"></span>
+      )}
+      <div
+        className="tooltip tooltip-bottom"
+        data-tip={unitClass.charAt(0).toUpperCase() + unitClass.slice(1)}
       >
-        {(provided, snapshot) =>
-          draggable({
-            imageComponent: CardImage({
-              unitClass,
-              isDragging: snapshot.isDragging,
-              isRed,
-            }),
-            ...provided,
-          })
-        }
-      </Draggable>
+        <Draggable
+          draggableId={unit.id}
+          index={0}
+          isDragDisabled={!isDragEnabled || unit.movedInTurn}
+        >
+          {(provided, snapshot) =>
+            draggable({
+              imageComponent: CardImage({
+                unitClass,
+                isDragging: snapshot.isDragging,
+                isRed,
+              }),
+              ...provided,
+            })
+          }
+        </Draggable>
+      </div>
     </div>
   );
 };

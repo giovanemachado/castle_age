@@ -1,4 +1,5 @@
 "use client";
+
 import Square from "../squares/square";
 import { BeforeCapture, DragDropContext, DropResult } from "@hello-pangea/dnd";
 import { SquareData } from "@/schema/types";

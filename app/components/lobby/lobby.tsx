@@ -14,19 +14,31 @@ import { fetchData } from "@/utils/requests";
 export default function Lobby() {
   const supabase = createClient();
   const router = useRouter();
-  const { match, setMatch, setEvents, events } = useGameStore((state) => state);
+  const { match, setMatch, setEvents, events, setPlayer } = useGameStore(
+    (state) => state,
+  );
   const [token, setToken] = useState<string>("");
   const [matchCode, setMatchCode] = useState<string>("");
 
   useEffect(() => {
     const getData = async () => {
       const sessionData = await supabase.auth.getSession();
+      const userData = await supabase.auth.getUser();
+
       const accessToken = sessionData.data.session?.access_token;
 
       setToken(accessToken ?? "");
 
       if (!accessToken) {
         return;
+      }
+
+      if (userData.data.user) {
+        const playerInfo = {
+          playerId: userData.data.user.id,
+          name: userData.data.user.user_metadata.name,
+        };
+        setPlayer(playerInfo);
       }
 
       const { status, data } = await fetchData(accessToken, `games/match`);
