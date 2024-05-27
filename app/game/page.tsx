@@ -80,6 +80,7 @@ export default function Game() {
           {/* <Money /> */}
 
           <Turns />
+          <Turns />
         </div>
       </>
     )

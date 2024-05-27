@@ -9,7 +9,7 @@ import { useGameStore } from "@/app/store/gameStoreProvider";
 import { fetchData } from "@/utils/requests";
 
 /**
- * Lobby handles all interaction to enter in a match
+ * Lobby handles all interaction to join a match
  */
 export default function Lobby() {
   const supabase = createClient();
@@ -56,7 +56,7 @@ export default function Lobby() {
     };
 
     getData();
-  }, [router, setMatch, supabase]);
+  }, [router, setMatch, setPlayer, supabase]);
 
   useEffect(() => {
     const onEvent = (value: any) => {
@@ -92,15 +92,15 @@ export default function Lobby() {
     }
   };
 
-  const handleEnterMatch = async () => {
+  const handleJoinMatch = async () => {
     const { status } = await fetchData(
       token,
-      `games/enter-match/${matchCode}`,
+      `games/join-match/${matchCode}`,
       "POST",
     );
 
     if (status === 201) {
-      // TODO this causes a flash when hitting enter match, might need to add a loadign state here
+      // TODO this causes a flash when hitting join match, might need to add a loadign state here
       router.push("/game");
     }
   };
@@ -145,7 +145,7 @@ export default function Lobby() {
                 onChange={(v) => setMatchCode(v.target.value)}
               />
               <button
-                onClick={handleEnterMatch}
+                onClick={handleJoinMatch}
                 className="btn btn-primary join-item rounded-r-full"
               >
                 Join
