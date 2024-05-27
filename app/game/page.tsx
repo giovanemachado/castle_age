@@ -1,10 +1,10 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Map from "../components/maps/map";
-import Turns from "../components/turns/turns";
+import Map from "../components/gameplay/maps/map";
+import Turns from "../components/gameplay/turns/turns";
 import { useGameStore } from "@/app/store/gameStoreProvider";
-import Money from "../components/money/money";
+import Money from "../components/gameplay/money/money";
 import { createClient } from "@/utils/supabase/client";
 import { fetchData } from "@/utils/requests";
 
@@ -79,7 +79,6 @@ export default function Game() {
 
           {/* <Money /> */}
 
-          <Turns />
           <Turns />
         </div>
       </>

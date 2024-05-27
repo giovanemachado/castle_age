@@ -3,7 +3,7 @@
 import { Draggable, DraggableProvided } from "@hello-pangea/dnd";
 import CardImage from "./components/cardImage";
 import { MatchStateUnitsMovement } from "@/schema/types";
-import { unitIsStructure } from "../shared/utils";
+import { unitIsStructure } from "../../shared/utils";
 import { useEffect, useState } from "react";
 import { useGameStore } from "@/app/store/gameStoreProvider";
 

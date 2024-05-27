@@ -1,10 +1,10 @@
 "use client";
 
-import Square from "../squares/square";
 import { BeforeCapture, DragDropContext, DropResult } from "@hello-pangea/dnd";
 import { SquareData } from "@/schema/types";
 import { validDropResult } from "./methods/utils";
 import { useGameStore } from "@/app/store/gameStoreProvider";
+import Square from "../squares/square";
 
 /**
  * Represents the whole map of the game, showing all Squares and Cards in it.
