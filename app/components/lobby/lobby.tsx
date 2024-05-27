@@ -1,10 +1,9 @@
 "use client";
 
 import { MatchData } from "@/schema/types";
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { socket } from "@/app/socket/socket";
-import { createClient } from "@/utils/supabase/client";
 import { useGameStore } from "@/app/store/gameStoreProvider";
 import { fetchData } from "@/utils/requests";
 
@@ -12,36 +11,15 @@ import { fetchData } from "@/utils/requests";
  * Lobby handles all interaction to join a match
  */
 export default function Lobby() {
-  const supabase = createClient();
   const router = useRouter();
-  const { match, setMatch, setEvents, events, setPlayer } = useGameStore(
+  const { match, setMatch, setEvents, events, setPlayer, token } = useGameStore(
     (state) => state,
   );
-  const [token, setToken] = useState<string>("");
   const [matchCode, setMatchCode] = useState<string>("");
 
   useEffect(() => {
     const getData = async () => {
-      const sessionData = await supabase.auth.getSession();
-      const userData = await supabase.auth.getUser();
-
-      const accessToken = sessionData.data.session?.access_token;
-
-      setToken(accessToken ?? "");
-
-      if (!accessToken) {
-        return;
-      }
-
-      if (userData.data.user) {
-        const playerInfo = {
-          playerId: userData.data.user.id,
-          name: userData.data.user.user_metadata.name,
-        };
-        setPlayer(playerInfo);
-      }
-
-      const { status, data } = await fetchData(accessToken, `games/match`);
+      const { status, data } = await fetchData(token, `games/match`);
 
       if (status === 200) {
         const matchData: MatchData | null = data;
@@ -56,7 +34,7 @@ export default function Lobby() {
     };
 
     getData();
-  }, [router, setMatch, setPlayer, supabase]);
+  }, [router, setMatch, setPlayer, token]);
 
   useEffect(() => {
     const onEvent = (value: any) => {

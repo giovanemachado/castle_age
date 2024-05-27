@@ -4,9 +4,10 @@ import { useEffect, useState } from "react";
 import Map from "../components/gameplay/maps/map";
 import Turns from "../components/gameplay/turns/turns";
 import { useGameStore } from "@/app/store/gameStoreProvider";
-import Money from "../components/gameplay/money/money";
 import { createClient } from "@/utils/supabase/client";
 import { fetchData } from "@/utils/requests";
+import Surrender from "../components/gameplay/surrender/surrender";
+import { useRouter } from "next/navigation";
 
 /**
  * Game handles all game load, preparing all data to other components (Map, Turns, etc)
@@ -19,25 +20,29 @@ export default function Game() {
     setUnitsMovement,
     setMatchState,
     waitingOtherPlayers,
+    setToken,
+    token,
   } = useGameStore((state) => state);
 
   const supabase = createClient();
 
   const [loading, setLoading] = useState(true);
-  const [token, setToken] = useState<string>("");
+
+  const router = useRouter();
 
   useEffect(() => {
     const getData = async () => {
       const userData = await supabase.auth.getUser();
       const sessionData = await supabase.auth.getSession();
 
+      if (!userData.data.user) {
+        router.push("/");
+      }
+
       setToken(sessionData.data.session?.access_token ?? "");
       setPlayerId(userData.data.user?.id ?? "");
 
-      const { status, data } = await fetchData(
-        sessionData.data.session?.access_token ?? "",
-        `games/initial-data`,
-      );
+      const { status, data } = await fetchData(token, `games/initial-data`);
 
       if (status === 200) {
         const mapData = data;
@@ -57,6 +62,9 @@ export default function Game() {
     setUnitsMovement,
     setMatchState,
     supabase,
+    router,
+    setToken,
+    token,
   ]);
 
   if (!token) {
@@ -79,6 +87,7 @@ export default function Game() {
 
           {/* <Money /> */}
 
+          <Surrender />
           <Turns />
         </div>
       </>

@@ -2,8 +2,7 @@
 
 import { useGameStore } from "@/app/store/gameStoreProvider";
 import { fetchData } from "@/utils/requests";
-import { createClient } from "@/utils/supabase/client";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { socket } from "@/app/socket/socket";
 
 const PassTurnButton = () => {
@@ -17,18 +16,8 @@ const PassTurnButton = () => {
     setWaitingOtherPlayers,
     match,
     waitingOtherPlayers,
+    token,
   } = useGameStore((state) => state);
-  const supabase = createClient();
-
-  const [token, setToken] = useState<string>("");
-
-  useEffect(() => {
-    const getData = async () => {
-      const sessionData = await supabase.auth.getSession();
-      setToken(sessionData.data.session?.access_token ?? "");
-    };
-    getData();
-  }, [supabase]);
 
   useEffect(() => {
     const onEvent = (value: any) => {

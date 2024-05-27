@@ -8,6 +8,8 @@ export type Player = {
 };
 
 export type ClientState = {
+  user?: any;
+  token?: string;
   canBeReached: string[];
   currentPlayerId?: string;
   player?: Player;
@@ -21,6 +23,8 @@ export type ClientState = {
 };
 
 export type GameActions = {
+  setUser: (user?: any) => void;
+  setToken: (token?: string) => void;
   setMatchState: (updatedState: MatchState) => void;
   setUnitNewLocalization: (unitId: string, localization: string) => void;
   setCanBeReached: (unitId?: string) => void;
@@ -41,6 +45,8 @@ export const createGameStore = (initState: MatchState) => {
     canBeReached: [],
     events: [],
     waitingOtherPlayers: false,
+    setUser: (newUser) => set(() => ({ user: newUser })),
+    setToken: (newToken) => set(() => ({ token: newToken })),
     setMatchState: (updatedState) =>
       set(() => {
         return updatedState;

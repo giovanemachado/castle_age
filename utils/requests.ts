@@ -1,5 +1,5 @@
 export const fetchData = async (
-  token: string,
+  token: string = "",
   route: string,
   method: string = "GET",
   body?: any,

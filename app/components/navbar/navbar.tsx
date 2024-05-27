@@ -1,13 +1,16 @@
 "use client";
 
 import { signOut } from "@/app/lib/actions";
+import { setToken } from "@/app/store/gameStoreActions";
 import { useGameStore } from "@/app/store/gameStoreProvider";
 import { createClient } from "@/utils/supabase/client";
 import Link from "next/link";
 import { useEffect } from "react";
 
 export default function Navbar() {
-  const { player, setPlayer } = useGameStore((state) => state);
+  const { player, setPlayer, setUser, setToken } = useGameStore(
+    (state) => state,
+  );
 
   const supabase = createClient();
 
@@ -29,8 +32,10 @@ export default function Navbar() {
   }, [setPlayer, supabase]);
 
   const handleClick = () => {
-    signOut();
     setPlayer();
+    setUser();
+    setToken();
+    signOut();
   };
 
   return (
