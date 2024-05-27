@@ -76,12 +76,18 @@ export default function Navbar() {
       </div>
       <div className="navbar-end">
         {player && (
-          <>
-            <div>{player.name}</div>
-            <button onClick={handleClick} className="btn btn-seocndary">
-              Sign out
-            </button>
-          </>
+          <ul className="menu menu-horizontal px-1">
+            <li>
+              <details>
+                <summary>Playing as: {player.name}</summary>
+                <ul className="p-2 bg-base-100 rounded-t-none">
+                  <li>
+                    <a onClick={handleClick}>Sign out</a>
+                  </li>
+                </ul>
+              </details>
+            </li>
+          </ul>
         )}
       </div>
     </div>

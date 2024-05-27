@@ -22,6 +22,9 @@ export default function Game() {
     waitingOtherPlayers,
     setToken,
     token,
+    setUser,
+    match,
+    setPlayer,
   } = useGameStore((state) => state);
 
   const supabase = createClient();
@@ -32,15 +35,25 @@ export default function Game() {
 
   useEffect(() => {
     const getData = async () => {
-      const userData = await supabase.auth.getUser();
       const sessionData = await supabase.auth.getSession();
+      const userData = await supabase.auth.getUser();
 
       if (!userData.data.user) {
         router.push("/");
       }
 
-      setToken(sessionData.data.session?.access_token ?? "");
-      setPlayerId(userData.data.user?.id ?? "");
+      if (userData.data.user) {
+        setUser(userData.data.user);
+        setToken(sessionData.data.session?.access_token ?? "");
+
+        const playerInfo = {
+          playerId: userData.data.user.id,
+          name: userData.data.user.user_metadata.name,
+        };
+
+        setPlayer(playerInfo);
+        setPlayerId(userData.data.user.id);
+      }
 
       const { status, data } = await fetchData(token, `games/initial-data`);
 
@@ -51,46 +64,55 @@ export default function Game() {
         setUnitsMovement(mapData.units);
         setMatch(mapData.matchData);
       }
+
+      setLoading(false);
     };
 
     getData();
-    setLoading(false);
   }, [
-    setGameMap,
-    setMatch,
-    setPlayerId,
-    setUnitsMovement,
-    setMatchState,
-    supabase,
-    router,
     setToken,
+    supabase,
+    setUser,
+    setPlayer,
+    setPlayerId,
+    router,
     token,
+    setMatchState,
+    setGameMap,
+    setUnitsMovement,
+    setMatch,
   ]);
 
   if (!token) {
     return null;
   }
 
+  if (loading) {
+    return <>Loading ...</>;
+  }
+
+  if (!match) {
+    return <>No active Match ...</>;
+  }
+
   return (
-    !loading && (
-      <>
-        <div className="flex overflow-y-auto justify-center py-4">
-          <Map />
-        </div>
-        <div className="relative flex justify-center items-center">
-          {waitingOtherPlayers && (
-            <div className="flex flex-col justify-center items-center absolute">
-              <p className="py-2 text-sm">Waiting your opponent to play ...</p>
-              <progress className="progress w-56"></progress>
-            </div>
-          )}
+    <>
+      <div className="flex overflow-y-auto justify-center py-4">
+        <Map />
+      </div>
+      <div className="relative flex justify-center items-center">
+        {waitingOtherPlayers && (
+          <div className="flex flex-col justify-center items-center absolute">
+            <p className="py-2 text-sm">Waiting your opponent to play ...</p>
+            <progress className="progress w-56"></progress>
+          </div>
+        )}
 
-          {/* <Money /> */}
+        {/* <Money /> */}
 
-          <Surrender />
-          <Turns />
-        </div>
-      </>
-    )
+        <Surrender />
+        <Turns />
+      </div>
+    </>
   );
 }

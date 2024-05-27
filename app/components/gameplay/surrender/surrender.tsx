@@ -4,14 +4,14 @@ import { useGameStore } from "@/app/store/gameStoreProvider";
 import { fetchData } from "@/utils/requests";
 
 const Surrender = () => {
-  const { match } = useGameStore((state) => state);
+  const { match, token } = useGameStore((state) => state);
 
   const handleClick = async () => {
     if (!match) {
       return;
     }
 
-    await fetchData("token", `games/finish-match/${match.code}`, "POST");
+    await fetchData(token, `games/finish-match/${match.code}`, "POST");
   };
 
   return (
