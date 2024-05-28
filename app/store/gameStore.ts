@@ -28,7 +28,7 @@ export type GameActions = {
   setMatchState: (updatedState: MatchState) => void;
   setUnitNewLocalization: (unitId: string, localization: string) => void;
   setCanBeReached: (unitId?: string) => void;
-  setMatch: (matchData: MatchData) => void;
+  setMatch: (matchData?: MatchData) => void;
   setGameMap: (rows: SquareData[][], units: UnitData[]) => void;
   setPlayerId: (playerId: string) => void;
   setEvents: (eventValue: { type: string; value: any }) => void;
@@ -54,7 +54,7 @@ export const createGameStore = (initState: MatchState) => {
     setUnitNewLocalization: (unitId, localization) =>
       set((state) => setUnitNewLocalization(state, unitId, localization)),
     setCanBeReached: (unitId) => set((state) => setCanBeReached(state, unitId)),
-    setMatch: (match: MatchData) =>
+    setMatch: (match?: MatchData) =>
       set(() => ({
         match,
       })),

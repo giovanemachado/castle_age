@@ -1,4 +1,4 @@
-import { StrictModeDroppable } from "@/app/components/shared/droppable";
+import { StrictModeDroppable } from "@/app/components/shared/components/droppable";
 import { useGameStore } from "@/app/store/gameStoreProvider";
 import { MatchStateUnitsMovement } from "@/schema/types";
 import { DroppableProvided } from "@hello-pangea/dnd";

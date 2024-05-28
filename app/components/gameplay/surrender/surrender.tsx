@@ -1,17 +1,12 @@
 "use client";
 
-import { useGameStore } from "@/app/store/gameStoreProvider";
-import { fetchData } from "@/utils/requests";
+import { useFinishMatch } from "../../shared/hooks/useFinishMatch";
 
 const Surrender = () => {
-  const { match, token } = useGameStore((state) => state);
+  const finishMatch = useFinishMatch();
 
   const handleClick = async () => {
-    if (!match) {
-      return;
-    }
-
-    await fetchData(token, `games/finish-match/${match.code}`, "POST");
+    finishMatch();
   };
 
   return (

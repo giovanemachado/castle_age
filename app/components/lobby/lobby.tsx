@@ -1,86 +1,40 @@
 "use client";
 
-import { MatchData } from "@/schema/types";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-import { socket } from "@/app/socket/socket";
+import { useState } from "react";
 import { useGameStore } from "@/app/store/gameStoreProvider";
-import { fetchData } from "@/utils/requests";
+import { useRedirectToActiveMatch } from "./hooks/useRedirectToActiveMatch";
+import { useSocket } from "../shared/hooks/useSocket";
+import { useRedirectByEvent } from "./hooks/useRedirectByEvent";
+import useCreateMatch from "./hooks/useCreateMatch";
+import useJoinMatch from "./hooks/useJoinMatch";
+import { useFinishMatch } from "../shared/hooks/useFinishMatch";
 
 /**
  * Lobby handles all interaction to join a match
  */
 export default function Lobby() {
-  const router = useRouter();
-  const { match, setMatch, setEvents, events, setPlayer, token } = useGameStore(
-    (state) => state,
-  );
+  const { match, token } = useGameStore((state) => state);
+
   const [matchCode, setMatchCode] = useState<string>("");
 
-  useEffect(() => {
-    const getData = async () => {
-      const { status, data } = await fetchData(token, `games/match`);
+  const createMatch = useCreateMatch();
+  const joinMatch = useJoinMatch(matchCode);
+  const finishMatch = useFinishMatch();
 
-      if (status === 200) {
-        const matchData: MatchData | null = data;
-        if (matchData) {
-          setMatch(matchData);
+  useRedirectToActiveMatch();
+  useSocket();
+  useRedirectByEvent();
 
-          if (matchData.players.length == 2) {
-            router.push("/game");
-          }
-        }
-      }
-    };
-
-    getData();
-  }, [router, setMatch, setPlayer, token]);
-
-  useEffect(() => {
-    const onEvent = (value: any) => {
-      if (value.matchCode == match?.code) {
-        setEvents({ type: "enter_in_match", value });
-      }
-    };
-
-    socket.on("enter_in_match", onEvent);
-
-    return () => {
-      socket.off("enter_in_match", onEvent);
-    };
-  }, [match, setEvents, token]);
-
-  // TODO temp
-  useEffect(() => {
-    if (
-      events.filter((e) => {
-        return e.type === "enter_in_match";
-      }).length > 0
-    ) {
-      router.push("/game");
-    }
-  }, [events, router]);
-
-  const handleCreateMatch = async () => {
-    const { status, data } = await fetchData(token, `games/match`, "POST");
-
-    if (status === 201) {
-      const matchData: MatchData = data;
-      setMatch(matchData);
-    }
+  const handleCreateMatch = () => {
+    createMatch();
   };
 
-  const handleJoinMatch = async () => {
-    const { status } = await fetchData(
-      token,
-      `games/join-match/${matchCode}`,
-      "POST",
-    );
+  const handleJoinMatch = () => {
+    joinMatch();
+  };
 
-    if (status === 201) {
-      // TODO this causes a flash when hitting join match, might need to add a loadign state here
-      router.push("/game");
-    }
+  const handleCancelMatch = () => {
+    finishMatch();
   };
 
   if (!token) {
@@ -96,6 +50,9 @@ export default function Lobby() {
               Share this Match code with your opponent:
             </h2>
             <h1 className="text-lg font-bold text-center">{match.code}</h1>
+            <button onClick={handleCancelMatch} className="btn btn-error">
+              Cancel Match
+            </button>
           </div>
         </div>
       </div>
