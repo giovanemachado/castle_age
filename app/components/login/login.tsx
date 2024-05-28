@@ -2,13 +2,10 @@
 
 import { FormEvent } from "react";
 import { login } from "@/app/lib/actions";
-import { createClient } from "@/utils/supabase/client";
-import { useGameStore } from "@/app/store/gameStoreProvider";
+import { useGetUserData } from "../shared/hooks/useGetUserData";
 
 export default function LoginForm() {
-  const { setToken, setUser, setPlayer } = useGameStore((state) => state);
-
-  const supabase = createClient();
+  const getUserData = useGetUserData();
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -20,20 +17,7 @@ export default function LoginForm() {
       return;
     }
 
-    const sessionData = await supabase.auth.getSession();
-    const userData = await supabase.auth.getUser();
-
-    if (userData.data.user) {
-      setUser(userData.data.user);
-      setToken(sessionData.data.session?.access_token ?? "");
-
-      const playerInfo = {
-        playerId: userData.data.user.id,
-        name: userData.data.user.user_metadata.name,
-      };
-
-      setPlayer(playerInfo);
-    }
+    getUserData?.();
   }
 
   return (

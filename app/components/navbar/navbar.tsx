@@ -1,41 +1,25 @@
 "use client";
 
-import { signOut } from "@/app/lib/actions";
-import { setToken } from "@/app/store/gameStoreActions";
-import { useGameStore } from "@/app/store/gameStoreProvider";
-import { createClient } from "@/utils/supabase/client";
 import Link from "next/link";
+import { signOut } from "@/app/lib/actions";
+import { useGameStore } from "@/app/store/gameStoreProvider";
 import { useEffect } from "react";
+import { useResetUserData } from "../shared/hooks/useResetUserData";
+import { useGetUserData } from "../shared/hooks/useGetUserData";
 
 export default function Navbar() {
-  const { player, setPlayer, setUser, setToken } = useGameStore(
-    (state) => state,
-  );
+  const { player } = useGameStore((state) => state);
 
-  const supabase = createClient();
+  const resetUserData = useResetUserData();
+  const getUserData = useGetUserData();
 
   useEffect(() => {
-    const getData = async () => {
-      const userData = await supabase.auth.getUser();
-      if (!userData.data.user) {
-        return;
-      }
+    getUserData?.();
+  }, [getUserData]);
 
-      const playerInfo = {
-        playerId: userData.data.user.id,
-        name: userData.data.user.user_metadata.name,
-      };
-
-      setPlayer(playerInfo);
-    };
-    getData();
-  }, [setPlayer, supabase]);
-
-  const handleClick = () => {
-    setPlayer();
-    setUser();
-    setToken();
-    signOut();
+  const handleClick = async () => {
+    await signOut();
+    resetUserData();
   };
 
   return (
