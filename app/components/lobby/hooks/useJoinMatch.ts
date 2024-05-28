@@ -1,5 +1,4 @@
 import { useGameStore } from "@/app/store/gameStoreProvider";
-import { MatchData } from "@/schema/types";
 import { fetchData } from "@/utils/requests";
 import { useRouter } from "next/navigation";
 

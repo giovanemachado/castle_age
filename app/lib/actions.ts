@@ -1,10 +1,8 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import { createClient } from "@/utils/supabase/server";
 
-export async function login(formData: FormData) {
+export async function login(formData: FormData): Promise<boolean> {
   const supabase = createClient();
 
   const data = {
@@ -14,16 +12,10 @@ export async function login(formData: FormData) {
 
   const { error } = await supabase.auth.signInWithPassword(data);
 
-  // TODO not working
-  if (!error) {
-    revalidatePath("/", "layout");
-    redirect("/");
-  }
+  return !error;
 }
 
 export async function signOut() {
   const supabase = createClient();
   await supabase.auth.signOut();
-
-  redirect("/");
 }
