@@ -32,7 +32,9 @@ const draggable = ({
  * Representation of a Card in the game (an unit). It's a draggable item, and you can interact with most of them.
  */
 const Card = ({ unit }: CardProps) => {
-  const { gameMap, match, currentPlayerId } = useGameStore((state) => state);
+  const { gameMap, match, player, waitingOtherPlayers } = useGameStore(
+    (state) => state,
+  );
   const [isDragEnabled, setIsDragEnabled] = useState(false);
   const [isRed, setIsRed] = useState(false);
   const [unitClass, setUnitClass] = useState("");
@@ -44,13 +46,13 @@ const Card = ({ unit }: CardProps) => {
       return;
     }
 
-    const isPlayersUnit = currentUnit.playerId == currentPlayerId;
+    const isPlayersUnit = currentUnit.playerId == player?.playerId;
     const isUnitMovable = !unitIsStructure(currentUnit);
 
     setIsRed(currentUnit?.playerId == match.players[0]);
-    setIsDragEnabled(isPlayersUnit && isUnitMovable);
+    setIsDragEnabled(isPlayersUnit && isUnitMovable && !waitingOtherPlayers);
     setUnitClass(currentUnit.class);
-  }, [currentPlayerId, match, unit.id, gameMap]);
+  }, [match, unit.id, gameMap, player, waitingOtherPlayers]);
 
   return (
     <div className="indicator">

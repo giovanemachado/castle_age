@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { useGameStore } from "@/app/store/gameStoreProvider";
 import { useRedirectToActiveMatch } from "./hooks/useRedirectToActiveMatch";
-import { useSocket } from "../shared/hooks/useSocket";
+import { useWaitForLobbyEvent } from "../shared/hooks/useWaitForLobbyEvent";
 import { useRedirectByEvent } from "./hooks/useRedirectByEvent";
 import useCreateMatch from "./hooks/useCreateMatch";
 import useJoinMatch from "./hooks/useJoinMatch";
@@ -22,7 +22,7 @@ export default function Lobby() {
   const finishMatch = useFinishMatch();
 
   useRedirectToActiveMatch();
-  useSocket();
+  useWaitForLobbyEvent();
   useRedirectByEvent();
 
   const handleCreateMatch = () => {

@@ -4,14 +4,13 @@ import { setCanBeReached, setUnitNewLocalization } from "./gameStoreActions";
 
 export type Player = {
   name: string;
-  playerId: string; // TODO same from currentPlayerId, we could remove it
+  playerId: string;
 };
 
 export type ClientState = {
   user?: any;
   token?: string;
   canBeReached: string[];
-  currentPlayerId?: string;
   player?: Player;
   gameMap?: { rows: SquareData[][]; units: UnitData[] };
   match?: MatchData;
@@ -30,7 +29,6 @@ export type GameActions = {
   setCanBeReached: (unitId?: string) => void;
   setMatch: (matchData?: MatchData) => void;
   setGameMap: (rows: SquareData[][], units: UnitData[]) => void;
-  setPlayerId: (playerId: string) => void;
   setEvents: (eventValue: { type: string; value: any }) => void;
   setUnitsMovement: (unitsData: UnitData[]) => void;
   setWaitingOtherPlayers: (isWaiting: boolean) => void;
@@ -64,10 +62,6 @@ export const createGameStore = (initState: MatchState) => {
           rows,
           units,
         },
-      })),
-    setPlayerId: (currentPlayerId: string) =>
-      set(() => ({
-        currentPlayerId,
       })),
     setEvents: (eventValue: { type: string; value: any }) =>
       set((state) => ({ events: [...state.events, eventValue] })),

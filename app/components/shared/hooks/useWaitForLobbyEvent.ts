@@ -2,8 +2,8 @@ import { useGameStore } from "@/app/store/gameStoreProvider";
 import { useEffect } from "react";
 import { socket } from "@/app/socket/socket";
 
-export function useSocket() {
-  const { token, setEvents, match } = useGameStore((state) => state);
+export function useWaitForLobbyEvent() {
+  const { setEvents, match } = useGameStore((state) => state);
 
   useEffect(() => {
     const onEvent = (value: any) => {
@@ -17,5 +17,5 @@ export function useSocket() {
     return () => {
       socket.off("enter_in_match", onEvent);
     };
-  }, [match, setEvents, token]);
+  }, [match, setEvents]);
 }
