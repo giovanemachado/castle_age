@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { useGetUserData } from "../components/shared/hooks/useGetUserData";
 import { useGetInitialData } from "./hooks/useGetInitialData";
 import { useWaitForGameEvent } from "./hooks/useWaitForGameEvent";
+import Loading from "../components/shared/components/loading";
 
 /**
  * Game handles all game load, preparing all data to other components (Map, Turns, etc)
@@ -35,7 +36,7 @@ export default function Game() {
   }
 
   if (loading) {
-    return <>Loading ...</>;
+    return <Loading />;
   }
 
   if (!match) {

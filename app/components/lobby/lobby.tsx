@@ -8,6 +8,7 @@ import { useRedirectByEvent } from "./hooks/useRedirectByEvent";
 import useCreateMatch from "./hooks/useCreateMatch";
 import useJoinMatch from "./hooks/useJoinMatch";
 import { useFinishMatch } from "../shared/hooks/useFinishMatch";
+import Loading from "../shared/components/loading";
 
 /**
  * Lobby handles all interaction to join a match
@@ -21,7 +22,7 @@ export default function Lobby() {
   const joinMatch = useJoinMatch(matchCode);
   const finishMatch = useFinishMatch();
 
-  useRedirectToActiveMatch();
+  const loading = useRedirectToActiveMatch();
   useWaitForLobbyEvent();
   useRedirectByEvent();
 
@@ -41,7 +42,11 @@ export default function Lobby() {
     return null;
   }
 
-  if (match?.active) {
+  if (loading) {
+    return <Loading />;
+  }
+
+  if (match?.active && match?.players.length != 2) {
     return (
       <div className="hero h-full bg-base-100">
         <div className="hero-content flex-col">
