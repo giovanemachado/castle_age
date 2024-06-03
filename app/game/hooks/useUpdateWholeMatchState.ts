@@ -2,7 +2,7 @@ import { useGameStore } from "@/app/store/gameStoreProvider";
 import { MatchData, MatchState, SquareData, UnitData } from "@/schema/types";
 import { useCallback } from "react";
 
-export function useUpdateWholeMatchState() {
+export function useUpdateMatchState() {
   const {
     setGameMap,
     setMatch,

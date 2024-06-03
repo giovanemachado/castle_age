@@ -1,12 +1,12 @@
 import { useGameStore } from "@/app/store/gameStoreProvider";
 import { fetchData } from "@/utils/requests";
 import { useCallback, useEffect, useState } from "react";
-import { useUpdateWholeMatchState } from "./useUpdateWholeMatchState";
+import { useUpdateMatchState } from "./useUpdateWholeMatchState";
 
 export function useGetInitialData() {
   const [loading, setLoading] = useState(true);
 
-  const updateWholeMatchState = useUpdateWholeMatchState();
+  const updateMatchState = useUpdateMatchState();
 
   const { token, user } = useGameStore((state) => state);
 
@@ -19,10 +19,10 @@ export function useGetInitialData() {
 
     if (status === 200) {
       const mapData = data;
-      updateWholeMatchState(mapData);
+      updateMatchState(mapData);
     }
     setLoading(false);
-  }, [token, updateWholeMatchState, user]);
+  }, [token, updateMatchState, user]);
 
   useEffect(() => {
     getData();
