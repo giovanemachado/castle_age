@@ -19,13 +19,13 @@ export function useUpdateWholeMatchState() {
       units?: UnitData[];
       matchData?: MatchData;
     }) => {
-      setMatchState(mapData.matchState);
-
       if (mapData.rows && mapData.units && mapData.matchData) {
         setGameMap(mapData.rows, mapData.units);
         setUnitsMovement(mapData.units);
         setMatch(mapData.matchData);
       }
+
+      setMatchState(mapData.matchState);
 
       const currentState: MatchState = mapData.matchState;
 
