@@ -1,61 +1,32 @@
 import { useGameStore } from "@/app/store/gameStoreProvider";
-import { MatchState } from "@/schema/types";
 import { fetchData } from "@/utils/requests";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { useUpdateWholeMatchState } from "./useUpdateWholeMatchState";
 
 export function useGetInitialData() {
   const [loading, setLoading] = useState(true);
 
-  const {
-    setGameMap,
-    setMatch,
-    setUnitsMovement,
-    setMatchState,
-    player,
-    token,
-    user,
-    setWaitingOtherPlayers,
-  } = useGameStore((state) => state);
+  const updateWholeMatchState = useUpdateWholeMatchState();
 
-  useEffect(() => {
-    if (!user) {
+  const { token, user } = useGameStore((state) => state);
+
+  const getData = useCallback(async () => {
+    if (!user || !token) {
       return;
     }
 
-    const getData = async () => {
-      const { status, data } = await fetchData(token, `games/initial-data`);
+    const { status, data } = await fetchData(token, `games/initial-data`);
 
-      if (status === 200) {
-        const mapData = data;
-        setMatchState(mapData.matchState);
-        setGameMap(mapData.rows, mapData.units);
-        setUnitsMovement(mapData.units);
-        setMatch(mapData.matchData);
+    if (status === 200) {
+      const mapData = data;
+      updateWholeMatchState(mapData);
+    }
+    setLoading(false);
+  }, [token, updateWholeMatchState, user]);
 
-        const currentState: MatchState = mapData.matchState;
-
-        if (
-          currentState.playersEndTurn.find(
-            (p) => p.playerId == player?.playerId && p.endedTurn == true,
-          )
-        ) {
-          setWaitingOtherPlayers(true);
-        }
-      }
-      setLoading(false);
-    };
-
+  useEffect(() => {
     getData();
-  }, [
-    setGameMap,
-    player,
-    setMatch,
-    setMatchState,
-    setUnitsMovement,
-    token,
-    user,
-    setWaitingOtherPlayers,
-  ]);
+  }, [getData]);
 
   return loading;
 }

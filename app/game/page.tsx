@@ -1,41 +1,27 @@
 "use client";
 
-import { useEffect } from "react";
 import Map from "../components/gameplay/maps/map";
 import Turns from "../components/gameplay/turns/turns";
 import { useGameStore } from "@/app/store/gameStoreProvider";
 import Surrender from "../components/gameplay/surrender/surrender";
-import { useRouter } from "next/navigation";
-import { useGetUserData } from "../components/shared/hooks/useGetUserData";
 import { useGetInitialData } from "./hooks/useGetInitialData";
-import { useWaitForGameEvent } from "./hooks/useWaitForGameEvent";
 import Loading from "../components/shared/components/loading";
+import { useWaitForGameEvent } from "./hooks/useWaitForGameEvent";
 
 /**
  * Game handles all game load, preparing all data to other components (Map, Turns, etc)
  */
 export default function Game() {
-  const { waitingOtherPlayers, token, match, user } = useGameStore(
-    (state) => state,
-  );
-  const getUserData = useGetUserData();
-  const router = useRouter();
-  const loading = useGetInitialData();
+  const { token, match, waitingOtherPlayers } = useGameStore((state) => state);
+
+  const loadingData = useGetInitialData();
   useWaitForGameEvent();
-
-  useEffect(() => {
-    getUserData?.();
-
-    if (!user) {
-      router.push("/");
-    }
-  }, [getUserData, router, user]);
 
   if (!token) {
     return null;
   }
 
-  if (loading) {
+  if (loadingData) {
     return <Loading />;
   }
 
@@ -55,8 +41,6 @@ export default function Game() {
             <progress className="progress w-56"></progress>
           </div>
         )}
-
-        {/* <Money /> */}
 
         <Surrender />
         <Turns />

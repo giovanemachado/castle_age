@@ -3,19 +3,12 @@
 import Link from "next/link";
 import { signOut } from "@/app/lib/actions";
 import { useGameStore } from "@/app/store/gameStoreProvider";
-import { useEffect } from "react";
 import { useResetUserData } from "../shared/hooks/useResetUserData";
-import { useGetUserData } from "../shared/hooks/useGetUserData";
 
 export default function Navbar() {
   const { player } = useGameStore((state) => state);
 
   const resetUserData = useResetUserData();
-  const getUserData = useGetUserData();
-
-  useEffect(() => {
-    getUserData?.();
-  }, [getUserData]);
 
   const handleClick = async () => {
     await signOut();

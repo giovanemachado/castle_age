@@ -1,9 +1,10 @@
 import { useGameStore } from "@/app/store/gameStoreProvider";
 import { createClient } from "@/utils/supabase/client";
+import { useRouter } from "next/navigation";
 
 export function useGetUserData() {
+  const router = useRouter();
   const supabase = createClient();
-
   const { setPlayer, setToken, setUser, user } = useGameStore((state) => state);
 
   if (user?.id) {
@@ -24,6 +25,8 @@ export function useGetUserData() {
       };
 
       setPlayer(playerInfo);
+    } else {
+      router.push("/");
     }
   };
 }

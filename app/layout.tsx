@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { GameStoreProvider } from "./store/gameStoreProvider";
 import Navbar from "./components/navbar/navbar";
+import UserDataWrapper from "./userDataWrapper";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -21,8 +22,14 @@ export default function RootLayout({
       <body className={inter.className} suppressHydrationWarning={true}>
         <GameStoreProvider>
           <div className="h-screen flex flex-col container mx-auto px-2">
-            <Navbar />
-            {children}
+            <UserDataWrapper>
+              {
+                <>
+                  <Navbar />
+                  {children}
+                </>
+              }
+            </UserDataWrapper>
           </div>
         </GameStoreProvider>
       </body>
