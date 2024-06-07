@@ -7,10 +7,10 @@ import { useWaitForLobbyEvent } from "../shared/hooks/useWaitForLobbyEvent";
 import { useRedirectByEvent } from "./hooks/useRedirectByEvent";
 import useCreateMatch from "./hooks/useCreateMatch";
 import useJoinMatch from "./hooks/useJoinMatch";
-import { useFinishMatch } from "../shared/hooks/useFinishMatch";
 import Loading from "../shared/components/loading";
 import ShareCode from "./components/shareCode";
 import CreateMatch from "./components/createMatch";
+import useFinishMatch from "../shared/hooks/useFinishMatch";
 
 /**
  * Lobby handles all interaction to join a match

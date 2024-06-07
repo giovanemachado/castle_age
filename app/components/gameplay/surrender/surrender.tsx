@@ -1,11 +1,11 @@
 "use client";
 
-import { useFinishMatch } from "../../shared/hooks/useFinishMatch";
+import useFinishMatch from "../../shared/hooks/useFinishMatch";
 
 const Surrender = () => {
   const finishMatch = useFinishMatch();
 
-  const handleClick = async () => {
+  const handleClick = () => {
     finishMatch();
   };
 
