@@ -24,7 +24,6 @@ export function useUpdateMatchState() {
         setUnitsMovement(mapData.units);
         setMatch(mapData.matchData);
       }
-
       setMatchState(mapData.matchState);
 
       const currentState: MatchState = mapData.matchState;

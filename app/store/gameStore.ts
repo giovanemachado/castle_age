@@ -1,6 +1,7 @@
 import { MatchData, MatchState, SquareData, UnitData } from "@/schema/types";
 import { createStore } from "zustand/vanilla";
 import { setCanBeReached, setUnitNewLocalization } from "./gameStoreActions";
+import { devtools } from "zustand/middleware";
 
 export type Player = {
   name: string;
@@ -38,44 +39,82 @@ export type GameActions = {
 export type GameStore = MatchState & GameActions & ClientState;
 
 export const createGameStore = (initState: MatchState) => {
-  return createStore<GameStore>()((set) => ({
-    ...initState,
-    canBeReached: [],
-    events: [],
-    waitingOtherPlayers: false,
-    setUser: (newUser) => set(() => ({ user: newUser })),
-    setToken: (newToken) => set(() => ({ token: newToken })),
-    setMatchState: (updatedState) =>
-      set(() => {
-        return updatedState;
-      }),
-    setUnitNewLocalization: (unitId, localization) =>
-      set((state) => setUnitNewLocalization(state, unitId, localization)),
-    setCanBeReached: (unitId) => set((state) => setCanBeReached(state, unitId)),
-    setMatch: (match?: MatchData) =>
-      set(() => ({
-        match,
-      })),
-    setGameMap: (rows: SquareData[][], units: UnitData[]) =>
-      set(() => ({
-        gameMap: {
-          rows,
-          units,
-        },
-      })),
-    setEvents: (eventValue: { type: string; value: any }) =>
-      set((state) => ({ events: [...state.events, eventValue] })),
-    setUnitsMovement: (unitsData) =>
-      set((state) => ({
-        unitsMovement: unitsData.map((unitData) => ({
-          id: unitData.id,
-          localization: unitData.movement.initialLocalization,
-          playerId: unitData.playerId,
-          movedInTurn: false,
-        })),
-      })),
-    setWaitingOtherPlayers: (isWaiting) =>
-      set((state) => ({ waitingOtherPlayers: isWaiting })),
-    setPlayer: (playerData) => set(() => ({ player: playerData })),
-  }));
+  return createStore<GameStore>()(
+    devtools((set) => ({
+      ...initState,
+      canBeReached: [],
+      events: [],
+      waitingOtherPlayers: false,
+      setUser: (newUser) => set(() => ({ user: newUser }), false, "setUser"),
+      setToken: (newToken) =>
+        set(() => ({ token: newToken }), false, "setToken"),
+      setMatchState: (updatedState) =>
+        set(
+          () => {
+            return updatedState;
+          },
+          false,
+          "setMatchState",
+        ),
+      setUnitNewLocalization: (unitId, localization) =>
+        set(
+          (state) => setUnitNewLocalization(state, unitId, localization),
+          false,
+          "setUnitNewLocalization",
+        ),
+      setCanBeReached: (unitId) =>
+        set(
+          (state) => setCanBeReached(state, unitId),
+          false,
+          "setCanBeReached",
+        ),
+      setMatch: (match?: MatchData) =>
+        set(
+          () => ({
+            match,
+          }),
+          false,
+          "setMatch",
+        ),
+      setGameMap: (rows: SquareData[][], units: UnitData[]) =>
+        set(
+          () => ({
+            gameMap: {
+              rows,
+              units,
+            },
+          }),
+          false,
+          "setGameMap",
+        ),
+      setEvents: (eventValue: { type: string; value: any }) =>
+        set(
+          (state) => ({ events: [...state.events, eventValue] }),
+          false,
+          "setEvents",
+        ),
+      setUnitsMovement: (unitsData) =>
+        set(
+          () => ({
+            unitsMovement: unitsData.map((unitData) => ({
+              id: unitData.id,
+              localization: unitData.movement.initialLocalization,
+              playerId: unitData.playerId,
+              movedInTurn: false,
+              previousLocalization: unitData.movement.initialLocalization,
+            })),
+          }),
+          false,
+          "setUnitsMovement",
+        ),
+      setWaitingOtherPlayers: (isWaiting) =>
+        set(
+          () => ({ waitingOtherPlayers: isWaiting }),
+          false,
+          "setWaitingOtherPlayers",
+        ),
+      setPlayer: (playerData) =>
+        set(() => ({ player: playerData }), false, "setPlayer"),
+    })),
+  );
 };
