@@ -2,7 +2,7 @@
 
 import { BeforeCapture, DragDropContext, DropResult } from "@hello-pangea/dnd";
 import { SquareData } from "@/schema/types";
-import { validDropResult } from "./methods/utils";
+import { validDropResult } from "./utils";
 import { useGameStore } from "@/app/store/gameStoreProvider";
 import Square from "../squares/square";
 

@@ -2,7 +2,7 @@
 
 import { FormEvent } from "react";
 import { login } from "@/app/lib/actions";
-import { useGetUserData } from "../shared/hooks/useGetUserData";
+import { useGetUserData } from "../shared/useGetUserData";
 
 export default function LoginForm() {
   const getUserData = useGetUserData();

@@ -1,7 +1,7 @@
 "use client";
 
 import { useGameStore } from "@/app/store/gameStoreProvider";
-import useUpdateMatchState from "../hooks/usePassTurn";
+import useUpdateMatchState from "./usePassTurn";
 
 const PassTurnButton = () => {
   const { waitingOtherPlayers } = useGameStore((state) => state);

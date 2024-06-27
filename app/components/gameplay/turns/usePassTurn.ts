@@ -1,4 +1,4 @@
-import { useUpdateMatchState } from "@/app/game/hooks/useUpdateWholeMatchState";
+import { useUpdateMatchState } from "@/app/game/useUpdateWholeMatchState";
 import { useGameStore } from "@/app/store/gameStoreProvider";
 import { fetchData } from "@/utils/requests";
 import { useCallback } from "react";

@@ -2,15 +2,15 @@
 
 import { useState } from "react";
 import { useGameStore } from "@/app/store/gameStoreProvider";
-import { useRedirectToActiveMatch } from "./hooks/useRedirectToActiveMatch";
-import { useWaitForLobbyEvent } from "../shared/hooks/useWaitForLobbyEvent";
-import { useRedirectByEvent } from "./hooks/useRedirectByEvent";
-import useCreateMatch from "./hooks/useCreateMatch";
-import useJoinMatch from "./hooks/useJoinMatch";
-import Loading from "../shared/components/loading";
-import ShareCode from "./components/shareCode";
-import CreateMatch from "./components/createMatch";
-import useFinishMatch from "../shared/hooks/useFinishMatch";
+import { useRedirectToActiveMatch } from "./useRedirectToActiveMatch";
+import { useWaitForLobbyEvent } from "../shared/useWaitForLobbyEvent";
+import { useRedirectByEvent } from "./useRedirectByEvent";
+import useCreateMatch from "./useCreateMatch";
+import useJoinMatch from "./useJoinMatch";
+import Loading from "../shared/loading";
+import ShareCode from "./shareCode";
+import CreateMatch from "./createMatch";
+import useFinishMatch from "../shared/useFinishMatch";
 
 /**
  * Lobby handles all interaction to join a match

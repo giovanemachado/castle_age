@@ -1,6 +1,6 @@
 "use client";
 
-import useFinishMatch from "../../shared/hooks/useFinishMatch";
+import useFinishMatch from "../../shared/useFinishMatch";
 
 const Surrender = () => {
   const finishMatch = useFinishMatch();

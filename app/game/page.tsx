@@ -4,9 +4,9 @@ import Map from "../components/gameplay/maps/map";
 import Turns from "../components/gameplay/turns/turns";
 import { useGameStore } from "@/app/store/gameStoreProvider";
 import Surrender from "../components/gameplay/surrender/surrender";
-import { useGetInitialData } from "./hooks/useGetInitialData";
-import Loading from "../components/shared/components/loading";
-import { useWaitForGameEvent } from "./hooks/useWaitForGameEvent";
+import { useGetInitialData } from "./useGetInitialData";
+import Loading from "../components/shared/loading";
+import { useWaitForGameEvent } from "./useWaitForGameEvent";
 
 /**
  * Game handles all game load, preparing all data to other components (Map, Turns, etc)

@@ -1,7 +1,7 @@
 "use client";
 
 import { Draggable, DraggableProvided } from "@hello-pangea/dnd";
-import CardImage from "./components/cardImage";
+import CardImage from "./cardImage";
 import { MatchStateUnitsMovement } from "@/schema/types";
 import { unitIsStructure } from "../../shared/utils";
 import { useEffect, useState } from "react";

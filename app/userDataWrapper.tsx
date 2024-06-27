@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { useGetUserData } from "./components/shared/hooks/useGetUserData";
-import Loading from "./components/shared/components/loading";
+import { useGetUserData } from "./components/shared/useGetUserData";
+import Loading from "./components/shared/loading";
 
 export default function UserDataWrapper({
   children,

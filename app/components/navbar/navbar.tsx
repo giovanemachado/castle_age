@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { signOut } from "@/app/lib/actions";
 import { useGameStore } from "@/app/store/gameStoreProvider";
-import { useResetUserData } from "../shared/hooks/useResetUserData";
+import { useResetUserData } from "../shared/useResetUserData";
 
 export default function Navbar() {
   const { player } = useGameStore((state) => state);
