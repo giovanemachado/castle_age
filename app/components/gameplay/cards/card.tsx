@@ -9,6 +9,9 @@ import { useGameStore } from "@/app/store/gameStoreProvider";
 
 type DraggableCardProps = {
   imageComponent: React.ReactNode;
+  isDragEnabled: boolean;
+  unitMovedInTurn: boolean;
+  unitIsDragging: boolean;
 };
 
 type CardProps = {
@@ -20,9 +23,17 @@ const draggable = ({
   dragHandleProps,
   innerRef,
   imageComponent,
+  isDragEnabled,
+  unitMovedInTurn,
+  unitIsDragging,
 }: DraggableProvided & DraggableCardProps) => {
   return (
     <div {...draggableProps} {...dragHandleProps} ref={innerRef}>
+      {isDragEnabled && !unitMovedInTurn && (
+        <span className="indicator-item badge badge-secondary">
+          {unitIsDragging ? "..." : "!"}
+        </span>
+      )}
       {imageComponent}
     </div>
   );
@@ -56,9 +67,6 @@ const Card = ({ unit }: CardProps) => {
 
   return (
     <div className="indicator">
-      {isDragEnabled && !unit.movedInTurn && (
-        <span className="indicator-item badge badge-secondary"></span>
-      )}
       <div
         className="tooltip tooltip-bottom"
         data-tip={unitClass.charAt(0).toUpperCase() + unitClass.slice(1)}
@@ -75,6 +83,9 @@ const Card = ({ unit }: CardProps) => {
                 isDragging: snapshot.isDragging,
                 isRed,
               }),
+              isDragEnabled,
+              unitMovedInTurn: unit.movedInTurn,
+              unitIsDragging: snapshot.isDragging,
               ...provided,
             })
           }
