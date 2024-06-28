@@ -1,9 +1,9 @@
 # Castle Age
 
-Frontend for the Castle Age game.
+Castle Age's frontend, in NextJS.
 
 ### What is that
 
-A turn based game made with Next and Nest (nothing special in this choose besides my background experience with the tooling and practice).
+Castle Age is a multiplayer turn-based game, made with NextJS + NestJS. Here, you challenge another player to a medieval battlefield commanding diverse units to take down his castle, while keeping yours safe.
 
 ![Game print, it shows the game page with a board and units around.](documentation/print.jpeg)
