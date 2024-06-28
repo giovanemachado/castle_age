@@ -1,38 +1,48 @@
 import { useGameStore } from "@/app/store/gameStoreProvider";
 import { useEffect } from "react";
 import { socket } from "@/app/socket/socket";
+import { EVENT_TYPES } from "../socket/events";
 
 export function useWaitForGameEvent() {
-  const { setWaitingOtherPlayers, match, setEvents, events, setMatchState } =
-    useGameStore((state) => state);
+  const {
+    setWaitingOtherPlayers,
+    match,
+    setEvents,
+    events,
+    setMatchState,
+    turns,
+  } = useGameStore((state) => state);
 
   useEffect(() => {
     const onEvent = (value: any) => {
-      if (value.matchCode == match?.code) {
-        setEvents({ type: "both_players_ended_turn", value });
-      }
+      setEvents({ type: EVENT_TYPES.BOTH_PLAYERS_ENDED_TURN, value });
     };
 
-    socket.on("both_players_ended_turn", onEvent);
+    if (!match?.code) {
+      return;
+    }
+
+    const eventName = `${EVENT_TYPES.BOTH_PLAYERS_ENDED_TURN}_${match.code}`;
+
+    socket.on(eventName, onEvent);
+
     return () => {
-      socket.off("both_players_ended_turn", onEvent);
+      socket.off(eventName, onEvent);
     };
   }, [match?.code, setEvents]);
 
-  // TODO temp
   useEffect(() => {
-    const event = events.findLast((e) => {
-      return (
-        e.type === "both_players_ended_turn" &&
-        e.value.matchCode === match?.code
-      );
+    const event = events.findLast((event) => {
+      return event.type === EVENT_TYPES.BOTH_PLAYERS_ENDED_TURN;
     });
 
     if (!event) {
       return;
     }
 
-    setMatchState(event.value.matchState);
-    setWaitingOtherPlayers(false);
-  }, [events, match?.code, setMatchState, setWaitingOtherPlayers]);
+    if (event.value.matchState.turns != turns) {
+      setMatchState(event.value.matchState);
+      setWaitingOtherPlayers(false);
+    }
+  }, [events, match?.code, setMatchState, setWaitingOtherPlayers, turns]);
 }
