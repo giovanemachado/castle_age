@@ -5,11 +5,19 @@ import { GameStoreProvider } from "./store/gameStoreProvider";
 import Navbar from "./components/navbar/navbar";
 import UserDataWrapper from "./userDataWrapper";
 
+import { Macondo } from "next/font/google";
+
+// If loading a variable font, you don't need to specify the font weight
+const macondo = Macondo({
+  weight: "400",
+  subsets: ["latin"],
+});
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Castle Game",
-  description: "Castle Game is a turn based game about conquering castles.",
+  title: "Castle Age",
+  description: "Castle Age is a turn based game about conquering castles.",
 };
 
 export default function RootLayout({
@@ -19,7 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className} suppressHydrationWarning={true}>
+      <body className={macondo.className} suppressHydrationWarning={true}>
         <GameStoreProvider>
           <div className="h-screen flex flex-col container mx-auto px-2">
             <UserDataWrapper>

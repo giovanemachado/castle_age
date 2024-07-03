@@ -1,42 +1,15 @@
 "use client";
 
-import { Draggable, DraggableProvided } from "@hello-pangea/dnd";
-import CardImage from "./cardImage";
+import { Draggable } from "@hello-pangea/dnd";
+import Illustration from "./illustration";
 import { MatchStateUnitsMovement } from "@/schema/types";
 import { unitIsStructure } from "../../shared/utils";
 import { useEffect, useState } from "react";
 import { useGameStore } from "@/app/store/gameStoreProvider";
-
-type DraggableCardProps = {
-  imageComponent: React.ReactNode;
-  isDragEnabled: boolean;
-  unitMovedInTurn: boolean;
-  unitIsDragging: boolean;
-};
+import Indicator from "./indicator";
 
 type CardProps = {
   unit: MatchStateUnitsMovement;
-};
-
-const draggable = ({
-  draggableProps,
-  dragHandleProps,
-  innerRef,
-  imageComponent,
-  isDragEnabled,
-  unitMovedInTurn,
-  unitIsDragging,
-}: DraggableProvided & DraggableCardProps) => {
-  return (
-    <div {...draggableProps} {...dragHandleProps} ref={innerRef}>
-      {isDragEnabled && !unitMovedInTurn && (
-        <span className="indicator-item badge badge-secondary">
-          {unitIsDragging ? "..." : "!"}
-        </span>
-      )}
-      {imageComponent}
-    </div>
-  );
 };
 
 /**
@@ -66,32 +39,37 @@ const Card = ({ unit }: CardProps) => {
   }, [match, unit.id, gameMap, player, waitingOtherPlayers]);
 
   return (
-    <div className="indicator">
-      <div
-        className="tooltip tooltip-bottom"
-        data-tip={unitClass.charAt(0).toUpperCase() + unitClass.slice(1)}
-      >
-        <Draggable
-          draggableId={unit.id}
-          index={0}
-          isDragDisabled={!isDragEnabled || unit.movedInTurn}
-        >
-          {(provided, snapshot) =>
-            draggable({
-              imageComponent: CardImage({
-                unitClass,
-                isDragging: snapshot.isDragging,
-                isRed,
-              }),
-              isDragEnabled,
-              unitMovedInTurn: unit.movedInTurn,
-              unitIsDragging: snapshot.isDragging,
-              ...provided,
-            })
-          }
-        </Draggable>
-      </div>
-    </div>
+    <Draggable
+      draggableId={unit.id}
+      index={0}
+      isDragDisabled={!isDragEnabled || unit.movedInTurn}
+    >
+      {(provided, snapshot) => {
+        return (
+          <div
+            {...provided.draggableProps}
+            {...provided.dragHandleProps}
+            ref={provided.innerRef}
+          >
+            <Indicator
+              isDragEnabled={isDragEnabled}
+              unitMovedInTurn={unit.movedInTurn}
+              unitIsDragging={snapshot.isDragging}
+              unitClass={unitClass}
+            >
+              {
+                <Illustration
+                  unitClass={unitClass}
+                  isDragging={snapshot.isDragging}
+                  isRed={isRed}
+                  HP={Math.floor(Math.random() * 15 + 1).toString()} // TODO random HP temp
+                />
+              }
+            </Indicator>
+          </div>
+        );
+      }}
+    </Draggable>
   );
 };
 

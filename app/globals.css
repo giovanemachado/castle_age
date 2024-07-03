@@ -22,6 +22,12 @@
   }
 }
 
+.image-wrapper {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+}
+
 .map {
   display: flex;
   flex-direction: column;
@@ -29,6 +35,12 @@
 
 .map-row {
   display: flex;
+}
+
+.square {
+  width: 100px;
+  height: 100px;
+  background-size: cover;
 }
 
 .square {
