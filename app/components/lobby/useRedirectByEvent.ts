@@ -5,7 +5,7 @@ import { useEffect } from "react";
 
 export function useRedirectByEvent() {
   const router = useRouter();
-  const { events } = useGameStore((state) => state);
+  const events = useGameStore((state) => state.events);
 
   useEffect(() => {
     if (

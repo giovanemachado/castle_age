@@ -1,6 +1,7 @@
 import { useGameStore } from "@/app/store/gameStoreProvider";
 import { MatchData, MatchState, SquareData, UnitData } from "@/schema/types";
 import { useCallback } from "react";
+import { useShallow } from "zustand/react/shallow";
 
 export function useUpdateMatchState() {
   const {
@@ -10,7 +11,16 @@ export function useUpdateMatchState() {
     setMatchState,
     player,
     setWaitingOtherPlayers,
-  } = useGameStore((state) => state);
+  } = useGameStore(
+    useShallow((state) => ({
+      setGameMap: state.setGameMap,
+      setMatch: state.setMatch,
+      setUnitsMovement: state.setUnitsMovement,
+      setMatchState: state.setMatchState,
+      player: state.player,
+      setWaitingOtherPlayers: state.setWaitingOtherPlayers,
+    })),
+  );
 
   return useCallback(
     (mapData: {

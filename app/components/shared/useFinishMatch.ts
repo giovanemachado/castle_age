@@ -3,7 +3,9 @@ import { fetchData } from "@/utils/requests";
 import { useCallback } from "react";
 
 export default function useFinishMatch() {
-  const { match, token, setMatch } = useGameStore((state) => state);
+  const match = useGameStore((state) => state.match);
+  const token = useGameStore((state) => state.token);
+  const setMatch = useGameStore((state) => state.setMatch);
 
   return useCallback(async () => {
     if (!match?.code) {

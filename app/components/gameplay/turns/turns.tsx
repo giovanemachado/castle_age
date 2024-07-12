@@ -2,9 +2,16 @@
 
 import { useGameStore } from "@/app/store/gameStoreProvider";
 import PassTurnButton from "./passTurnButton";
+import { useShallow } from "zustand/react/shallow";
 
 const Turns = () => {
-  const { turns, match, player } = useGameStore((state) => state);
+  const { turns, match, player } = useGameStore(
+    useShallow((state) => ({
+      turns: state.turns,
+      match: state.match,
+      player: state.player,
+    })),
+  );
 
   // TODO temp, move this to the correct spot
   const prioPlayer = turns % 2 === 0 ? match?.players[0] : match?.players[1];

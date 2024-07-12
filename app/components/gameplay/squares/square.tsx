@@ -44,7 +44,8 @@ const droppable = ({
  * drop 1 card in each of these.
  */
 const Square = ({ droppableId }: { droppableId: string }) => {
-  const { canBeReached, unitsMovement } = useGameStore((state) => state);
+  const canBeReached = useGameStore((state) => state.canBeReached);
+  const unitsMovement = useGameStore((state) => state.unitsMovement);
 
   // temporary non-random to test images (will come from backend)
   let backgroundImage = `url(${

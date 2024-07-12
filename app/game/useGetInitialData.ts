@@ -8,7 +8,8 @@ export function useGetInitialData() {
 
   const updateMatchState = useUpdateMatchState();
 
-  const { token, user } = useGameStore((state) => state);
+  const token = useGameStore((state) => state.token);
+  const user = useGameStore((state) => state.user);
 
   const getData = useCallback(async () => {
     if (!user || !token) {

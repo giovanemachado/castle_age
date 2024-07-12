@@ -12,7 +12,11 @@ import { useWaitForGameEvent } from "./useWaitForGameEvent";
  * Game handles all game load, preparing all data to other components (Map, Turns, etc)
  */
 export default function Game() {
-  const { token, match, waitingOtherPlayers } = useGameStore((state) => state);
+  const token = useGameStore((state) => state.token);
+  const match = useGameStore((state) => state.match);
+  const waitingOtherPlayers = useGameStore(
+    (state) => state.waitingOtherPlayers,
+  );
 
   const loadingData = useGetInitialData();
   useWaitForGameEvent();

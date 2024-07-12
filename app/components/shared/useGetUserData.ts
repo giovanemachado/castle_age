@@ -5,7 +5,10 @@ import { useRouter } from "next/navigation";
 export function useGetUserData() {
   const router = useRouter();
   const supabase = createClient();
-  const { setPlayer, setToken, setUser, user } = useGameStore((state) => state);
+  const setPlayer = useGameStore((state) => state.setPlayer);
+  const setToken = useGameStore((state) => state.setToken);
+  const setUser = useGameStore((state) => state.setUser);
+  const user = useGameStore((state) => state.user);
 
   if (user?.id) {
     return;

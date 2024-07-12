@@ -4,9 +4,10 @@ import { Draggable } from "@hello-pangea/dnd";
 import Illustration from "./illustration";
 import { MatchStateUnitsMovement } from "@/schema/types";
 import { unitIsStructure } from "../../shared/utils";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useGameStore } from "@/app/store/gameStoreProvider";
 import Indicator from "./indicator";
+import { useShallow } from "zustand/react/shallow";
 
 type CardProps = {
   unit: MatchStateUnitsMovement;
@@ -17,7 +18,12 @@ type CardProps = {
  */
 const Card = ({ unit }: CardProps) => {
   const { gameMap, match, player, waitingOtherPlayers } = useGameStore(
-    (state) => state,
+    useShallow((state) => ({
+      gameMap: state.gameMap,
+      match: state.match,
+      player: state.player,
+      waitingOtherPlayers: state.waitingOtherPlayers,
+    })),
   );
   const [isDragEnabled, setIsDragEnabled] = useState(false);
   const [isRed, setIsRed] = useState(false);
@@ -37,6 +43,11 @@ const Card = ({ unit }: CardProps) => {
     setIsDragEnabled(isPlayersUnit && isUnitMovable && !waitingOtherPlayers);
     setUnitClass(currentUnit.class);
   }, [match, unit.id, gameMap, player, waitingOtherPlayers]);
+
+  const getRandomHP = useCallback(() => {
+    const value = Math.floor(Math.random() * 15 + 1).toString();
+    return value;
+  }, []);
 
   return (
     <Draggable
@@ -62,7 +73,7 @@ const Card = ({ unit }: CardProps) => {
                   unitClass={unitClass}
                   isDragging={snapshot.isDragging}
                   isRed={isRed}
-                  HP={Math.floor(Math.random() * 15 + 1).toString()} // TODO random HP temp
+                  HP={getRandomHP()} // TODO random HP temp
                 />
               }
             </Indicator>

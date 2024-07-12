@@ -4,7 +4,8 @@ import { fetchData } from "@/utils/requests";
 import { useCallback } from "react";
 
 export default function useCreateMatch() {
-  const { token, setMatch } = useGameStore((state) => state);
+  const token = useGameStore((state) => state.token);
+  const setMatch = useGameStore((state) => state.setMatch);
 
   return useCallback(async () => {
     const { status, data } = await fetchData(token, `games/match`, "POST");

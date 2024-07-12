@@ -16,7 +16,8 @@ import useFinishMatch from "../shared/useFinishMatch";
  * Lobby handles all interaction to join a match
  */
 export default function Lobby() {
-  const { match, token } = useGameStore((state) => state);
+  const match = useGameStore((state) => state.match);
+  const token = useGameStore((state) => state.token);
 
   const [matchCode, setMatchCode] = useState<string>("");
 

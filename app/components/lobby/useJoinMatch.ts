@@ -5,7 +5,7 @@ import { useCallback } from "react";
 
 export default function useJoinMatch(matchCode: string) {
   const router = useRouter();
-  const { token } = useGameStore((state) => state);
+  const token = useGameStore((state) => state.token);
 
   return useCallback(async () => {
     const { status } = await fetchData(

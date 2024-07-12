@@ -6,7 +6,7 @@ import { useGameStore } from "@/app/store/gameStoreProvider";
 import { useResetUserData } from "../shared/useResetUserData";
 
 export default function Navbar() {
-  const { player } = useGameStore((state) => state);
+  const player = useGameStore((state) => state.player);
 
   const resetUserData = useResetUserData();
 

@@ -4,7 +4,9 @@ import { useGameStore } from "@/app/store/gameStoreProvider";
 import useUpdateMatchState from "./usePassTurn";
 
 const PassTurnButton = () => {
-  const { waitingOtherPlayers } = useGameStore((state) => state);
+  const waitingOtherPlayers = useGameStore(
+    (state) => state.waitingOtherPlayers,
+  );
 
   const updateMatchState = useUpdateMatchState();
 

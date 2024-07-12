@@ -2,6 +2,7 @@ import { useGameStore } from "@/app/store/gameStoreProvider";
 import { useEffect } from "react";
 import { socket } from "@/app/socket/socket";
 import { EVENT_TYPES } from "../socket/events";
+import { useShallow } from "zustand/react/shallow";
 
 export function useWaitForGameEvent() {
   const {
@@ -11,7 +12,16 @@ export function useWaitForGameEvent() {
     events,
     setMatchState,
     turns,
-  } = useGameStore((state) => state);
+  } = useGameStore(
+    useShallow((state) => ({
+      setWaitingOtherPlayers: state.setWaitingOtherPlayers,
+      match: state.match,
+      setEvents: state.setEvents,
+      events: state.events,
+      setMatchState: state.setMatchState,
+      turns: state.turns,
+    })),
+  );
 
   useEffect(() => {
     const onEvent = (value: any) => {

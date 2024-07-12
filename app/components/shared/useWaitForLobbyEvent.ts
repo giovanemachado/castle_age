@@ -4,7 +4,8 @@ import { socket } from "@/app/socket/socket";
 import { EVENT_TYPES } from "@/app/socket/events";
 
 export function useWaitForLobbyEvent() {
-  const { setEvents, match } = useGameStore((state) => state);
+  const setEvents = useGameStore((state) => state.setEvents);
+  const match = useGameStore((state) => state.match);
 
   useEffect(() => {
     const onEvent = (value: any) => {

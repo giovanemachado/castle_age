@@ -2,7 +2,7 @@
 import { useGameStore } from "@/app/store/gameStoreProvider";
 
 const Money = () => {
-  const { money } = useGameStore((state) => state);
+  const money = useGameStore((state) => state.money);
 
   return (
     <div className="w-full flex">
