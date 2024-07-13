@@ -1,10 +1,8 @@
-"use client";
-
 import { Draggable } from "@hello-pangea/dnd";
 import Illustration from "./illustration";
 import { MatchStateUnitsMovement } from "@/schema/types";
 import { unitIsStructure } from "../../shared/utils";
-import { useCallback, useEffect, useState } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 import { useGameStore } from "@/app/store/gameStoreProvider";
 import Indicator from "./indicator";
 import { useShallow } from "zustand/react/shallow";
@@ -16,7 +14,7 @@ type CardProps = {
 /**
  * Representation of a Card in the game (an unit). It's a draggable item, and you can interact with most of them.
  */
-const Card = ({ unit }: CardProps) => {
+export const Card = memo(function Card({ unit }: CardProps) {
   const { gameMap, match, player, waitingOtherPlayers } = useGameStore(
     useShallow((state) => ({
       gameMap: state.gameMap,
@@ -82,6 +80,4 @@ const Card = ({ unit }: CardProps) => {
       }}
     </Draggable>
   );
-};
-
-export default Card;
+});

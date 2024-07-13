@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import { GameStoreProvider } from "./store/gameStoreProvider";
 import Navbar from "./components/navbar/navbar";
@@ -7,13 +6,10 @@ import UserDataWrapper from "./userDataWrapper";
 
 import { Macondo } from "next/font/google";
 
-// If loading a variable font, you don't need to specify the font weight
 const macondo = Macondo({
   weight: "400",
   subsets: ["latin"],
 });
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Castle Age",

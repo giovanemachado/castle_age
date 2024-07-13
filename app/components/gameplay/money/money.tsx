@@ -1,4 +1,3 @@
-"use client";
 import { useGameStore } from "@/app/store/gameStoreProvider";
 
 const Money = () => {

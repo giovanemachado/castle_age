@@ -1,5 +1,3 @@
-"use client";
-
 import { FormEvent } from "react";
 import { login } from "@/app/lib/actions";
 import { useGetUserData } from "../shared/useGetUserData";

@@ -1,11 +1,8 @@
-"use client";
-
 import { BeforeCapture, DragDropContext, DropResult } from "@hello-pangea/dnd";
-import { SquareData } from "@/schema/types";
 import { validDropResult } from "./utils";
 import { useGameStore } from "@/app/store/gameStoreProvider";
-import Square from "../squares/square";
 import { useShallow } from "zustand/react/shallow";
+import { Rows } from "./rows";
 
 /**
  * Represents the whole map of the game, showing all Squares and Cards in it.
@@ -39,15 +36,7 @@ const Map = () => {
     <div className="flex-col">
       <DragDropContext onBeforeCapture={onBeforeCapture} onDragEnd={onDragEnd}>
         <div className="map">
-          {gameMap?.rows.map((row: SquareData[], rIndex: number) => (
-            <div key={`${rIndex}`} className="map-row">
-              {row.map((square: SquareData, index: number) => (
-                <div key={`${rIndex}-${index}`}>
-                  <Square droppableId={square.id} />
-                </div>
-              ))}
-            </div>
-          ))}
+          <Rows rows={gameMap?.rows ?? []} />
         </div>
       </DragDropContext>
     </div>

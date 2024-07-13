@@ -1,5 +1,3 @@
-"use client";
-
 import useFinishMatch from "../../shared/useFinishMatch";
 
 const Surrender = () => {

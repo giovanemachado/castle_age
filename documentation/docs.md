@@ -36,7 +36,6 @@ From docs:
 
 ```js
 // imports ...
-"use client";
 import { createClient } from "@/utils/supabase/client";
 
 // component ...

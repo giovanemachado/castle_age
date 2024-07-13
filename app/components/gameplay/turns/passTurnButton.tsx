@@ -1,5 +1,3 @@
-"use client";
-
 import { useGameStore } from "@/app/store/gameStoreProvider";
 import useUpdateMatchState from "./usePassTurn";
 

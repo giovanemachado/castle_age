@@ -1,6 +1,4 @@
-"use client";
-
-export type ShareCodeProps = {
+type ShareCodeProps = {
   handleCancelMatch: () => void;
   matchCode: string;
 };

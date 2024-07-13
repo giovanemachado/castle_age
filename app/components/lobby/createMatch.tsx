@@ -1,5 +1,3 @@
-"use client";
-
 export type CreateMatchProps = {
   handleCreateMatch: () => void;
   handleJoinMatch: () => void;

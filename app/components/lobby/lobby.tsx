@@ -1,5 +1,3 @@
-"use client";
-
 import { useState } from "react";
 import { useGameStore } from "@/app/store/gameStoreProvider";
 import { useRedirectToActiveMatch } from "./useRedirectToActiveMatch";
