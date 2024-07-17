@@ -3,7 +3,6 @@ type IndicatorProps = {
   isDragEnabled: boolean;
   unitMovedInTurn: boolean;
   unitIsDragging: boolean;
-  unitClass: string;
 };
 
 const Indicator = ({
@@ -11,10 +10,11 @@ const Indicator = ({
   isDragEnabled,
   unitMovedInTurn,
   unitIsDragging,
-  unitClass,
 }: IndicatorProps) => {
   return (
-    <div className="indicator hover:z-10 hover:brightness-110 ease-in duration-100 block">
+    <div
+      className={`indicator hover:z-10 hover:brightness-110 ease-in duration-100 block ${unitIsDragging ? "brightness-110" : ""}`}
+    >
       {isDragEnabled && !unitMovedInTurn && (
         <span className="indicator-item indicator-top indicator-start badge badge-secondary">
           {unitIsDragging ? "..." : "!"}

@@ -1,6 +1,12 @@
-import { MatchData, MatchState, SquareData, UnitData } from "@/schema/types";
+import {
+  MatchData,
+  MatchState,
+  MatchStateUnitsMovement,
+  SquareData,
+  UnitData,
+} from "@/schema/types";
 import { createStore } from "zustand/vanilla";
-import { setCanBeReached, setUnitNewLocalization } from "./gameStoreActions";
+import { setUnitNewLocalization } from "./gameStoreActions";
 import { devtools } from "zustand/middleware";
 
 export type Player = {
@@ -12,6 +18,7 @@ export type ClientState = {
   user?: any;
   token?: string;
   canBeReached: string[];
+  unitInDrag?: MatchStateUnitsMovement;
   player?: Player;
   gameMap?: { rows: SquareData[][]; units: UnitData[] };
   match?: MatchData;
@@ -27,7 +34,7 @@ export type GameActions = {
   setToken: (token?: string) => void;
   setMatchState: (updatedState: MatchState) => void;
   setUnitNewLocalization: (unitId: string, localization: string) => void;
-  setCanBeReached: (unitId?: string) => void;
+  setUnitInDrag: (unitId?: string) => void;
   setMatch: (matchData?: MatchData) => void;
   setGameMap: (rows: SquareData[][], units: UnitData[]) => void;
   setEvents: (eventValue: { type: string; value: any }) => void;
@@ -62,11 +69,19 @@ export const createGameStore = (initState: MatchState) => {
           false,
           "setUnitNewLocalization",
         ),
-      setCanBeReached: (unitId) =>
+      setUnitInDrag: (unitId) =>
         set(
-          (state) => setCanBeReached(state, unitId),
+          (state) => {
+            let unitInDrag: MatchStateUnitsMovement | undefined = undefined;
+
+            if (unitId) {
+              unitInDrag = state.unitsMovement.find((u) => u.id == unitId);
+            }
+
+            return { unitInDrag: unitInDrag };
+          },
           false,
-          "setCanBeReached",
+          "setUnitInDrag",
         ),
       setMatch: (match?: MatchData) =>
         set(
@@ -102,6 +117,8 @@ export const createGameStore = (initState: MatchState) => {
               playerId: unitData.playerId,
               movedInTurn: false,
               previousLocalization: unitData.movement.initialLocalization,
+              reachableLocalizations:
+                unitData.movement.initialReachableLocalizations,
             })),
           }),
           false,

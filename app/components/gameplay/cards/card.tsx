@@ -64,7 +64,6 @@ export const Card = memo(function Card({ unit }: CardProps) {
               isDragEnabled={isDragEnabled}
               unitMovedInTurn={unit.movedInTurn}
               unitIsDragging={snapshot.isDragging}
-              unitClass={unitClass}
             >
               {
                 <Illustration

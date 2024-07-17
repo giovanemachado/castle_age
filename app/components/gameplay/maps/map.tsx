@@ -8,21 +8,21 @@ import { Rows } from "./rows";
  * Represents the whole map of the game, showing all Squares and Cards in it.
  */
 const Map = () => {
-  const { gameMap, setUnitNewLocalization, setCanBeReached } = useGameStore(
+  const { gameMap, setUnitNewLocalization, setUnitInDrag } = useGameStore(
     useShallow((state) => ({
       gameMap: state.gameMap,
       setUnitNewLocalization: state.setUnitNewLocalization,
-      setCanBeReached: state.setCanBeReached,
+      setUnitInDrag: state.setUnitInDrag,
     })),
   );
 
   const onBeforeCapture = (beforeCapture: BeforeCapture) => {
-    setCanBeReached(beforeCapture.draggableId);
+    setUnitInDrag(beforeCapture.draggableId);
   };
 
   const onDragEnd = (dropResult: DropResult) => {
     const result = validDropResult(dropResult);
-    setCanBeReached();
+    setUnitInDrag();
 
     if (!result) {
       return;

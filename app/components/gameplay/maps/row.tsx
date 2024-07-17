@@ -9,8 +9,8 @@ type RowProps = {
 };
 
 export const Row = memo(function Row({ row, rowsIndex }: RowProps) {
-  const canBeReached = useGameStore((state) => state.canBeReached);
   const unitsMovement = useGameStore((state) => state.unitsMovement);
+  const unitInDrag = useGameStore((state) => state.unitInDrag);
 
   const checkForUnitsInSquare = useCallback(
     (droppableId: string) => {
@@ -25,9 +25,10 @@ export const Row = memo(function Row({ row, rowsIndex }: RowProps) {
 
   const isReachable = useCallback(
     (droppableId: string) => {
-      return !canBeReached.includes(droppableId);
+      const reachableLocalizations = unitInDrag?.reachableLocalizations ?? [];
+      return !reachableLocalizations?.includes(droppableId);
     },
-    [canBeReached],
+    [unitInDrag?.reachableLocalizations],
   );
 
   return row.map((square: SquareData, rowIndex: number) => (
