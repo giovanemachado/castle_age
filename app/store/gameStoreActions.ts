@@ -3,7 +3,7 @@ import { GameStore } from "./gameStore";
 
 const getUnitIndex = (
   units: MatchStateUnitsMovement[],
-  unitId: string,
+  unitId: string
 ): number => {
   const unitIndex = units.findIndex((unit) => unit.id === unitId);
 
@@ -17,11 +17,9 @@ const getUnitIndex = (
 export const setUnitNewLocalization = (
   state: GameStore,
   unitId: string,
-  localization: string,
+  localization: string
 ) => {
-  const unitsInStore: MatchStateUnitsMovement[] = Array.from(
-    state.unitsMovement,
-  );
+  const unitsInStore = Array.from(state.unitsMovement);
   const unitInStoreIndex = getUnitIndex(state.unitsMovement, unitId);
 
   unitsInStore[unitInStoreIndex].localization = localization;

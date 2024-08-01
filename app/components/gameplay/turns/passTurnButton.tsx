@@ -3,7 +3,7 @@ import useUpdateMatchState from "./usePassTurn";
 
 const PassTurnButton = () => {
   const waitingOtherPlayers = useGameStore(
-    (state) => state.waitingOtherPlayers,
+    (state) => state.waitingOtherPlayers
   );
 
   const updateMatchState = useUpdateMatchState();
@@ -15,7 +15,7 @@ const PassTurnButton = () => {
   return (
     <button
       onClick={handleClick}
-      className={"btn btn-primary btn-l"}
+      className={"btn btn-primary text-base w-full"}
       disabled={waitingOtherPlayers}
     >
       {waitingOtherPlayers ? "Wait ..." : "Pass turn"}

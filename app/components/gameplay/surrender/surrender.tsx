@@ -8,7 +8,7 @@ const Surrender = () => {
   };
 
   return (
-    <button onClick={handleClick} className={"btn btn-error"}>
+    <button onClick={handleClick} className={"btn btn-error text-base w-full"}>
       Surrender
     </button>
   );

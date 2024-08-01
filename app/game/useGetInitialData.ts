@@ -5,6 +5,7 @@ import { useUpdateMatchState } from "./useUpdateWholeMatchState";
 
 export function useGetInitialData() {
   const [loading, setLoading] = useState(true);
+  const [shouldRefetch, refetch] = useState({});
 
   const updateMatchState = useUpdateMatchState();
 
@@ -16,6 +17,8 @@ export function useGetInitialData() {
       return;
     }
 
+    setLoading(true);
+
     const { status, data } = await fetchData(token, `games/initial-data`);
 
     if (status === 200) {
@@ -23,11 +26,11 @@ export function useGetInitialData() {
       updateMatchState(mapData);
     }
     setLoading(false);
-  }, [token, updateMatchState, user]);
+  }, [token, updateMatchState, user, shouldRefetch]);
 
   useEffect(() => {
     getData();
   }, [getData]);
 
-  return loading;
+  return { loading, refetch: () => refetch({}) };
 }

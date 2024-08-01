@@ -13,7 +13,7 @@ const Map = () => {
       gameMap: state.gameMap,
       setUnitNewLocalization: state.setUnitNewLocalization,
       setUnitInDrag: state.setUnitInDrag,
-    })),
+    }))
   );
 
   const onBeforeCapture = (beforeCapture: BeforeCapture) => {
@@ -35,7 +35,7 @@ const Map = () => {
   return (
     <div className="flex-col">
       <DragDropContext onBeforeCapture={onBeforeCapture} onDragEnd={onDragEnd}>
-        <div className="map">
+        <div className="map px-[16]">
           <Rows rows={gameMap?.rows ?? []} />
         </div>
       </DragDropContext>

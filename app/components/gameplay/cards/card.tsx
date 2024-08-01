@@ -21,7 +21,7 @@ export const Card = memo(function Card({ unit }: CardProps) {
       match: state.match,
       player: state.player,
       waitingOtherPlayers: state.waitingOtherPlayers,
-    })),
+    }))
   );
   const [isDragEnabled, setIsDragEnabled] = useState(false);
   const [isRed, setIsRed] = useState(false);
@@ -41,11 +41,6 @@ export const Card = memo(function Card({ unit }: CardProps) {
     setIsDragEnabled(isPlayersUnit && isUnitMovable && !waitingOtherPlayers);
     setUnitClass(currentUnit.class);
   }, [match, unit.id, gameMap, player, waitingOtherPlayers]);
-
-  const getRandomHP = useCallback(() => {
-    const value = Math.floor(Math.random() * 15 + 1).toString();
-    return value;
-  }, []);
 
   return (
     <Draggable
@@ -70,7 +65,6 @@ export const Card = memo(function Card({ unit }: CardProps) {
                   unitClass={unitClass}
                   isDragging={snapshot.isDragging}
                   isRed={isRed}
-                  HP={getRandomHP()} // TODO random HP temp
                 />
               }
             </Indicator>

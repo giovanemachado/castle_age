@@ -4,6 +4,8 @@ import castleIllustration from "@/public/castle.png";
 import gateIllustration from "@/public/gate.png";
 import wallIllustration from "@/public/wall.png";
 import spearmanIllustration from "@/public/spearman.png";
+import horsemanIllustration from "@/public/horseman.png";
+import archerIllustration from "@/public/archer.png";
 
 import background from "@/public/background.png";
 import flag from "@/public/flag.png";
@@ -20,6 +22,10 @@ const getIllustration = (illustration_tag: string): StaticImageData => {
       return wallIllustration;
     case UNITDATA_CLASS.SPEARMAN:
       return spearmanIllustration;
+    case UNITDATA_CLASS.HORSEMAN:
+      return horsemanIllustration;
+    case UNITDATA_CLASS.ARCHER:
+      return archerIllustration;
     default:
       return spearmanIllustration;
   }
@@ -41,15 +47,9 @@ type IllustrationProps = {
   unitClass: string;
   isDragging: boolean;
   isRed: boolean;
-  HP: string;
 };
 
-const Illustration = ({
-  unitClass,
-  isDragging,
-  isRed,
-  HP,
-}: IllustrationProps) => {
+const Illustration = ({ unitClass, isDragging, isRed }: IllustrationProps) => {
   return (
     <div className={`${isDragging ? "card" : ""} ease-in duration-100`}>
       <div className="image-wrapper">
@@ -93,9 +93,7 @@ const Illustration = ({
               style={{
                 color: "#2C2C2C",
               }}
-            >
-              {HP}
-            </div>
+            ></div>
           </div>
         </div>
       </div>

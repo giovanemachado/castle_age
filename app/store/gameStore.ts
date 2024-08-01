@@ -8,7 +8,6 @@ import {
 import { createStore } from "zustand/vanilla";
 import { setUnitNewLocalization } from "./gameStoreActions";
 import { devtools } from "zustand/middleware";
-
 export type Player = {
   name: string;
   playerId: string;
@@ -61,13 +60,13 @@ export const createGameStore = (initState: MatchState) => {
             return updatedState;
           },
           false,
-          "setMatchState",
+          "setMatchState"
         ),
       setUnitNewLocalization: (unitId, localization) =>
         set(
           (state) => setUnitNewLocalization(state, unitId, localization),
           false,
-          "setUnitNewLocalization",
+          "setUnitNewLocalization"
         ),
       setUnitInDrag: (unitId) =>
         set(
@@ -81,7 +80,7 @@ export const createGameStore = (initState: MatchState) => {
             return { unitInDrag: unitInDrag };
           },
           false,
-          "setUnitInDrag",
+          "setUnitInDrag"
         ),
       setMatch: (match?: MatchData) =>
         set(
@@ -89,7 +88,7 @@ export const createGameStore = (initState: MatchState) => {
             match,
           }),
           false,
-          "setMatch",
+          "setMatch"
         ),
       setGameMap: (rows: SquareData[][], units: UnitData[]) =>
         set(
@@ -100,13 +99,13 @@ export const createGameStore = (initState: MatchState) => {
             },
           }),
           false,
-          "setGameMap",
+          "setGameMap"
         ),
       setEvents: (eventValue: { type: string; value: any }) =>
         set(
           (state) => ({ events: [...state.events, eventValue] }),
           false,
-          "setEvents",
+          "setEvents"
         ),
       setUnitsMovement: (unitsData) =>
         set(
@@ -122,16 +121,16 @@ export const createGameStore = (initState: MatchState) => {
             })),
           }),
           false,
-          "setUnitsMovement",
+          "setUnitsMovement"
         ),
       setWaitingOtherPlayers: (isWaiting) =>
         set(
           () => ({ waitingOtherPlayers: isWaiting }),
           false,
-          "setWaitingOtherPlayers",
+          "setWaitingOtherPlayers"
         ),
       setPlayer: (playerData) =>
         set(() => ({ player: playerData }), false, "setPlayer"),
-    })),
+    }))
   );
 };

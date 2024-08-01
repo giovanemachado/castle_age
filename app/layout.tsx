@@ -25,7 +25,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={macondo.className} suppressHydrationWarning={true}>
         <GameStoreProvider>
-          <div className="h-screen flex flex-col container mx-auto px-2">
+          <div className="h-screen flex flex-col container max-w-screen-2xl mx-auto px-2 text-base">
             <UserDataWrapper>
               {
                 <>
